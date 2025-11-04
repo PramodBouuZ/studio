@@ -39,6 +39,8 @@ const heroBanners = [
 ];
 
 export default function HeroSection() {
+  const images = PlaceHolderImages;
+
   return (
     <section className="relative w-full h-[500px] md:h-[600px] overflow-hidden">
       <Carousel
@@ -48,7 +50,7 @@ export default function HeroSection() {
       >
         <CarouselContent className="h-full">
           {heroBanners.map((banner, index) => {
-            const image = PlaceHolderImages.find((img) => img.id === banner.imageId);
+            const image = images.find((img) => img.id === banner.imageId);
             return (
               <CarouselItem key={index} className="relative h-full">
                 <div className="absolute inset-0 bg-black/50 z-10" />
