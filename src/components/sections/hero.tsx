@@ -11,7 +11,6 @@ import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Autoplay from 'embla-carousel-autoplay';
 import { ArrowRight } from 'lucide-react';
-import { Card, CardContent } from '../ui/card';
 
 const heroBanners = [
   {
@@ -43,7 +42,7 @@ const heroBanners = [
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full h-[600px] overflow-hidden">
+    <section className="relative w-full h-[600px] overflow-hidden -mb-1">
       <Carousel
         className="w-full h-full"
         plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
