@@ -67,7 +67,7 @@ export default function ProductCatalog() {
         <div>
           <Label>Price Range</Label>
           <div className="flex items-center gap-4">
-            <span className="text-sm font-medium">${priceRange[0]}</span>
+            <span className="text-sm font-medium">₹{priceRange[0]}</span>
             <Slider
               min={0}
               max={maxPrice}
@@ -76,7 +76,7 @@ export default function ProductCatalog() {
               onValueChange={(value) => setPriceRange(value)}
               className="w-full"
             />
-            <span className="text-sm font-medium">${priceRange[1]}</span>
+            <span className="text-sm font-medium">₹{priceRange[1]}</span>
           </div>
         </div>
       </div>
@@ -125,7 +125,7 @@ function ProductCard({ product }: { product: Product }) {
         <CardDescription className="mb-4 h-10">{product.description}</CardDescription>
         <div className="flex justify-between items-center">
           <p className="text-2xl font-semibold text-primary">
-            ${product.price.toLocaleString()}
+            ₹{product.price.toLocaleString()}
           </p>
           <Button variant="outline">View Details</Button>
         </div>
