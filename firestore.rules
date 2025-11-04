@@ -10,7 +10,8 @@
  * - Users can only access their own data.
  * - Vendors can only manage their own profile.
  * - Public read access is granted for approved vendors, but write access is restricted.
- * - User and vendor listing is disallowed.
+ * - Admins can read all vendor data.
+ * - User and general vendor listing is disallowed.
  *
  * Denormalization for Authorization:
  * The `userId` and `vendorId` are denormalized into the document path itself,
@@ -32,6 +33,10 @@ service cloud.firestore {
       return isOwner(userId) && resource != null;
     }
 
+    function isAdmin() {
+      return isSignedIn() && request.auth.token.email == 'admin@bantconfirm.com';
+    }
+
     /**
      * @description Secure user accounts under /users/{userId}. Only the authenticated user can manage their own account.
      * @path /users/{userId}
@@ -49,22 +54,24 @@ service cloud.firestore {
      * - Any authenticated user can create their own vendor profile.
      * - Only the owning vendor can update their profile.
      * - Public can read approved vendor profiles.
+     * - Admin can read and update all vendor profiles.
      * @path /vendors/{vendorId}
      */
     match /vendors/{vendorId} {
-        // Anyone can read an approved vendor's profile.
-        allow get: if resource.data.status == 'approved';
-        // No one can list all vendors.
-        allow list: if false; 
+        // Public can read an approved vendor's profile. Admin can read any.
+        allow get: if resource.data.status == 'approved' || isAdmin();
+
+        // Only admin can list all vendors.
+        allow list: if isAdmin(); 
         
         // A user can create a vendor profile for themselves.
         allow create: if isOwner(vendorId) && request.resource.data.id == vendorId;
         
-        // The owner of the vendor profile can update it.
-        allow update: if isOwner(vendorId);
+        // The owner of the vendor profile or an admin can update it.
+        allow update: if isOwner(vendorId) || isAdmin();
 
-        // Only the vendor owner can delete their profile.
-        allow delete: if isOwner(vendorId);
+        // The owner of the vendor profile or an admin can delete it.
+        allow delete: if isOwner(vendorId) || isAdmin();
     }
   }
 }
