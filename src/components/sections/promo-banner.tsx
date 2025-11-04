@@ -6,12 +6,19 @@ import { Button } from '@/components/ui/button';
 import { ArrowRight, Gift } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card } from '@/components/ui/card';
+import { motion } from 'framer-motion';
 
 export default function PromoBanner() {
     const image = PlaceHolderImages.find(img => img.id === 'hero-5');
 
     return (
-        <section className="py-16 sm:py-24">
+        <motion.section 
+            className="py-16 sm:py-24"
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+        >
             <Card className="overflow-hidden bg-gradient-to-r from-primary to-blue-600 text-primary-foreground shadow-2xl">
                 <div className="grid md:grid-cols-2 items-center">
                     <div className="p-8 md:p-12 lg:p-16 order-2 md:order-1">
@@ -45,6 +52,6 @@ export default function PromoBanner() {
                     </div>
                 </div>
             </Card>
-        </section>
+        </motion.section>
     );
 }

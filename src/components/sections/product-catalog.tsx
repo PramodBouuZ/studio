@@ -18,6 +18,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { motion } from 'framer-motion';
 
 const productTypes = ['All', 'Software', 'Service', 'Consulting', 'Hardware'];
 const maxPrice = Math.max(...allProducts.map((p) => p.price));
@@ -109,69 +110,89 @@ export default function ProductCatalog() {
   const timeSlots = ['09:00 AM', '11:00 AM', '02:00 PM', '04:00 PM'];
 
   return (
-    <section id="products" className="py-16 sm:py-24">
-      <div className="text-center space-y-4 mb-12">
+    <section id="products" className="py-16 sm:py-24 overflow-hidden">
+      <motion.div 
+        className="text-center space-y-4 mb-12"
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5 }}
+      >
         <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl md:text-6xl font-headline">Our Product Catalog</h2>
         <p className="max-w-3xl mx-auto text-muted-foreground md:text-xl/relaxed">
           Explore a wide range of curated products and services offered by our network of trusted vendors.
         </p>
-      </div>
+      </motion.div>
       
-      <Card className="mb-12 p-6 bg-card/80 backdrop-blur-sm border shadow-lg">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
-            <div className="md:col-span-2">
-                <Label htmlFor="search">Search Products</Label>
-                <div className="relative">
-                    <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-                    <Input
-                    id="search"
-                    placeholder="Search by name or description..."
-                    className="pl-10 h-11 text-base"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
-            </div>
-            <div>
-                <Label htmlFor="type">Product Type</Label>
-                <Select value={selectedType} onValueChange={setSelectedType}>
-                    <SelectTrigger id="type" className="h-11 text-base">
-                        <SelectValue placeholder="Filter by type" />
-                    </SelectTrigger>
-                    <SelectContent>
-                    {productTypes.map((type) => (
-                        <SelectItem key={type} value={type}>{type}</SelectItem>
-                    ))}
-                    </SelectContent>
-                </Select>
-            </div>
-            <div className="space-y-3">
-                <div className="flex justify-between items-center">
-                    <Label>Price Range</Label>
-                    <span className="text-sm font-medium text-primary">
-                        ₹{priceRange[0]} - ₹{priceRange[1]}
-                    </span>
-                </div>
-                <Slider
-                    min={0}
-                    max={maxPrice}
-                    step={100}
-                    value={priceRange}
-                    onValueChange={(value) => setPriceRange(value)}
-                    className="w-full"
-                />
-            </div>
-        </div>
-      </Card>
+      <motion.div
+        initial={{ opacity: 0, y: 50 }}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.2 }}
+      >
+        <Card className="mb-12 p-6 bg-card/80 backdrop-blur-sm border shadow-lg">
+          <div className="grid grid-cols-1 md:grid-cols-4 gap-6 items-end">
+              <div className="md:col-span-2">
+                  <Label htmlFor="search">Search Products</Label>
+                  <div className="relative">
+                      <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
+                      <Input
+                      id="search"
+                      placeholder="Search by name or description..."
+                      className="pl-10 h-11 text-base"
+                      value={searchTerm}
+                      onChange={(e) => setSearchTerm(e.target.value)}
+                      />
+                  </div>
+              </div>
+              <div>
+                  <Label htmlFor="type">Product Type</Label>
+                  <Select value={selectedType} onValueChange={setSelectedType}>
+                      <SelectTrigger id="type" className="h-11 text-base">
+                          <SelectValue placeholder="Filter by type" />
+                      </SelectTrigger>
+                      <SelectContent>
+                      {productTypes.map((type) => (
+                          <SelectItem key={type} value={type}>{type}</SelectItem>
+                      ))}
+                      </SelectContent>
+                  </Select>
+              </div>
+              <div className="space-y-3">
+                  <div className="flex justify-between items-center">
+                      <Label>Price Range</Label>
+                      <span className="text-sm font-medium text-primary">
+                          ₹{priceRange[0]} - ₹{priceRange[1]}
+                      </span>
+                  </div>
+                  <Slider
+                      min={0}
+                      max={maxPrice}
+                      step={100}
+                      value={priceRange}
+                      onValueChange={(value) => setPriceRange(value)}
+                      className="w-full"
+                  />
+              </div>
+          </div>
+        </Card>
+      </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {filteredProducts.map((product) => (
-          <ProductCard 
-            key={product.id} 
-            product={product}
-            onBookDemoClick={() => handleBookDemoClick(product)}
-            onPostEnquiryClick={() => handlePostEnquiryClick(product)}
-          />
+        {filteredProducts.map((product, index) => (
+           <motion.div
+            key={product.id}
+            initial={{ opacity: 0, y: 50 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: index * 0.1 }}
+          >
+            <ProductCard 
+              product={product}
+              onBookDemoClick={() => handleBookDemoClick(product)}
+              onPostEnquiryClick={() => handlePostEnquiryClick(product)}
+            />
+          </motion.div>
         ))}
          {filteredProducts.length === 0 && (
           <div className="col-span-full text-center py-16">
@@ -240,7 +261,7 @@ function ProductCard({ product, onBookDemoClick, onPostEnquiryClick }: { product
   const Icon = product.icon;
 
   return (
-    <Card className="overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col group border-transparent hover:border-primary">
+    <Card className="overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col group border-transparent hover:border-primary h-full">
       <CardHeader className="p-0">
         {image && (
           <div className="relative h-52 w-full">
@@ -278,8 +299,8 @@ function ProductCard({ product, onBookDemoClick, onPostEnquiryClick }: { product
   );
 }
 
-function Label({ htmlFor, children }: { htmlFor?: string; children: React.ReactNode }) {
-    return <label htmlFor={htmlFor} className="block text-sm font-medium text-muted-foreground">{children}</label>
+function Label({ htmlFor, children, className }: { htmlFor?: string; children: React.ReactNode, className?: string }) {
+    return <label htmlFor={htmlFor} className={cn("block text-sm font-medium text-muted-foreground", className)}>{children}</label>
 }
 
     
