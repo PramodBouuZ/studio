@@ -5,7 +5,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Button } from '@/components/ui/button';
-import { Lightbulb, Loader2, Send, UserPlus } from 'lucide-react';
+import { Lightbulb, Loader2, Send, UserPlus, ArrowRight } from 'lucide-react';
 import { refineCustomerInquiry, RefineCustomerInquiryOutput } from '@/ai/flows/refine-customer-inquiry';
 import { Alert, AlertDescription, AlertTitle } from '../ui/alert';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '../ui/dialog';
@@ -61,14 +61,13 @@ export default function InquirySection() {
   const [conversation, setConversation] = useState<Message[]>([]);
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
   const formRef = useRef<HTMLFormElement>(null);
+  const inquirySectionRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (state?.success) {
       if ('refinedInquiry' in state) {
         setConversation(prev => [...prev, { role: 'assistant', content: state.refinedInquiry }]);
         if (state.isFinished) {
-          // Here you would check if user is authenticated
-          // For now, we'll just open the auth modal
           setAuthModalOpen(true);
         }
       }
@@ -88,9 +87,20 @@ export default function InquirySection() {
     formRef.current?.reset();
   };
 
+  const handleScrollToInquiry = () => {
+    inquirySectionRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
     <>
-      <section id="inquiry" className="py-16 sm:py-24">
+      <div className="text-center -mt-16 relative z-30 mb-16">
+        <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleScrollToInquiry}>
+            Submit Your Inquiry
+            <ArrowRight className="ml-2 h-5 w-5" />
+        </Button>
+      </div>
+
+      <section id="inquiry" className="py-16 sm:py-24" ref={inquirySectionRef}>
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
           <div className="space-y-4">
             <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">

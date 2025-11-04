@@ -7,10 +7,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import Autoplay from 'embla-carousel-autoplay';
-import { ArrowRight } from 'lucide-react';
 
 const heroBanners = [
   {
@@ -42,7 +40,7 @@ const heroBanners = [
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full h-[600px] overflow-hidden">
+    <section className="relative w-full h-[500px] md:h-[600px] overflow-hidden">
       <Carousel
         className="w-full h-full"
         plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
@@ -71,10 +69,6 @@ export default function HeroSection() {
                   <p className="mt-4 max-w-2xl text-lg md:text-xl text-primary-foreground/90 drop-shadow-md">
                     {banner.description}
                   </p>
-                  <Button size="lg" className="mt-8 bg-accent text-accent-foreground hover:bg-accent/90">
-                    Submit Your Inquiry
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                  </Button>
                 </div>
               </CarouselItem>
             );

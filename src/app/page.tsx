@@ -7,17 +7,15 @@ import Testimonials from '@/components/sections/testimonials';
 
 export default function Home() {
   return (
-    <>
+    <div className='flex flex-col min-h-screen'>
       <HeroSection />
       <ScrollingBenefits />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <InquirySection />
         <ProductCatalog />
-      </div>
-      <VendorShowcase />
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <Testimonials />
       </div>
-    </>
+      <VendorShowcase />
+    </div>
   );
 }
