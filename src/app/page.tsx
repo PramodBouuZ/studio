@@ -1,4 +1,3 @@
-import HeroSection from '@/components/sections/hero';
 import ScrollingBenefits from '@/components/sections/scrolling-benefits';
 import InquirySection from '@/components/sections/inquiry';
 import ProductCatalog from '@/components/sections/product-catalog';
@@ -7,8 +6,7 @@ import Testimonials from '@/components/sections/testimonials';
 
 export default function Home() {
   return (
-    <div className='flex flex-col min-h-screen'>
-      <HeroSection />
+    <div className="flex min-h-screen flex-col">
       <ScrollingBenefits />
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <InquirySection />
