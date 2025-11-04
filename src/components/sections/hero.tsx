@@ -42,7 +42,7 @@ const heroBanners = [
 
 export default function HeroSection() {
   return (
-    <section className="relative w-full h-[600px] overflow-hidden -mb-1">
+    <section className="relative w-full h-[600px] overflow-hidden">
       <Carousel
         className="w-full h-full"
         plugins={[Autoplay({ delay: 5000, stopOnInteraction: true })]}
