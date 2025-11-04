@@ -1,0 +1,79 @@
+{
+  "entities": {
+    "UserAccount": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "UserAccount",
+      "type": "object",
+      "description": "Stores user account information, excluding sensitive authentication data.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the user account."
+        },
+        "email": {
+          "type": "string",
+          "description": "User's email address.",
+          "format": "email"
+        },
+        "firstName": {
+          "type": "string",
+          "description": "User's first name."
+        },
+        "lastName": {
+          "type": "string",
+          "description": "User's last name."
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the account was created.",
+          "format": "date-time"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the account was last updated.",
+          "format": "date-time"
+        },
+        "role": {
+          "type": "string",
+          "description": "Role of user, either admin, vendor, or customer."
+        }
+      },
+      "required": [
+        "id",
+        "email",
+        "firstName",
+        "lastName",
+        "createdAt",
+        "updatedAt",
+        "role"
+      ]
+    }
+  },
+  "auth": {
+    "providers": [
+      "password",
+      "anonymous"
+    ]
+  },
+  "firestore": {
+    "structure": [
+      {
+        "path": "/users/{userId}",
+        "definition": {
+          "entityName": "UserAccount",
+          "schema": {
+            "$ref": "#/backend/entities/UserAccount"
+          },
+          "description": "Stores user account information. The `userId` parameter corresponds to the Firebase Auth UID, providing path-based ownership and simplifying security rules.",
+          "params": [
+            {
+              "name": "userId",
+              "description": "The unique identifier for the user, matching their Firebase Auth UID."
+            }
+          ]
+        }
+      }
+    ],
+    "reasoning": "This Firestore structure prioritizes authorization independence and simplifies security rules. User accounts are stored under `/users/{userId}`. This path-based ownership model provides strong isolation and simplifies access control, enabling atomic operations and clear authorization logic. The structure allows for secure list operations using path-based rules (QAPs) since each user's data is isolated within their own collection.\n\nAuthorization Independence: This design enforces authorization independence by leveraging path-based ownership. Since user data is stored under `/users/{userId}`, access control can be enforced solely based on `request.auth.uid` matching the `userId` without needing to retrieve data from other documents.\n\nQAPs: The design facilitates secure list operations by structurally segregating user data.  Listing documents within `/users/{userId}` only requires checking that `request.auth.uid == userId`, which avoids complex filtering logic in rules and enables efficient queries."
+  }
+}
