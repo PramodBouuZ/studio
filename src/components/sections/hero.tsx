@@ -10,7 +10,6 @@ import {
   useCarousel,
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
-import { Button } from '@/components/ui/button';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const heroSlides = [
@@ -56,7 +55,7 @@ export default function HeroSection() {
   }, [api]);
 
   return (
-    <section className="relative w-full h-[50vh] md:h-[60vh]">
+    <section className="relative w-full h-[50vh] md:h-[60vh] bg-secondary">
       <Carousel
         setApi={setApi}
         className="w-full h-full"

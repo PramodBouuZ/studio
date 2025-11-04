@@ -93,7 +93,7 @@ export default function InquirySection() {
 
   return (
     <>
-      <div className="text-center -mt-16 relative z-30 mb-16">
+      <div className="text-center -mt-16 relative z-10 mb-16">
         <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleScrollToInquiry}>
             Submit Your Inquiry
             <ArrowRight className="ml-2 h-5 w-5" />
