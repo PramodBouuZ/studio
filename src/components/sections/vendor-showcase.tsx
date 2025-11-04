@@ -11,13 +11,13 @@ import Autoplay from 'embla-carousel-autoplay';
 
 export default function VendorShowcase() {
   return (
-    <section id="vendors" className="py-16 sm:py-24 bg-secondary/50">
+    <section id="vendors" className="py-16 sm:py-24 bg-secondary">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center space-y-4 mb-12">
-          <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
+          <h2 className="text-4xl font-extrabold tracking-tighter sm:text-5xl font-headline">
             Our Trusted Vendors
           </h2>
-          <p className="max-w-xl mx-auto text-muted-foreground md:text-xl/relaxed">
+          <p className="max-w-2xl mx-auto text-muted-foreground md:text-xl/relaxed">
             We partner with industry-leading companies to deliver exceptional quality and service.
           </p>
         </div>
@@ -27,7 +27,7 @@ export default function VendorShowcase() {
             loop: true,
             dragFree: true,
           }}
-          plugins={[Autoplay({ delay: 3000, stopOnInteraction: false })]}
+          plugins={[Autoplay({ delay: 3000, stopOnInteraction: false, stopOnMouseEnter: true })]}
           className="w-full"
         >
           <CarouselContent>
@@ -36,7 +36,7 @@ export default function VendorShowcase() {
               return (
                 <CarouselItem key={vendor.id} className="basis-1/2 md:basis-1/3 lg:basis-1/5">
                   <div className="p-4">
-                    <div className="flex items-center justify-center h-24 p-6 bg-background rounded-lg shadow-sm grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300">
+                    <div className="flex items-center justify-center h-28 p-6 bg-background rounded-lg shadow-sm grayscale opacity-60 hover:grayscale-0 hover:opacity-100 transition-all duration-300 hover:shadow-xl hover:scale-105">
                       {image && (
                         <Image
                           src={image.imageUrl}

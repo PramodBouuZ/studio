@@ -17,8 +17,8 @@ import { ArrowRight } from 'lucide-react';
 const heroSlides = [
   {
     id: 'hero-1',
-    title: 'Cloud Telephony Systems',
-    description: 'Upgrade your business communication with our reliable and scalable cloud phone systems.',
+    title: 'Find The Right Vendor, Faster.',
+    description: 'Describe your needs, and our AI-powered platform will connect you with top-tier vendors.',
     buttonText: 'Submit Your Inquiry',
     imageId: 'hero-1',
   },
@@ -57,7 +57,7 @@ export default function HeroSection({ onCTAClick }: { onCTAClick?: () => void })
   }, [api]);
 
   return (
-    <section className="relative w-full h-[60vh] md:h-[70vh] bg-secondary">
+    <section className="relative w-full h-[70vh] md:h-[80vh] bg-secondary">
       <Carousel
         setApi={setApi}
         className="w-full h-full"
@@ -70,11 +70,11 @@ export default function HeroSection({ onCTAClick }: { onCTAClick?: () => void })
         ]}
       >
         <CarouselContent>
-          {heroSlides.map((slide) => {
+          {heroSlides.map((slide, index) => {
             const image = PlaceHolderImages.find((img) => img.id === slide.imageId);
             return (
               <CarouselItem key={slide.id}>
-                <div className="relative w-full h-[60vh] md:h-[70vh]">
+                <div className="relative w-full h-[70vh] md:h-[80vh]">
                   {image && (
                     <Image
                       src={image.imageUrl}
@@ -82,25 +82,25 @@ export default function HeroSection({ onCTAClick }: { onCTAClick?: () => void })
                       fill
                       className="object-cover"
                       data-ai-hint={image.imageHint}
-                      priority={heroSlides.indexOf(slide) === 0}
+                      priority={index === 0}
                     />
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/30 to-transparent" />
                   <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 md:p-12 lg:p-16">
-                    <div className="max-w-2xl text-white">
-                       <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 font-headline animate-fade-in-down">
-                        Find The Right Vendor, Faster.
+                    <div className="max-w-3xl text-white drop-shadow-md">
+                       <h1 className="text-4xl md:text-6xl font-extrabold tracking-tighter mb-4 font-headline">
+                        {slide.title}
                       </h1>
-                      <p className="text-lg md:text-xl text-white/90 mb-8 animate-fade-in-up">
-                        Describe your needs, and our AI-powered platform will connect you with top-tier vendors.
+                      <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
+                        {slide.description}
                       </p>
                       {onCTAClick && (
                         <Button
                             size="lg"
-                            className="bg-accent text-accent-foreground hover:bg-accent/90 animate-fade-in-up"
+                            className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-6 rounded-full shadow-lg transition-transform hover:scale-105"
                             onClick={onCTAClick}
                         >
-                            Submit Your Inquiry <ArrowRight className="ml-2" />
+                            {slide.buttonText} <ArrowRight className="ml-2 h-5 w-5" />
                         </Button>
                       )}
                     </div>
@@ -111,12 +111,12 @@ export default function HeroSection({ onCTAClick }: { onCTAClick?: () => void })
           })}
         </CarouselContent>
       </Carousel>
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2">
+      <div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex gap-2">
         {Array.from({ length: count }).map((_, i) => (
           <button
             key={i}
             onClick={() => api?.scrollTo(i)}
-            className={`h-2 w-2 rounded-full transition-colors ${current === i ? 'bg-white' : 'bg-white/50'}`}
+            className={`h-2 w-2 rounded-full transition-all duration-300 ${current === i ? 'w-4 bg-white' : 'bg-white/50'}`}
             aria-label={`Go to slide ${i + 1}`}
           />
         ))}

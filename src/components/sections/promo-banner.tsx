@@ -5,28 +5,28 @@ import Image from 'next/image';
 import { Button } from '@/components/ui/button';
 import { ArrowRight, Zap } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 
 export default function PromoBanner() {
     const image = PlaceHolderImages.find(img => img.id === 'hero-4');
 
     return (
         <section className="py-16 sm:py-24">
-            <Card className="overflow-hidden bg-primary/5 text-foreground shadow-lg">
+            <Card className="overflow-hidden bg-gradient-to-r from-primary to-blue-600 text-primary-foreground shadow-2xl">
                 <div className="grid md:grid-cols-2 items-center">
                     <div className="p-8 md:p-12 lg:p-16 order-2 md:order-1">
                         <div className="max-w-md">
-                             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent/10 px-3 py-1 text-sm font-medium text-accent">
+                             <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent/90 px-4 py-1.5 text-sm font-semibold text-accent-foreground shadow-md">
                                 <Zap className="h-4 w-4" />
                                 <span>Limited Time Offer</span>
                             </div>
-                            <h2 className="text-3xl font-bold tracking-tight font-headline sm:text-4xl mb-4">
-                                Unlock Your Project's Potential
+                            <h2 className="text-3xl font-extrabold tracking-tight font-headline sm:text-4xl mb-4 text-white">
+                                Find Your Perfect Match
                             </h2>
-                            <p className="text-muted-foreground mb-6">
+                            <p className="text-lg text-white/90 mb-8">
                                 For a limited time, get premium access to our marketplace and receive exclusive offers from our network of trusted vendors. Find the perfect partner for your next project and bring your vision to life.
                             </p>
-                            <Button size="lg">
+                            <Button size="lg" variant="secondary" className="text-lg px-8 py-6 rounded-full shadow-lg transition-transform hover:scale-105">
                                 Claim Offer <ArrowRight className="ml-2" />
                             </Button>
                         </div>
@@ -41,6 +41,7 @@ export default function PromoBanner() {
                                 data-ai-hint={image.imageHint}
                             />
                         )}
+                        <div className="absolute inset-0 bg-black/20" />
                     </div>
                 </div>
             </Card>
