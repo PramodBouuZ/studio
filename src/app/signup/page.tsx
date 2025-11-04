@@ -24,6 +24,9 @@ export default function SignupPage() {
   const [lastName, setLastName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [mobileNumber, setMobileNumber] = useState('');
+  const [companyName, setCompanyName] = useState('');
+  const [location, setLocation] = useState('');
   const [loading, setLoading] = useState(false);
   const router = useRouter();
   const auth = getAuth();
@@ -43,6 +46,9 @@ export default function SignupPage() {
         email: user.email,
         firstName: firstName,
         lastName: lastName,
+        mobileNumber: mobileNumber,
+        companyName: companyName,
+        location: location,
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
         role: 'customer',
@@ -62,8 +68,8 @@ export default function SignupPage() {
   };
 
   return (
-    <div className="flex min-h-[calc(100vh-104px)] items-center justify-center bg-gray-100 dark:bg-gray-950 px-4">
-      <Card className="mx-auto max-w-sm">
+    <div className="flex min-h-[calc(100vh-104px)] items-center justify-center bg-gray-100 dark:bg-gray-950 px-4 py-12">
+      <Card className="mx-auto max-w-lg">
         <CardHeader>
           <CardTitle className="text-xl">Sign Up</CardTitle>
           <CardDescription>Enter your information to create an account</CardDescription>
@@ -101,6 +107,36 @@ export default function SignupPage() {
                 required
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+              />
+            </div>
+             <div className="grid gap-2">
+              <Label htmlFor="mobile-number">Mobile Number</Label>
+              <Input
+                id="mobile-number"
+                type="tel"
+                placeholder="9876543210"
+                required
+                value={mobileNumber}
+                onChange={(e) => setMobileNumber(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="location">Location</Label>
+              <Input
+                id="location"
+                placeholder="City, State"
+                required
+                value={location}
+                onChange={(e) => setLocation(e.target.value)}
+              />
+            </div>
+            <div className="grid gap-2">
+              <Label htmlFor="company-name">Company Name (Optional)</Label>
+              <Input
+                id="company-name"
+                placeholder="Your Company"
+                value={companyName}
+                onChange={(e) => setCompanyName(e.target.value)}
               />
             </div>
             <div className="grid gap-2">

@@ -23,6 +23,18 @@
           "type": "string",
           "description": "User's last name."
         },
+        "mobileNumber": {
+          "type": "string",
+          "description": "User's mobile phone number."
+        },
+        "companyName": {
+          "type": "string",
+          "description": "User's company name."
+        },
+        "location": {
+          "type": "string",
+          "description": "User's location."
+        },
         "createdAt": {
           "type": "string",
           "description": "Timestamp indicating when the account was created.",
@@ -43,6 +55,8 @@
         "email",
         "firstName",
         "lastName",
+        "mobileNumber",
+        "location",
         "createdAt",
         "updatedAt",
         "role"
