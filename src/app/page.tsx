@@ -20,18 +20,7 @@ export default function Home() {
 
   return (
     <div className="flex min-h-screen flex-col">
-      <HeroSection />
-
-      <div className="bg-background">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-            <div className="text-center -mt-8 relative z-10 mb-8">
-                <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={handleScrollToInquiry}>
-                    Submit Your Inquiry
-                    <ArrowRight className="ml-2 h-5 w-5" />
-                </Button>
-            </div>
-        </div>
-      </div>
+      <HeroSection onCTAClick={handleScrollToInquiry} />
       
       <ScrollingBenefits />
 
