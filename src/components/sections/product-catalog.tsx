@@ -1,7 +1,7 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
-import { products as allProducts, type Product, leads } from '@/lib/data';
+import { products as allProducts, type Product } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -70,29 +70,18 @@ export default function ProductCatalog() {
       return;
     }
 
-    const newLead = {
-      id: `lead_${leads.length + 1}`,
-      name: user.displayName || 'N/A',
-      company: '', // This could be fetched from user's profile
-      email: user.email || '',
-      phone: user.phoneNumber || '',
-      inquiry: `Enquiry for ${product.name}`,
-      status: 'New' as const,
-      assignedVendor: '',
-    };
-
-    // In a real app, you'd send this to a backend. For now, we just show a toast.
-    console.log("New Lead:", newLead);
+    // This action no longer saves to the admin panel.
+    // It only shows a confirmation toast to the user.
     toast({
       title: 'Enquiry Sent!',
-      description: `Your enquiry for "${product.name}" has been sent to the admin.`,
+      description: `Your interest in "${product.name}" has been noted. Our team will reach out to you shortly.`,
     });
-     // Note: This won't actually update the admin panel data across sessions.
-     // It's a placeholder for client-side feedback.
   };
 
   const handleScheduleDemo = () => {
     if (selectedDate && selectedTime && selectedProduct) {
+      // This action no longer saves to the admin panel.
+      // It only shows a confirmation toast to the user.
       toast({
         title: 'Demo Booked!',
         description: `Your demo for ${selectedProduct.name} is scheduled on ${format(selectedDate, 'PPP')} at ${selectedTime}.`,
