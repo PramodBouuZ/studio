@@ -4,12 +4,12 @@
 import { useRef } from 'react';
 import HeroSection from '@/components/sections/hero';
 import ScrollingBenefits from '@/components/sections/scrolling-benefits';
-import InquirySection from '@/components/sections/inquiry';
 import ProductCatalog from '@/components/sections/product-catalog';
 import VendorShowcase from '@/components/sections/vendor-showcase';
 import Testimonials from '@/components/sections/testimonials';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
+import AIChat from '@/components/ai-chat';
 
 export default function Home() {
   const inquirySectionRef = useRef<HTMLDivElement>(null);
@@ -21,7 +21,7 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col">
       <HeroSection />
-      
+
       <div className="bg-background">
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
             <div className="text-center -mt-8 relative z-10 mb-8">
@@ -32,11 +32,10 @@ export default function Home() {
             </div>
         </div>
       </div>
-
+      
       <ScrollingBenefits />
 
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-        <InquirySection ref={inquirySectionRef} />
+      <div id="inquiry-section" ref={inquirySectionRef} className="container mx-auto px-4 sm:px-6 lg:px-8">
         <ProductCatalog />
         <Testimonials />
       </div>
