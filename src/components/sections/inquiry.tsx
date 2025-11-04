@@ -89,16 +89,8 @@ const InquirySection = forwardRef<HTMLDivElement>((props, ref) => {
   return (
     <>
       <section id="inquiry" className="py-16 sm:py-24" ref={ref}>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
-          <div className="space-y-4">
-            <h2 className="text-3xl font-bold tracking-tighter sm:text-4xl md:text-5xl font-headline">
-              Need Something Specific?
-            </h2>
-            <p className="text-muted-foreground md:text-xl/relaxed">
-              Describe your project, and our AI will help refine your inquiry to attract the perfect vendors. We'll guide you through specifying your Budget, Authority, Need, and Timeline (BANT) to ensure the best match.
-            </p>
-          </div>
-          <Card className="shadow-lg">
+        <div className="grid grid-cols-1 gap-12 items-start">
+          <Card className="shadow-lg max-w-2xl mx-auto w-full">
             <CardHeader>
               <CardTitle>Submit Your Inquiry</CardTitle>
               <CardDescription>Let our AI assistant guide you.</CardDescription>
