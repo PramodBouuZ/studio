@@ -88,12 +88,6 @@ export default function HeroSection({ onCTAClick }: { onCTAClick: () => void }) 
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
                   <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 lg:p-16">
                     <div className="max-w-2xl text-white">
-                        <h1 className="text-3xl md:text-5xl font-bold font-headline mb-4 drop-shadow-lg">{slide.title}</h1>
-                        <p className="text-lg md:text-xl mb-6 drop-shadow-md">{slide.description}</p>
-                        <Button size="lg" className="bg-accent text-accent-foreground hover:bg-accent/90" onClick={onCTAClick}>
-                            {slide.buttonText}
-                            <ArrowRight className="ml-2 h-5 w-5" />
-                        </Button>
                     </div>
                   </div>
                 </div>
