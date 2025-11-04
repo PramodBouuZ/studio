@@ -17,6 +17,7 @@ import { usePathname, useRouter } from 'next/navigation';
 import AdminAIChat from '@/components/admin/admin-ai-chat';
 import { useUser } from '@/firebase';
 import { useEffect } from 'react';
+import { Button } from '@/components/ui/button';
 
 const menuItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
