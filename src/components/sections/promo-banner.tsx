@@ -21,10 +21,10 @@ export default function PromoBanner() {
                                 <span>Limited Time Offer</span>
                             </div>
                             <h2 className="text-3xl font-bold tracking-tight font-headline sm:text-4xl mb-4">
-                                Supercharge Your Sales Pipeline
+                                Unlock Your Project's Potential
                             </h2>
                             <p className="text-muted-foreground mb-6">
-                                For a limited time, get 3 months of our premium lead generation service for the price of one. Unlock qualified leads and accelerate your growth today.
+                                For a limited time, get premium access to our marketplace and receive exclusive offers from our network of trusted vendors. Find the perfect partner for your next project and bring your vision to life.
                             </p>
                             <Button size="lg">
                                 Claim Offer <ArrowRight className="ml-2" />
