@@ -20,6 +20,8 @@ interface AIChatContextType {
   isOpen: boolean;
   openChat: () => void;
   closeChat: () => void;
+  highlightedProductIds: string[];
+  setHighlightedProductIds: (ids: string[]) => void;
 }
 
 const AIChatContext = createContext<AIChatContextType | undefined>(undefined);
@@ -34,11 +36,12 @@ export const useAIChat = () => {
 
 export const AIChatProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const [highlightedProductIds, setHighlightedProductIds] = useState<string[]>([]);
   const openChat = () => setIsOpen(true);
   const closeChat = () => setIsOpen(false);
 
   return (
-    <AIChatContext.Provider value={{ isOpen, openChat, closeChat }}>
+    <AIChatContext.Provider value={{ isOpen, openChat, closeChat, highlightedProductIds, setHighlightedProductIds }}>
       {children}
       <AIChat />
     </AIChatContext.Provider>
@@ -47,7 +50,7 @@ export const AIChatProvider = ({ children }: { children: ReactNode }) => {
 
 
 function AIChat() {
-  const { isOpen, closeChat, openChat } = useAIChat();
+  const { isOpen, closeChat, openChat, setHighlightedProductIds } = useAIChat();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -86,6 +89,10 @@ function AIChat() {
         const result: RefineCustomerInquiryOutput = await refineCustomerInquiry({ inquiry: conversationHistory, isNewConversation });
 
         setMessages(prev => [...prev, { role: 'assistant', content: result.refinedInquiry }]);
+        
+        if (result.suggestedProductIds && result.suggestedProductIds.length > 0) {
+            setHighlightedProductIds(result.suggestedProductIds);
+        }
 
         if (result.isFinished) {
             setAuthModalOpen(true);

@@ -19,6 +19,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
+import { useAIChat } from '../ai-chat';
 
 const productTypes = ['All', 'Software', 'Service', 'Consulting', 'Hardware'];
 const maxPrice = Math.max(...allProducts.map((p) => p.price));
@@ -31,6 +32,7 @@ export default function ProductCatalog() {
   const [isDemoModalOpen, setDemoModalOpen] = useState(false);
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
   const [selectedTime, setSelectedTime] = useState<string>('');
+  const { highlightedProductIds } = useAIChat();
 
   const { user } = useUser();
   const router = useRouter();
@@ -191,6 +193,7 @@ export default function ProductCatalog() {
               product={product}
               onBookDemoClick={() => handleBookDemoClick(product)}
               onPostEnquiryClick={() => handlePostEnquiryClick(product)}
+              isHighlighted={highlightedProductIds.includes(product.id)}
             />
           </motion.div>
         ))}
@@ -256,12 +259,15 @@ export default function ProductCatalog() {
   );
 }
 
-function ProductCard({ product, onBookDemoClick, onPostEnquiryClick }: { product: Product, onBookDemoClick: () => void, onPostEnquiryClick: () => void }) {
+function ProductCard({ product, onBookDemoClick, onPostEnquiryClick, isHighlighted }: { product: Product, onBookDemoClick: () => void, onPostEnquiryClick: () => void, isHighlighted?: boolean }) {
   const image = PlaceHolderImages.find((img) => img.id === product.imageId);
   const Icon = product.icon;
 
   return (
-    <Card className="overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col group border-transparent hover:border-primary h-full">
+    <Card className={cn(
+        "overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col group h-full",
+        isHighlighted ? "border-primary ring-2 ring-primary" : "border-transparent hover:border-primary"
+    )}>
       <CardHeader className="p-0">
         {image && (
           <div className="relative h-52 w-full">
@@ -273,6 +279,7 @@ function ProductCard({ product, onBookDemoClick, onPostEnquiryClick }: { product
               data-ai-hint={image.imageHint}
             />
              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+             {isHighlighted && <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">Suggested</div>}
           </div>
         )}
       </CardHeader>
