@@ -1,3 +1,124 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "hero-1",
+      "description": "A diverse group of professionals collaborating in a modern office.",
+      "imageUrl": "https://images.unsplash.com/photo-1517048676732-d65bc937f952?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0ZWFtJTIwY29sbGFib3JhdGlvbnxlbnwwfHx8fDE3NjIxNTIyODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "team collaboration"
+    },
+    {
+      "id": "hero-2",
+      "description": "A person using a laptop with charts and graphs on the screen.",
+      "imageUrl": "https://images.unsplash.com/photo-1523961131990-5ea7c61b2107?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxkYXRhJTIwYW5hbHlzaXN8ZW58MHx8fHwxNzYyMTQ1NzM2fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "data analysis"
+    },
+    {
+      "id": "hero-3",
+      "description": "Abstract network connections representing technology.",
+      "imageUrl": "https://images.unsplash.com/photo-1750969185331-e03829f72c7d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxhYnN0cmFjdCUyMG5ldHdvcmt8ZW58MHx8fHwxNzYyMTk3MDA1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "abstract network"
+    },
+    {
+      "id": "hero-4",
+      "description": "A customer shaking hands with a vendor, symbolizing a successful partnership.",
+      "imageUrl": "https://images.unsplash.com/photo-1681505531034-8d67054e07f6?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxidXNpbmVzcyUyMGhhbmRzaGFrZXxlbnwwfHx8fDE3NjIxODI4NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "business handshake"
+    },
+    {
+      "id": "hero-5",
+      "description": "A rocket launching, symbolizing growth and success.",
+      "imageUrl": "https://images.unsplash.com/photo-1457365050282-c53d772ef8b2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxyb2NrZXQlMjBsYXVuY2h8ZW58MHx8fHwxNzYyMjQ3NjUxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "rocket launch"
+    },
+    {
+      "id": "product-1",
+      "description": "A software development team working on code.",
+      "imageUrl": "https://images.unsplash.com/photo-1605379399642-870262d3d051?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzb2Z0d2FyZSUyMGRldmVsb3BtZW50fGVufDB8fHx8MTc2MjE5MDc3Mnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "software development"
+    },
+    {
+      "id": "product-2",
+      "description": "A marketing team brainstorming ideas on a whiteboard.",
+      "imageUrl": "https://images.unsplash.com/photo-1620325867502-221cfb5faa5f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtYXJrZXRpbmclMjBzdHJhdGVneXxlbnwwfHx8fDE3NjIxOTI1OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "marketing strategy"
+    },
+    {
+      "id": "product-3",
+      "description": "A modern office space with ergonomic chairs and desks.",
+      "imageUrl": "https://images.unsplash.com/photo-1631193816258-28b44b21e78b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxvZmZpY2UlMjBzcGFjZXxlbnwwfHx8fDE3NjIyNDQzNzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "office space"
+    },
+    {
+      "id": "product-4",
+      "description": "A consultant presenting a report to a client.",
+      "imageUrl": "https://images.unsplash.com/photo-1573164574511-73c773193279?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxidXNpbmVzcyUyMGNvbnN1bHRpbmd8ZW58MHx8fHwxNzYyMTg5OTQ4fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "business consulting"
+    },
+    {
+      "id": "product-5",
+      "description": "Cloud servers in a data center.",
+      "imageUrl": "https://images.unsplash.com/photo-1721444127971-b7d0023bbef2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjbG91ZCUyMGhvc3Rpbmd8ZW58MHx8fHwxNzYyMjU5MTM5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cloud hosting"
+    },
+    {
+      "id": "product-6",
+      "description": "A designer working on a new logo on a tablet.",
+      "imageUrl": "https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxncmFwaGljJTIwZGVzaWdufGVufDB8fHx8MTc2MjE4ODQwMXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "graphic design"
+    },
+    {
+      "id": "vendor-1",
+      "description": "Logo for a tech company.",
+      "imageUrl": "https://images.unsplash.com/photo-1622651132634-a7ed1fbb86dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0ZWNoJTIwbG9nb3xlbnwwfHx8fDE3NjIyNDM3MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "tech logo"
+    },
+    {
+      "id": "vendor-2",
+      "description": "Logo for a marketing agency.",
+      "imageUrl": "https://images.unsplash.com/photo-1590102426275-8d1c367070d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjcmVhdGl2ZSUyMGxvZ298ZW58MHx8fHwxNzYyMjU5MTM5fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "creative logo"
+    },
+    {
+      "id": "vendor-3",
+      "description": "Logo for a consulting firm.",
+      "imageUrl": "https://images.unsplash.com/photo-1676870421337-2b9c65190264?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjBsb2dvfGVufDB8fHx8MTc2MjE1MDAwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "corporate logo"
+    },
+    {
+      "id": "vendor-4",
+      "description": "Logo for a hardware company.",
+      "imageUrl": "https://images.unsplash.com/photo-1760037028553-3c5c801f18c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bW9kZXJuJTIwbG9nb3xlbnwwfHx8fDE3NjIyMzEyODN8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "modern logo"
+    },
+    {
+      "id": "vendor-5",
+      "description": "Logo for a software startup.",
+      "imageUrl": "https://images.unsplash.com/photo-1669633971142-99954984ca8a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzdGFydHVwJTIwbG9nb3xlbnwwfHx8fDE3NjIyNDIxMjB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "startup logo"
+    },
+    {
+      "id": "avatar-1",
+      "description": "Portrait of a smiling woman.",
+      "imageUrl": "https://images.unsplash.com/photo-1614283233556-f35b0c801ef1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTc2MjI0NDMxOHww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman portrait"
+    },
+    {
+      "id": "avatar-2",
+      "description": "Portrait of a man in business attire.",
+      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjIyMjQ5MzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "avatar-3",
+      "description": "Portrait of a person with glasses.",
+      "imageUrl": "https://images.unsplash.com/photo-1535643302794-19c3804b874b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGVyc29uJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYyMTg3MjcwfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "person portrait"
+    },
+    {
+      "id": "avatar-4",
+      "description": "Portrait of a smiling man.",
+      "imageUrl": "https://images.unsplash.com/photo-1633367583895-08545d733dfe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtYW4lMjBzbWlsaW5nfGVufDB8fHx8MTc2MjE2MTk4NXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man smiling"
+    }
+  ]
 }
