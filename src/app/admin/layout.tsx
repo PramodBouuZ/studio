@@ -12,7 +12,7 @@ import {
   SidebarInset,
 } from '@/components/ui/sidebar';
 import BANTLogo from '@/components/bant-logo';
-import { LayoutDashboard, ShoppingCart, Users, LifeBuoy, LogOut, Megaphone } from 'lucide-react';
+import { LayoutDashboard, ShoppingCart, Users, LifeBuoy, LogOut, Megaphone, Presentation } from 'lucide-react';
 import { usePathname } from 'next/navigation';
 import AdminAIChat from '@/components/admin/admin-ai-chat';
 
@@ -20,6 +20,7 @@ const menuItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
   { href: '/admin/products', label: 'Products', icon: ShoppingCart },
   { href: '/admin/vendors', label: 'Vendors', icon: Users },
+  { href: '/admin/hero-banner', label: 'Hero Banner', icon: Presentation },
   { href: '/admin/promotions', label: 'Promotions', icon: Megaphone },
 ];
 
