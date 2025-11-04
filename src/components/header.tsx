@@ -7,6 +7,7 @@ import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import BANTLogo from '@/components/bant-logo';
 import { cn } from '@/lib/utils';
+import { Separator } from '@/components/ui/separator';
 
 const navLinks = [
   { href: '#products', label: 'Products' },
@@ -20,25 +21,36 @@ export default function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+      <div className="bg-secondary/50">
+        <div className="container flex h-10 items-center justify-end gap-6 text-sm font-medium">
+          <Link href="#" className="text-muted-foreground transition-colors hover:text-foreground">
+            Become a Vendor
+          </Link>
+          <Separator orientation="vertical" className="h-4" />
+          <Link href="#inquiry" className="text-muted-foreground transition-colors hover:text-foreground">
+            Post Enquiry
+          </Link>
+        </div>
+      </div>
       <div className="container flex h-16 items-center">
         <div className="mr-4 flex">
           <Link href="/" className="mr-6 flex items-center space-x-2">
-            <BANTLogo />
+            <BANTLogo textClassName='text-xl md:text-2xl' />
           </Link>
         </div>
-        <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
-          {navLinks.map((link) => (
-            <Link
-              key={link.href}
-              href={link.href}
-              className="transition-colors hover:text-foreground/80 text-foreground/60"
-            >
-              {link.label}
-            </Link>
-          ))}
-        </nav>
-        <div className="flex flex-1 items-center justify-end space-x-4">
-          <Button>Get Started</Button>
+        
+        <div className="flex flex-1 items-center justify-end space-x-2">
+          <nav className="hidden items-center gap-6 text-sm font-medium md:flex">
+            {navLinks.map((link) => (
+              <Link
+                key={link.href}
+                href={link.href}
+                className="transition-colors hover:text-foreground/80 text-foreground/60"
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
           <Button
             variant="ghost"
             size="icon"
@@ -54,7 +66,7 @@ export default function Header() {
         <div
           className={cn(
             'md:hidden animate-in fade-in-20 slide-in-from-top-4',
-            'absolute top-16 left-0 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t'
+            'absolute top-[104px] left-0 w-full bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-t'
           )}
         >
           <nav className="grid items-start gap-6 p-6 text-lg font-medium">
