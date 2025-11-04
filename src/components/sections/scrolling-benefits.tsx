@@ -1,4 +1,4 @@
-import { CheckCircle } from 'lucide-react';
+import { CheckCircle, Award } from 'lucide-react';
 
 const benefits = [
   'AI-Powered Vendor Matching',
@@ -7,6 +7,7 @@ const benefits = [
   'Grow Your Business',
   'Expert Support',
   'Secure & Reliable',
+  'Earn 10% Commission on Deals',
 ];
 
 export default function ScrollingBenefits() {
@@ -17,7 +18,11 @@ export default function ScrollingBenefits() {
       <div className="flex whitespace-nowrap animate-marquee">
         {repeatedBenefits.map((benefit, index) => (
           <div key={index} className="flex items-center mx-6">
-            <CheckCircle className="h-5 w-5 mr-2 text-accent" />
+            {benefit.includes('Commission') ? (
+                <Award className="h-5 w-5 mr-2 text-accent" />
+            ) : (
+                <CheckCircle className="h-5 w-5 mr-2 text-accent" />
+            )}
             <span className="text-md font-medium">{benefit}</span>
           </div>
         ))}
