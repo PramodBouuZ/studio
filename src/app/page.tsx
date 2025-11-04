@@ -10,6 +10,7 @@ import Testimonials from '@/components/sections/testimonials';
 import { Button } from '@/components/ui/button';
 import { ArrowRight } from 'lucide-react';
 import AIChat from '@/components/ai-chat';
+import PromoBanner from '@/components/sections/promo-banner';
 
 export default function Home() {
   const inquirySectionRef = useRef<HTMLDivElement>(null);
@@ -26,6 +27,7 @@ export default function Home() {
 
       <div id="inquiry-section" ref={inquirySectionRef} className="container mx-auto px-4 sm:px-6 lg:px-8">
         <ProductCatalog />
+        <PromoBanner />
         <Testimonials />
       </div>
       <VendorShowcase />
