@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import {
   Sheet,
   SheetContent,
@@ -49,12 +49,21 @@ export default function UserDetailsSheet({
   const [editedLead, setEditedLead] = useState<Lead>(lead);
   const [aiState, setAiState] = useState<AIState>({ loading: false, suggestions: null, error: null });
 
+  useEffect(() => {
+    // When a new lead is passed in, update the sheet's state
+    setEditedLead(lead);
+    // Reset AI state as well
+    setAiState({ loading: false, suggestions: null, error: null });
+  }, [lead, isOpen]);
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     setEditedLead({ ...editedLead, [e.target.name]: e.target.value });
   };
   
   const handleSelectChange = (name: string, value: string) => {
-    setEditedLead({ ...editedLead, [name]: value });
+    // If the value for assignedVendor is "unassigned", store it as an empty string.
+    const finalValue = name === 'assignedVendor' && value === 'unassigned' ? '' : value;
+    setEditedLead({ ...editedLead, [name]: finalValue });
   };
 
   const handleSaveChanges = () => {
@@ -66,11 +75,13 @@ export default function UserDetailsSheet({
     setAiState({ loading: true, suggestions: null, error: null });
     try {
         const userDetails = `
-        Name: ${lead.name}
-        Company: ${lead.company}
-        Inquiry: ${lead.inquiry}
-        Current Status: ${lead.status}
-        Assigned Vendor: ${lead.assignedVendor || 'None'}
+        Name: ${editedLead.name}
+        Company: ${editedLead.company}
+        Email: ${editedLead.email}
+        Phone: ${editedLead.phone}
+        Inquiry: ${editedLead.inquiry}
+        Current Status: ${editedLead.status}
+        Assigned Vendor: ${editedLead.assignedVendor || 'None'}
         `;
       const result: ImproveLeadQualificationOutput = await improveLeadQualification({ userDetails });
       setAiState({ loading: false, suggestions: result.suggestions, error: null });
@@ -123,12 +134,12 @@ export default function UserDetailsSheet({
           </div>
            <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="assignedVendor" className="text-right">Assigned Vendor</Label>
-            <Select name="assignedVendor" value={editedLead.assignedVendor} onValueChange={(v) => handleSelectChange('assignedVendor', v)}>
+            <Select name="assignedVendor" value={editedLead.assignedVendor || 'unassigned'} onValueChange={(v) => handleSelectChange('assignedVendor', v)}>
               <SelectTrigger className="col-span-3">
                 <SelectValue placeholder="Assign vendor" />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="">Unassigned</SelectItem>
+                <SelectItem value="unassigned">Unassigned</SelectItem>
                 {vendors.map(v => <SelectItem key={v} value={v}>{v}</SelectItem>)}
               </SelectContent>
             </Select>
