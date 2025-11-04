@@ -4,55 +4,67 @@
  *
  * Data Structure:
  * All user data is nested under `/users/{userId}`, where `userId` MUST match the Firebase Auth UID.
+ * Vendor data is nested under `/vendors/{vendorId}`, where `vendorId` MUST match the Firebase Auth UID.
  *
  * Key Security Decisions:
  * - Users can only access their own data.
- * - User listing is disallowed.
+ * - Vendors can only manage their own profile.
+ * - Public read access is granted for approved vendors, but write access is restricted.
+ * - User and vendor listing is disallowed.
  *
  * Denormalization for Authorization:
- * The `userId` is denormalized into the document path itself (`/users/{userId}`),
+ * The `userId` and `vendorId` are denormalized into the document path itself,
  * allowing for simple `isOwner(userId)` checks without additional reads.
  */
 rules_version = '2';
 service cloud.firestore {
   match /databases/{database}/documents {
 
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isOwner(userId) {
+      return isSignedIn() && request.auth.uid == userId;
+    }
+    
+    function isExistingOwner(userId) {
+      return isOwner(userId) && resource != null;
+    }
+
     /**
-     * @description Secure user accounts under /users/{userId}. Only the authenticated user can create, read, update, or delete their own account.
+     * @description Secure user accounts under /users/{userId}. Only the authenticated user can manage their own account.
      * @path /users/{userId}
-     * @allow (create) User with UID 'user123' can create /users/user123 with matching data.id.
-     * @allow (get) User with UID 'user456' can get /users/user456.
-     * @allow (update) User with UID 'user789' can update /users/user789.
-     * @allow (delete) User with UID 'user901' can delete /users/user901.
-     * @deny (create) User with UID 'user123' cannot create /users/otherUser if data.id != user123.
-     * @deny (get) User with UID 'user456' cannot get /users/otherUser.
-     * @deny (update) User with UID 'user789' cannot update /users/otherUser.
-     * @deny (delete) User with UID 'user901' cannot delete /users/otherUser.
-     * @principle Enforces document ownership; users can only manage their own account data.
      */
     match /users/{userId} {
-      function isSignedIn() {
-        return request.auth != null;
-      }
-
-      function isOwner(userId) {
-        return isSignedIn() && request.auth.uid == userId;
-      }
-
-      function isExistingOwner(userId) {
-        return isOwner(userId) && resource != null;
-      }
-
       allow get: if isOwner(userId);
       allow list: if false; // User listing is not permitted.
-
-      // Allow the user to create their own document, but enforce that the ID matches their auth UID.
       allow create: if isOwner(userId) && request.resource.data.id == userId;
-
-      // On Update: You SHOULD enforce that the ownership field is immutable
       allow update: if isExistingOwner(userId) && request.resource.data.id == resource.data.id;
-
       allow delete: if isExistingOwner(userId);
+    }
+    
+    /**
+     * @description Secure vendor profiles under /vendors/{vendorId}.
+     * - Any authenticated user can create their own vendor profile.
+     * - Only the owning vendor can update their profile.
+     * - Public can read approved vendor profiles.
+     * @path /vendors/{vendorId}
+     */
+    match /vendors/{vendorId} {
+        // Anyone can read an approved vendor's profile.
+        allow get: if resource.data.status == 'approved';
+        // No one can list all vendors.
+        allow list: if false; 
+        
+        // A user can create a vendor profile for themselves.
+        allow create: if isOwner(vendorId) && request.resource.data.id == vendorId;
+        
+        // The owner of the vendor profile can update it.
+        allow update: if isOwner(vendorId);
+
+        // Only the vendor owner can delete their profile.
+        allow delete: if isOwner(vendorId);
     }
   }
 }

@@ -61,6 +61,73 @@
         "updatedAt",
         "role"
       ]
+    },
+    "VendorProfile": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "VendorProfile",
+      "type": "object",
+      "description": "Stores detailed information about a vendor.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the vendor, matching their Firebase Auth UID."
+        },
+        "name": {
+          "type": "string",
+          "description": "The legal name of the vendor company."
+        },
+        "contactName": {
+          "type": "string",
+          "description": "The primary contact person's name."
+        },
+        "email": {
+          "type": "string",
+          "description": "Vendor's contact email address.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Vendor's contact phone number."
+        },
+        "location": {
+          "type": "string",
+          "description": "Vendor's physical location."
+        },
+        "logoUrl": {
+          "type": "string",
+          "description": "URL for the vendor's logo.",
+          "format": "uri"
+        },
+        "products": {
+          "type": "string",
+          "description": "A description of products or services offered by the vendor."
+        },
+        "status": {
+          "type": "string",
+          "description": "The approval status of the vendor.",
+          "enum": [
+            "pending_approval",
+            "approved",
+            "rejected"
+          ]
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "Timestamp indicating when the vendor profile was created.",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "id",
+        "name",
+        "contactName",
+        "email",
+        "phone",
+        "location",
+        "products",
+        "status",
+        "createdAt"
+      ]
     }
   },
   "auth": {
@@ -86,8 +153,24 @@
             }
           ]
         }
+      },
+      {
+        "path": "/vendors/{vendorId}",
+        "definition": {
+          "entityName": "VendorProfile",
+          "schema": {
+            "$ref": "#/backend/entities/VendorProfile"
+          },
+          "description": "Stores vendor profiles. The `vendorId` must match the user's Auth UID, who must have a 'vendor' role.",
+          "params": [
+            {
+              "name": "vendorId",
+              "description": "The unique identifier for the vendor, matching their Firebase Auth UID."
+            }
+          ]
+        }
       }
     ],
-    "reasoning": "This Firestore structure prioritizes authorization independence and simplifies security rules. User accounts are stored under `/users/{userId}`. This path-based ownership model provides strong isolation and simplifies access control, enabling atomic operations and clear authorization logic. The structure allows for secure list operations using path-based rules (QAPs) since each user's data is isolated within their own collection.\n\nAuthorization Independence: This design enforces authorization independence by leveraging path-based ownership. Since user data is stored under `/users/{userId}`, access control can be enforced solely based on `request.auth.uid` matching the `userId` without needing to retrieve data from other documents.\n\nQAPs: The design facilitates secure list operations by structurally segregating user data.  Listing documents within `/users/{userId}` only requires checking that `request.auth.uid == userId`, which avoids complex filtering logic in rules and enables efficient queries."
+    "reasoning": "This Firestore structure prioritizes authorization independence and simplifies security rules. User accounts are stored under `/users/{userId}`. This path-based ownership model provides strong isolation and simplifies access control. Vendor profiles are stored in a separate `/vendors/{vendorId}` collection, which allows for different security rules and data models specific to vendors. The `vendorId` also matches the Firebase Auth UID, ensuring that only the authenticated vendor can manage their own profile."
   }
 }

@@ -50,7 +50,7 @@ export default function Header() {
     <header className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="bg-secondary/50">
         <div className="container flex h-10 items-center justify-end gap-6 text-sm font-medium">
-          <Link href="#" className="text-muted-foreground transition-colors hover:text-foreground">
+          <Link href="/become-a-vendor" className="text-muted-foreground transition-colors hover:text-foreground">
             Become a Vendor
           </Link>
           <Separator orientation="vertical" className="h-4" />
