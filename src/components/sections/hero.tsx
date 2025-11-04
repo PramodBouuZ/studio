@@ -13,6 +13,7 @@ import Autoplay from 'embla-carousel-autoplay';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
+import { useAIChat } from '../ai-chat';
 
 const heroSlides = [
   {
@@ -38,10 +39,11 @@ const heroSlides = [
   },
 ];
 
-export default function HeroSection({ onCTAClick }: { onCTAClick?: () => void }) {
+export default function HeroSection() {
   const [api, setApi] = React.useState<any>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
+  const { openChat } = useAIChat();
 
   React.useEffect(() => {
     if (!api) {
@@ -94,15 +96,15 @@ export default function HeroSection({ onCTAClick }: { onCTAClick?: () => void })
                       <p className="text-lg md:text-xl text-white/90 mb-8 max-w-2xl mx-auto">
                         {slide.description}
                       </p>
-                      {onCTAClick && (
+                      
                         <Button
                             size="lg"
                             className="bg-primary text-primary-foreground hover:bg-primary/90 text-lg px-8 py-6 rounded-full shadow-lg transition-transform hover:scale-105"
-                            onClick={onCTAClick}
+                            onClick={openChat}
                         >
                             {slide.buttonText} <ArrowRight className="ml-2 h-5 w-5" />
                         </Button>
-                      )}
+                      
                     </div>
                   </div>
                 </div>
