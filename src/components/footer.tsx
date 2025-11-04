@@ -19,16 +19,16 @@ export default function Footer() {
           <div>
             <h3 className="font-semibold mb-4">Platform</h3>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-foreground">Products</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-foreground">Vendors</Link></li>
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-foreground">Testimonials</Link></li>
+              <li><Link href="#products" className="text-sm text-muted-foreground hover:text-foreground">Products</Link></li>
+              <li><Link href="#vendors" className="text-sm text-muted-foreground hover:text-foreground">Vendors</Link></li>
+              <li><Link href="#testimonials" className="text-sm text-muted-foreground hover:text-foreground">Testimonials</Link></li>
               <li><Link href="/admin" className="text-sm text-muted-foreground hover:text-foreground">Admin Login</Link></li>
             </ul>
           </div>
           <div>
             <h3 className="font-semibold mb-4">Company</h3>
             <ul className="space-y-2">
-              <li><Link href="#" className="text-sm text-muted-foreground hover:text-foreground">About Us</Link></li>
+              <li><Link href="#about-us" className="text-sm text-muted-foreground hover:text-foreground">About Us</Link></li>
               <li><Link href="#" className="text-sm text-muted-foreground hover:text-foreground">Careers</Link></li>
               <li><Link href="#" className="text-sm text-muted-foreground hover:text-foreground">Press</Link></li>
               <li><Link href="#" className="text-sm text-muted-foreground hover:text-foreground">Contact</Link></li>

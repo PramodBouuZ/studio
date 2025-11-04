@@ -13,6 +13,7 @@ const navLinks = [
   { href: '#products', label: 'Products' },
   { href: '#vendors', label: 'Vendors' },
   { href: '#testimonials', label: 'Testimonials' },
+  { href: '#about-us', label: 'About Us'},
   { href: '/admin', label: 'Admin' },
 ];
 
@@ -27,7 +28,7 @@ export default function Header() {
             Become a Vendor
           </Link>
           <Separator orientation="vertical" className="h-4" />
-          <Link href="#inquiry" className="text-muted-foreground transition-colors hover:text-foreground">
+          <Link href="#inquiry-section" className="text-muted-foreground transition-colors hover:text-foreground">
             Post Enquiry
           </Link>
         </div>

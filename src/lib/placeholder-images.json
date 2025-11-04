@@ -33,92 +33,98 @@
     {
       "id": "product-1",
       "description": "A software development team working on code.",
-      "imageUrl": "https://images.unsplash.com/photo-1605379399642-870262d3d051?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzb2Z0d2FyZSUyMGRldmVsb3BtZW50fGVufDB8fHx8MTc2MjE5MDc3Mnww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "software development"
+      "imageUrl": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjb21tdW5pY2F0aW9uJTIwcGxhdGZvcm18ZW58MHx8fHwxNzIyOTI0MDUzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "communication platform"
     },
     {
       "id": "product-2",
       "description": "A marketing team brainstorming ideas on a whiteboard.",
-      "imageUrl": "https://images.unsplash.com/photo-1620325867502-221cfb5faa5f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxtYXJrZXRpbmclMjBzdHJhdGVneXxlbnwwfHx8fDE3NjIxOTI1OTZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "marketing strategy"
+      "imageUrl": "https://images.unsplash.com/photo-1587560699334-cc4ff6349094?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx2b2lwfGVufDB8fHx8MTcyMjkyNDA4N3ww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "voip"
     },
     {
       "id": "product-3",
       "description": "A modern office space with ergonomic chairs and desks.",
-      "imageUrl": "https://images.unsplash.com/photo-1631193816258-28b44b21e78b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxvZmZpY2UlMjBzcGFjZXxlbnwwfHx8fDE3NjIyNDQzNzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "office space"
+      "imageUrl": "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwYnh8ZW58MHx8fHwxNzIyOTI0MTMxfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "pbx"
     },
     {
       "id": "product-4",
       "description": "A consultant presenting a report to a client.",
-      "imageUrl": "https://images.unsplash.com/photo-1573164574511-73c773193279?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxidXNpbmVzcyUyMGNvbnN1bHRpbmd8ZW58MHx8fHwxNzYyMTg5OTQ4fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "business consulting"
+      "imageUrl": "https://images.unsplash.com/photo-1543286386-713bdd548da4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZXBvcnQlMjBhbmFseXRpY3N8ZW58MHx8fHwxNzIyOTI0MTYzfDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "report analytics"
     },
     {
       "id": "product-5",
       "description": "Cloud servers in a data center.",
-      "imageUrl": "https://images.unsplash.com/photo-1721444127971-b7d0023bbef2?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxjbG91ZCUyMGhvc3Rpbmd8ZW58MHx8fHwxNzYyMjU5MTM5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "cloud hosting"
+      "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjbG91ZCUyMGNlbnRlcnxlbnwwfHx8fDE3MjI5MjQxODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "cloud center"
     },
     {
       "id": "product-6",
       "description": "A designer working on a new logo on a tablet.",
-      "imageUrl": "https://images.unsplash.com/photo-1512295767273-ac109ac3acfa?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw5fHxncmFwaGljJTIwZGVzaWdufGVufDB8fHx8MTc2MjE4ODQwMXww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "graphic design"
+      "imageUrl": "https://images.unsplash.com/photo-1626224510492-bf3935215a31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzaXAlMjB0cnVua2luZ3xlbnwwfHx8fDE3MjI5MjQyMTF8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "sip trunking"
     },
     {
-      "id": "vendor-1",
-      "description": "Logo for a tech company.",
-      "imageUrl": "https://images.unsplash.com/photo-1622651132634-a7ed1fbb86dd?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHx0ZWNoJTIwbG9nb3xlbnwwfHx8fDE3NjIyNDM3MzJ8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "tech logo"
+      "id": "vendor-airtel",
+      "description": "Logo for Airtel.",
+      "imageUrl": "https://images.unsplash.com/photo-1744646363639-b75b02808313?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8QWlydGVsJTIwbG9nb3xlbnwwfHx8fDE3NjIyNjQyMzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Airtel logo"
     },
     {
-      "id": "vendor-2",
-      "description": "Logo for a marketing agency.",
-      "imageUrl": "https://images.unsplash.com/photo-1590102426275-8d1c367070d3?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjcmVhdGl2ZSUyMGxvZ298ZW58MHx8fHwxNzYyMjU5MTM5fDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "creative logo"
+      "id": "vendor-tata",
+      "description": "Logo for Tata Communications.",
+      "imageUrl": "https://images.unsplash.com/photo-1651578261941-96720c8e98d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxUYXRhJTIwbG9nb3xlbnwwfHx8fDE3NjIxNjQyMTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Tata logo"
     },
     {
-      "id": "vendor-3",
-      "description": "Logo for a consulting firm.",
-      "imageUrl": "https://images.unsplash.com/photo-1676870421337-2b9c65190264?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjb3Jwb3JhdGUlMjBsb2dvfGVufDB8fHx8MTc2MjE1MDAwM3ww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "corporate logo"
+      "id": "vendor-jio",
+      "description": "Logo for Jio.",
+      "imageUrl": "https://images.unsplash.com/photo-1626204836070-f4cb18ae370f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8SmlvJTIwbG9nb3xlbnwwfHx8fDE3NjIyNjQyMzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Jio logo"
     },
     {
-      "id": "vendor-4",
-      "description": "Logo for a hardware company.",
-      "imageUrl": "https://images.unsplash.com/photo-1760037028553-3c5c801f18c1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8bW9kZXJuJTIwbG9nb3xlbnwwfHx8fDE3NjIyMzEyODN8MA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "modern logo"
+      "id": "vendor-vi",
+      "description": "Logo for Vodafone Idea.",
+      "imageUrl": "https://images.unsplash.com/photo-1648503211120-c69b4233de5c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxWb2RhZm9uZSUyMElkZWF8ZW58MHx8fHwxNzYyMjY0MjM1fDA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "Vodafone Idea"
     },
     {
-      "id": "vendor-5",
-      "description": "Logo for a software startup.",
-      "imageUrl": "https://images.unsplash.com/photo-1669633971142-99954984ca8a?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxzdGFydHVwJTIwbG9nb3xlbnwwfHx8fDE3NjIyNDIxMjB8MA&ixlibrb-4.1.0&q=80&w=1080",
-      "imageHint": "startup logo"
+      "id": "vendor-bsnl",
+      "description": "Logo for BSNL.",
+      "imageUrl": "https://images.unsplash.com/photo-1595409583957-5d1ec5869de9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxCU05MJTIwbG9nb3xlbnwwfHx8fDE3NjIyNjQyMzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "BSNL logo"
     },
     {
       "id": "avatar-1",
-      "description": "Portrait of a smiling woman.",
-      "imageUrl": "https://images.unsplash.com/photo-1614283233556-f35b0c801ef1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHx3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTc2MjI0NDMxOHww&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "woman portrait"
-    },
-    {
-      "id": "avatar-2",
-      "description": "Portrait of a man in business attire.",
-      "imageUrl": "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3NjIyMjQ5MzB8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "description": "Portrait of a smiling man.",
+      "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbmRpYW4lMjBtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3MjI5MjQ4ODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "man portrait"
     },
     {
+      "id": "avatar-2",
+      "description": "Portrait of a smiling woman.",
+      "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjB3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTcyMjkyNDkxNnww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "woman portrait"
+    },
+    {
       "id": "avatar-3",
-      "description": "Portrait of a person with glasses.",
-      "imageUrl": "https://images.unsplash.com/photo-1535643302794-19c3804b874b?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8cGVyc29uJTIwcG9ydHJhaXR8ZW58MHx8fHwxNzYyMTg3MjcwfDA&ixlib=rb-4.1.0&q=80&w=1080",
-      "imageHint": "person portrait"
+      "description": "Portrait of a man in business attire.",
+      "imageUrl": "https://images.unsplash.com/photo-1618531244498-c68d90977d0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxpbmRpYW4lMjBtYW4lMjBzbWlsaW5nfGVufDB8fHx8MTcyMjkyNDk0OXww&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man smiling"
     },
     {
       "id": "avatar-4",
       "description": "Portrait of a smiling man.",
-      "imageUrl": "https://images.unsplash.com/photo-1633367583895-08545d733dfe?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxtYW4lMjBzbWlsaW5nfGVufDB8fHx8MTc2MjE2MTk4NXww&ixlibrb-4.1.0&q=80&w=1080",
-      "imageHint": "man smiling"
+      "imageUrl": "https://images.unsplash.com/photo-1599566150163-29194dcaad36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxpbmRpYW4lMjBtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3MjI5MjQ4ODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "man portrait"
+    },
+    {
+      "id": "about-us",
+      "description": "A vibrant and diverse team working together in a bright, modern office space.",
+      "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxkaXZlcnNlJTIwdGVhbXxlbnwwfHx8fDE3MjI5MjUyNDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
+      "imageHint": "diverse team"
     }
   ]
 }

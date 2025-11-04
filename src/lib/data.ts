@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react';
-import { Briefcase, Lightbulb, ShoppingCart, Wrench } from 'lucide-react';
+import { Briefcase, Lightbulb, ShoppingCart, Wrench, Megaphone, Server, Palette, CloudCog } from 'lucide-react';
 
 export type Product = {
   id: string;
@@ -14,59 +14,60 @@ export type Product = {
 export const products: Product[] = [
   {
     id: 'prod_1',
-    name: 'CRM Pro',
+    name: 'Unified Communications Platform',
     type: 'Software',
-    price: 499,
-    description: 'Advanced customer relationship management software.',
+    price: 80000,
+    description: 'Integrate voice, video, and messaging for seamless team collaboration.',
     imageId: 'product-1',
     icon: ShoppingCart,
   },
   {
     id: 'prod_2',
-    name: 'Digital Marketing Campaign',
+    name: 'VoIP Business Phone System',
     type: 'Service',
-    price: 1200,
-    description: 'Comprehensive digital marketing services.',
+    price: 50000,
+    description: 'Cost-effective, feature-rich voice over IP solutions for modern businesses.',
     imageId: 'product-2',
     icon: Wrench,
   },
   {
     id: 'prod_3',
-    name: 'Cloud Infrastructure Setup',
+    name: 'Cloud Contact Center',
     type: 'Service',
-    price: 2500,
-    description: 'Full setup of scalable cloud infrastructure.',
+    price: 150000,
+    description: 'Scalable and intelligent contact center solutions to enhance customer experience.',
     imageId: 'product-5',
-    icon: Wrench,
+    icon: CloudCog,
   },
   {
     id: 'prod_4',
-    name: 'Business Strategy Consulting',
+    name: 'Telecom Expense Management',
     type: 'Consulting',
-    price: 5000,
-    description: 'Expert consulting for business growth.',
+    price: 100000,
+    description: 'Optimize your telecom spend with our expert analysis and management services.',
     imageId: 'product-4',
     icon: Briefcase,
   },
   {
     id: 'prod_5',
-    name: 'Quantum Server R2',
+    name: 'Enterprise PBX Server',
     type: 'Hardware',
-    price: 15000,
-    description: 'High-performance server for demanding applications.',
+    price: 250000,
+    description: 'Robust and secure on-premise PBX servers for large-scale operations.',
     imageId: 'product-3',
-    icon: Lightbulb,
+    icon: Server,
   },
   {
     id: 'prod_6',
-    name: 'UI/UX Design Subscription',
+    name: 'SIP Trunking Services',
     type: 'Service',
-    price: 850,
-    description: 'Monthly subscription for UI/UX design services.',
+    price: 30000,
+    description: 'Reliable and high-quality SIP trunking to connect your PBX to the PSTN.',
     imageId: 'product-6',
     icon: Wrench,
   },
 ];
+
 
 export type Vendor = {
   id: string;
@@ -75,12 +76,13 @@ export type Vendor = {
 };
 
 export const vendors: Vendor[] = [
-  { id: 'vendor_1', name: 'Innovatech', imageId: 'vendor-1' },
-  { id: 'vendor_2', name: 'MarketVantage', imageId: 'vendor-2' },
-  { id: 'vendor_3', name: 'Stratgurus', imageId: 'vendor-3' },
-  { id: 'vendor_4', name: 'QuantumCore', imageId: 'vendor-4' },
-  { id: 'vendor_5', name: 'PixelPerfect', imageId: 'vendor-5' },
+    { id: 'vendor_1', name: 'Airtel', imageId: 'vendor-airtel' },
+    { id: 'vendor_2', name: 'Tata Communications', imageId: 'vendor-tata' },
+    { id: 'vendor_3', name: 'Jio', imageId: 'vendor-jio' },
+    { id: 'vendor_4', name: 'Vodafone Idea', imageId: 'vendor-vi' },
+    { id: 'vendor_5', name: 'BSNL', imageId: 'vendor-bsnl' },
 ];
+
 
 export type Testimonial = {
   id: string;
@@ -93,30 +95,30 @@ export type Testimonial = {
 export const testimonials: Testimonial[] = [
   {
     id: 'test_1',
-    name: 'Sarah Johnson',
-    role: 'CEO, TechCorp',
-    quote: 'BANTConfirm transformed how we find vendors. The AI refinement is a game-changer, saving us countless hours.',
+    name: 'Rohan Sharma',
+    role: 'IT Head, Global Exports',
+    quote: 'BANTConfirm helped us find the perfect VoIP provider in record time. The AI-driven process ensured we got a vendor that met our exact budget and technical needs.',
     imageId: 'avatar-1',
   },
   {
     id: 'test_2',
-    name: 'David Chen',
-    role: 'Marketing Director, Creative Solutions',
-    quote: 'The quality of leads and the platform\'s ease of use are exceptional. We\'ve seen a 30% increase in qualified leads.',
+    name: 'Priya Mehta',
+    role: 'Operations Director, Sterling Corp',
+    quote: 'The marketplace is incredibly intuitive. We submitted our requirements and received proposals from top-tier telecom companies within a day. A fantastic experience!',
     imageId: 'avatar-2',
   },
   {
     id: 'test_3',
-    name: 'Maria Rodriguez',
-    role: 'Founder, StartUpX',
-    quote: 'As a new business, finding the right partners is crucial. BANTConfirm made it simple and efficient. Highly recommended!',
+    name: 'Ankit Desai',
+    role: 'Founder, NextGen BPO',
+    quote: 'As a startup, every penny counts. BANTConfirm connected us with a vendor that provided a scalable and affordable cloud contact center solution, which was crucial for our growth.',
     imageId: 'avatar-3',
   },
   {
     id: 'test_4',
-    name: 'James Williams',
-    role: 'Operations Manager, Global Logistics',
-    quote: 'The admin dashboard is powerful. Managing leads and gaining AI insights has streamlined our entire sales process.',
+    name: 'Sameer Gupta',
+    role: 'CFO, Pharma Solutions Ltd.',
+    quote: 'The Telecom Expense Management consultant we found through this platform has already saved us 20% on our annual telecom bills. The quality of vendors is truly top-notch.',
     imageId: 'avatar-4',
   },
 ];
