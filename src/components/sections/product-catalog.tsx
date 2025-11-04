@@ -100,7 +100,7 @@ function ProductCard({ product }: { product: Product }) {
   const Icon = product.icon;
 
   return (
-    <Card className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300">
+    <Card className="overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 flex flex-col">
       <CardHeader className="p-0">
         {image && (
           <div className="relative h-48 w-full">
@@ -114,7 +114,7 @@ function ProductCard({ product }: { product: Product }) {
           </div>
         )}
       </CardHeader>
-      <CardContent className="p-6">
+      <CardContent className="p-6 flex-grow flex flex-col">
         <div className="flex justify-between items-start mb-2">
           <CardTitle className="text-xl font-bold font-headline">{product.name}</CardTitle>
           <Badge variant="secondary" className="flex items-center gap-1.5">
@@ -122,12 +122,15 @@ function ProductCard({ product }: { product: Product }) {
             {product.type}
           </Badge>
         </div>
-        <CardDescription className="mb-4 h-10">{product.description}</CardDescription>
-        <div className="flex justify-between items-center">
+        <CardDescription className="mb-4 h-10 flex-grow">{product.description}</CardDescription>
+        <div className="flex justify-between items-center mt-4">
           <p className="text-2xl font-semibold text-primary">
             ₹{product.price.toLocaleString()}
           </p>
-          <Button variant="outline">View Details</Button>
+          <div className="flex gap-2">
+            <Button variant="outline" size="sm">Book Demo</Button>
+            <Button size="sm">Post Enquiry</Button>
+          </div>
         </div>
       </CardContent>
     </Card>
