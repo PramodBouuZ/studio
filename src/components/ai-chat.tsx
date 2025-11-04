@@ -2,14 +2,20 @@
 
 import { useState, useEffect, useRef, createContext, useContext, ReactNode } from 'react';
 import { Button } from './ui/button';
-import { MessageSquare, X, Send, Loader2, UserPlus } from 'lucide-react';
+import { MessageSquare, X, Send, Loader2, UserPlus, LogIn } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from './ui/card';
 import { Textarea } from './ui/textarea';
 import { AnimatePresence, motion } from 'framer-motion';
 import { refineCustomerInquiry, RefineCustomerInquiryOutput } from '@/ai/flows/refine-customer-inquiry';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from './ui/dialog';
-import { Input } from './ui/input';
+import { useUser, useAuth, useFirestore } from '@/firebase';
+import { useRouter } from 'next/navigation';
+import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
+import { useToast } from '@/hooks/use-toast';
+import { leads, type Lead } from '@/lib/data';
 import { Label } from './ui/label';
+import { Input } from './ui/input';
 
 type Message = {
     role: 'user' | 'assistant';
@@ -57,6 +63,13 @@ function AIChat() {
   const [isAuthModalOpen, setAuthModalOpen] = useState(false);
   const chatContentRef = useRef<HTMLDivElement>(null);
   const [isNewConversation, setIsNewConversation] = useState(true);
+  const [inquirySummary, setInquirySummary] = useState<string | null>(null);
+
+  const { user } = useUser();
+  const auth = useAuth();
+  const firestore = useFirestore();
+  const router = useRouter();
+  const { toast } = useToast();
 
   useEffect(() => {
     if (chatContentRef.current) {
@@ -68,8 +81,9 @@ function AIChat() {
     if(isOpen && messages.length === 0){
         setLoading(true);
         refineCustomerInquiry({ inquiry: '', isNewConversation: true }).then((output) => {
-            setMessages([{ role: 'assistant', content: "Hello! I'm here to help you find the perfect vendor. To start, could you please tell me what you're looking for?" }]);
+            setMessages([{ role: 'assistant', content: output.refinedInquiry }]);
         }).finally(() => setLoading(false));
+        setIsNewConversation(true);
     }
   }, [isOpen, messages.length]);
 
@@ -80,13 +94,12 @@ function AIChat() {
     const userMessage: Message = { role: 'user', content: input };
     const newMessages: Message[] = [...messages, userMessage];
     setMessages(newMessages);
-    const userInput = input;
     setInput('');
     setLoading(true);
 
     try {
         const conversationHistory = newMessages.map(m => `${m.role === 'user' ? 'User' : 'Assistant'}: ${m.content}`).join('\n');
-        const result: RefineCustomerInquiryOutput = await refineCustomerInquiry({ inquiry: conversationHistory, isNewConversation });
+        const result: RefineCustomerInquiryOutput = await refineCustomerInquiry({ inquiry: conversationHistory, isNewConversation: isNewConversation && newMessages.length <= 1 });
 
         setMessages(prev => [...prev, { role: 'assistant', content: result.refinedInquiry }]);
         
@@ -95,7 +108,12 @@ function AIChat() {
         }
 
         if (result.isFinished) {
-            setAuthModalOpen(true);
+            setInquirySummary(result.summaryForAdmin || 'Customer needs follow-up.');
+            if (!user) {
+              setAuthModalOpen(true);
+            } else {
+              await saveLead(result.summaryForAdmin || 'Customer needs follow-up.');
+            }
         }
         setIsNewConversation(false);
 
@@ -104,6 +122,34 @@ function AIChat() {
     } finally {
         setLoading(false);
     }
+  };
+
+  const saveLead = async (summary: string) => {
+    if (!user) return;
+
+    const newLead: Lead = {
+      id: `lead_${Date.now()}`,
+      name: user.displayName || `${user.email}`,
+      company: '', // This could be fetched from user's profile if available
+      email: user.email || '',
+      phone: user.phoneNumber || '',
+      inquiry: summary,
+      status: 'New',
+      assignedVendor: '',
+    };
+    
+    // In a real app, you would save this to Firestore. We are adding it to a local array for now.
+    leads.unshift(newLead);
+
+    toast({
+      title: 'Inquiry Submitted!',
+      description: "Our team will review your request and get back to you shortly.",
+    });
+
+    closeChat();
+    setMessages([]);
+    setIsNewConversation(true);
+    router.push('/admin'); // Navigate admin to see the new lead
   };
 
   return (
@@ -187,33 +233,91 @@ function AIChat() {
         </AnimatePresence>
       </div>
 
-       <Dialog open={isAuthModalOpen} onOpenChange={setAuthModalOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle>Almost there!</DialogTitle>
-            <DialogDescription>
-              Your inquiry has been refined. Please create an account or sign in to submit it to our vendors.
-            </DialogDescription>
-          </DialogHeader>
-          <div className="space-y-4 py-4">
-            <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="you@example.com" />
-            </div>
-             <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" />
-            </div>
-          </div>
-          <DialogFooter className='gap-2 sm:justify-between'>
-            <Button variant="outline">Sign In</Button>
-            <Button>
-              <UserPlus className="mr-2 h-4 w-4"/>
-              Create Account & Submit
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+       <AuthModal 
+        isOpen={isAuthModalOpen}
+        onOpenChange={setAuthModalOpen}
+        onSuccess={async () => {
+          if (inquirySummary) {
+            await saveLead(inquirySummary);
+          }
+          setAuthModalOpen(false);
+        }}
+       />
     </>
   );
+}
+
+
+function AuthModal({ isOpen, onOpenChange, onSuccess }: { isOpen: boolean, onOpenChange: (open: boolean) => void, onSuccess: () => void }) {
+  const [isLoginView, setIsLoginView] = useState(true);
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
+  const auth = useAuth();
+  const firestore = useFirestore();
+  const { toast } = useToast();
+
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      await signInWithEmailAndPassword(auth, email, password);
+      toast({ title: "Logged In Successfully!" });
+      onSuccess();
+    } catch (error: any) {
+      toast({ variant: 'destructive', title: 'Login Failed', description: error.message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleSignup = async () => {
+    setLoading(true);
+    try {
+      const cred = await createUserWithEmailAndPassword(auth, email, password);
+      await setDoc(doc(firestore, "users", cred.user.uid), {
+        id: cred.user.uid,
+        email: cred.user.email,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        role: 'customer',
+      });
+      toast({ title: "Account Created Successfully!" });
+      onSuccess();
+    } catch (error: any) {
+      toast({ variant: 'destructive', title: 'Sign Up Failed', description: error.message });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>{isLoginView ? 'Sign In to Continue' : 'Create an Account to Continue'}</DialogTitle>
+          <DialogDescription>
+            Your inquiry is ready. Please {isLoginView ? 'sign in' : 'create an account'} to submit it to our vendors.
+          </DialogDescription>
+        </DialogHeader>
+        <div className="space-y-4 py-4">
+          <div className="space-y-2">
+            <Label htmlFor="email-modal">Email</Label>
+            <Input id="email-modal" type="email" placeholder="you@example.com" value={email} onChange={e => setEmail(e.target.value)} />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password-modal">Password</Label>
+            <Input id="password-modal" type="password" value={password} onChange={e => setPassword(e.target.value)} />
+          </div>
+        </div>
+        <DialogFooter className='gap-2 sm:justify-between'>
+          <Button variant="ghost" onClick={() => setIsLoginView(!isLoginView)}>
+            {isLoginView ? 'Need an account? Sign Up' : 'Have an account? Sign In'}
+          </Button>
+          <Button onClick={isLoginView ? handleLogin : handleSignup} disabled={loading}>
+            {loading ? <Loader2 className="mr-2 h-4 w-4 animate-spin" /> : (isLoginView ? <><LogIn className="mr-2 h-4 w-4" /> Sign In & Submit</> : <><UserPlus className="mr-2 h-4 w-4" /> Sign Up & Submit</>)}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  )
 }
