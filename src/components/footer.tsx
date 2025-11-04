@@ -66,7 +66,7 @@ export default function Footer() {
           </div>
         </div>
         <div className="mt-16 border-t pt-8 text-center text-sm text-muted-foreground">
-          <p>&copy; {new Date().getFullYear()} BANTConfirm Marketplace. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} BANTConfirm. All rights reserved.</p>
         </div>
       </div>
     </footer>
