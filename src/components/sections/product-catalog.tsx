@@ -9,6 +9,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Slider } from '@/components/ui/slider';
 import { Search } from 'lucide-react';
 import { Badge } from '../ui/badge';
+import { Button } from '../ui/button';
 
 const productTypes = ['All', 'Software', 'Service', 'Consulting', 'Hardware'];
 const maxPrice = Math.max(...allProducts.map((p) => p.price));

@@ -1,5 +1,6 @@
 'use client';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
@@ -44,7 +45,7 @@ function SubmitButton() {
 }
 
 export default function InquirySection() {
-  const [state, formAction] = useFormState(handleInquiry, null);
+  const [state, formAction] = useActionState(handleInquiry, null);
 
   return (
     <section id="inquiry" className="py-16 sm:py-24">
