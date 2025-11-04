@@ -1,15 +1,23 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
-import { products as allProducts, type Product } from '@/lib/data';
+import { products as allProducts, type Product, leads } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { Search } from 'lucide-react';
+import { Search, Calendar as CalendarIcon, Clock } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
+import { useUser } from '@/firebase';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@/hooks/use-toast';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
+import { Calendar } from '@/components/ui/calendar';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
+import { cn } from '@/lib/utils';
+import { format } from 'date-fns';
 
 const productTypes = ['All', 'Software', 'Service', 'Consulting', 'Hardware'];
 const maxPrice = Math.max(...allProducts.map((p) => p.price));
@@ -18,6 +26,14 @@ export default function ProductCatalog() {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('All');
   const [priceRange, setPriceRange] = useState([0, maxPrice]);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [isDemoModalOpen, setDemoModalOpen] = useState(false);
+  const [selectedDate, setSelectedDate] = useState<Date | undefined>(new Date());
+  const [selectedTime, setSelectedTime] = useState<string>('');
+
+  const { user } = useUser();
+  const router = useRouter();
+  const { toast } = useToast();
 
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
@@ -27,6 +43,70 @@ export default function ProductCatalog() {
       return matchesSearch && matchesType && matchesPrice;
     });
   }, [searchTerm, selectedType, priceRange]);
+  
+  const handleBookDemoClick = (product: Product) => {
+    if (!user) {
+      toast({
+        title: 'Authentication Required',
+        description: 'Please log in or sign up to book a demo.',
+        action: <Button onClick={() => router.push('/login')}>Login</Button>,
+      });
+      return;
+    }
+    setSelectedProduct(product);
+    setDemoModalOpen(true);
+  };
+  
+  const handlePostEnquiryClick = (product: Product) => {
+    if (!user) {
+       toast({
+        title: 'Authentication Required',
+        description: 'Please log in or sign up to post an enquiry.',
+        action: <Button onClick={() => router.push('/login')}>Login</Button>,
+      });
+      return;
+    }
+
+    const newLead = {
+      id: `lead_${leads.length + 1}`,
+      name: user.displayName || 'N/A',
+      company: '', // This could be fetched from user's profile
+      email: user.email || '',
+      phone: user.phoneNumber || '',
+      inquiry: `Enquiry for ${product.name}`,
+      status: 'New' as const,
+      assignedVendor: '',
+    };
+
+    // In a real app, you'd send this to a backend. For now, we just show a toast.
+    console.log("New Lead:", newLead);
+    toast({
+      title: 'Enquiry Sent!',
+      description: `Your enquiry for "${product.name}" has been sent to the admin.`,
+    });
+     // Note: This won't actually update the admin panel data across sessions.
+     // It's a placeholder for client-side feedback.
+  };
+
+  const handleScheduleDemo = () => {
+    if (selectedDate && selectedTime && selectedProduct) {
+      toast({
+        title: 'Demo Booked!',
+        description: `Your demo for ${selectedProduct.name} is scheduled on ${format(selectedDate, 'PPP')} at ${selectedTime}.`,
+      });
+      setDemoModalOpen(false);
+      setSelectedDate(new Date());
+      setSelectedTime('');
+    } else {
+        toast({
+            variant: 'destructive',
+            title: 'Incomplete Information',
+            description: 'Please select a date and time to book the demo.',
+        })
+    }
+  };
+
+  const timeSlots = ['09:00 AM', '11:00 AM', '02:00 PM', '04:00 PM'];
 
   return (
     <section id="products" className="py-16 sm:py-24">
@@ -83,7 +163,12 @@ export default function ProductCatalog() {
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {filteredProducts.map((product) => (
-          <ProductCard key={product.id} product={product} />
+          <ProductCard 
+            key={product.id} 
+            product={product}
+            onBookDemoClick={() => handleBookDemoClick(product)}
+            onPostEnquiryClick={() => handlePostEnquiryClick(product)}
+          />
         ))}
          {filteredProducts.length === 0 && (
           <div className="col-span-full text-center py-12">
@@ -91,11 +176,63 @@ export default function ProductCatalog() {
           </div>
         )}
       </div>
+
+      <Dialog open={isDemoModalOpen} onOpenChange={setDemoModalOpen}>
+        <DialogContent>
+            <DialogHeader>
+                <DialogTitle>Book a Demo for {selectedProduct?.name}</DialogTitle>
+                <DialogDescription>Select a date and time that works for you.</DialogDescription>
+            </DialogHeader>
+            <div className="grid gap-4 py-4">
+                <div className="grid grid-cols-4 items-start gap-4">
+                    <Label className="text-right pt-2">Date</Label>
+                    <Popover>
+                        <PopoverTrigger asChild>
+                        <Button
+                            variant={"outline"}
+                            className={cn(
+                            "col-span-3 justify-start text-left font-normal",
+                            !selectedDate && "text-muted-foreground"
+                            )}
+                        >
+                            <CalendarIcon className="mr-2 h-4 w-4" />
+                            {selectedDate ? format(selectedDate, "PPP") : <span>Pick a date</span>}
+                        </Button>
+                        </PopoverTrigger>
+                        <PopoverContent className="w-auto p-0">
+                            <Calendar
+                                mode="single"
+                                selected={selectedDate}
+                                onSelect={setSelectedDate}
+                                initialFocus
+                                disabled={(date) => date < new Date(new Date().setDate(new Date().getDate() - 1))}
+                            />
+                        </PopoverContent>
+                    </Popover>
+                </div>
+                 <div className="grid grid-cols-4 items-start gap-4">
+                    <Label className="text-right pt-2">Time</Label>
+                    <div className="col-span-3 grid grid-cols-2 gap-2">
+                        {timeSlots.map(time => (
+                            <Button key={time} variant={selectedTime === time ? 'default' : 'outline'} onClick={() => setSelectedTime(time)}>
+                                <Clock className="mr-2 h-4 w-4" />
+                                {time}
+                            </Button>
+                        ))}
+                    </div>
+                </div>
+            </div>
+            <DialogFooter>
+                <Button onClick={handleScheduleDemo}>Schedule Demo</Button>
+            </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
     </section>
   );
 }
 
-function ProductCard({ product }: { product: Product }) {
+function ProductCard({ product, onBookDemoClick, onPostEnquiryClick }: { product: Product, onBookDemoClick: () => void, onPostEnquiryClick: () => void }) {
   const image = PlaceHolderImages.find((img) => img.id === product.imageId);
   const Icon = product.icon;
 
@@ -128,8 +265,8 @@ function ProductCard({ product }: { product: Product }) {
             ₹{product.price.toLocaleString()}
           </p>
           <div className="flex gap-2">
-            <Button variant="outline" size="sm">Book Demo</Button>
-            <Button size="sm">Post Enquiry</Button>
+            <Button variant="outline" size="sm" onClick={onBookDemoClick}>Book Demo</Button>
+            <Button size="sm" onClick={onPostEnquiryClick}>Post Enquiry</Button>
           </div>
         </div>
       </CardContent>
@@ -140,3 +277,5 @@ function ProductCard({ product }: { product: Product }) {
 function Label({ htmlFor, children }: { htmlFor?: string; children: React.ReactNode }) {
     return <label htmlFor={htmlFor} className="block text-sm font-medium text-muted-foreground mb-2">{children}</label>
 }
+
+    
