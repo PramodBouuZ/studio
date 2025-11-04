@@ -5,7 +5,7 @@ import { cn } from '@/lib/utils';
 import { Toaster } from '@/components/ui/toaster';
 import Header from '@/components/header';
 import Footer from '@/components/footer';
-import AIChat from '@/components/ai-chat';
+import { AIChatProvider } from '@/components/ai-chat';
 import { FirebaseClientProvider } from '@/firebase';
 
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
@@ -29,12 +29,13 @@ export default function RootLayout({
       </head>
       <body className={cn('min-h-screen bg-background font-body antialiased', inter.variable)}>
         <FirebaseClientProvider>
-          <div className="relative flex min-h-screen flex-col">
-            <Header />
-            <main className="flex-1">{children}</main>
-            <Footer />
-            <AIChat />
-          </div>
+          <AIChatProvider>
+            <div className="relative flex min-h-screen flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
+          </AIChatProvider>
           <Toaster />
         </FirebaseClientProvider>
       </body>

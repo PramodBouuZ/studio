@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useRef } from 'react';
+import { useState, useEffect, useRef, createContext, useContext, ReactNode } from 'react';
 import { Button } from './ui/button';
 import { MessageSquare, X, Send, Loader2, UserPlus } from 'lucide-react';
 import { Card, CardHeader, CardTitle, CardContent, CardFooter } from './ui/card';
@@ -16,8 +16,38 @@ type Message = {
     content: string;
 };
 
-export default function AIChat() {
+interface AIChatContextType {
+  isOpen: boolean;
+  openChat: () => void;
+  closeChat: () => void;
+}
+
+const AIChatContext = createContext<AIChatContextType | undefined>(undefined);
+
+export const useAIChat = () => {
+  const context = useContext(AIChatContext);
+  if (!context) {
+    throw new Error('useAIChat must be used within an AIChatProvider');
+  }
+  return context;
+};
+
+export const AIChatProvider = ({ children }: { children: ReactNode }) => {
   const [isOpen, setIsOpen] = useState(false);
+  const openChat = () => setIsOpen(true);
+  const closeChat = () => setIsOpen(false);
+
+  return (
+    <AIChatContext.Provider value={{ isOpen, openChat, closeChat }}>
+      {children}
+      <AIChat />
+    </AIChatContext.Provider>
+  );
+};
+
+
+function AIChat() {
+  const { isOpen, closeChat, openChat } = useAIChat();
   const [messages, setMessages] = useState<Message[]>([]);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
@@ -83,7 +113,7 @@ export default function AIChat() {
               <Card className="w-80 md:w-96 shadow-2xl">
                 <CardHeader className="flex flex-row items-center justify-between py-3 px-4 border-b">
                   <CardTitle className="text-base font-semibold">AI Assistant</CardTitle>
-                  <Button variant="ghost" size="icon" className="h-7 w-7" onClick={() => setIsOpen(false)}>
+                  <Button variant="ghost" size="icon" className="h-7 w-7" onClick={closeChat}>
                     <X className="h-4 w-4" />
                   </Button>
                 </CardHeader>
@@ -141,7 +171,7 @@ export default function AIChat() {
             <Button
               size="lg"
               className="rounded-full shadow-lg h-14 w-14 mt-2"
-              onClick={() => setIsOpen(true)}
+              onClick={openChat}
             >
               <MessageSquare className="h-6 w-6" />
             </Button>

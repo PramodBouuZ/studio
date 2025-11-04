@@ -38,7 +38,7 @@ const heroSlides = [
   },
 ];
 
-export default function HeroSection({ onCTAClick }: { onCTAClick: () => void }) {
+export default function HeroSection({ onCTAClick }: { onCTAClick?: () => void }) {
   const [api, setApi] = React.useState<any>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
@@ -86,8 +86,23 @@ export default function HeroSection({ onCTAClick }: { onCTAClick: () => void }) 
                     />
                   )}
                   <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent" />
-                  <div className="absolute inset-0 flex flex-col justify-end p-6 md:p-12 lg:p-16">
+                  <div className="absolute inset-0 flex flex-col items-center justify-center text-center p-6 md:p-12 lg:p-16">
                     <div className="max-w-2xl text-white">
+                       <h1 className="text-4xl md:text-6xl font-bold tracking-tighter mb-4 font-headline animate-fade-in-down">
+                        Find The Right Vendor, Faster.
+                      </h1>
+                      <p className="text-lg md:text-xl text-white/90 mb-8 animate-fade-in-up">
+                        Describe your needs, and our AI-powered platform will connect you with top-tier vendors.
+                      </p>
+                      {onCTAClick && (
+                        <Button
+                            size="lg"
+                            className="bg-accent text-accent-foreground hover:bg-accent/90 animate-fade-in-up"
+                            onClick={onCTAClick}
+                        >
+                            Submit Your Inquiry <ArrowRight className="ml-2" />
+                        </Button>
+                      )}
                     </div>
                   </div>
                 </div>
