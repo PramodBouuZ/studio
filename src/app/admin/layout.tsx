@@ -14,6 +14,7 @@ import {
 import BANTLogo from '@/components/bant-logo';
 import { LayoutDashboard, ShoppingCart, Users, LifeBuoy, LogOut } from 'lucide-react';
 import { usePathname } from 'next/navigation';
+import AdminAIChat from '@/components/admin/admin-ai-chat';
 
 const menuItems = [
   { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
@@ -26,7 +27,7 @@ const bottomMenuItems = [
     { href: '/', label: 'Logout', icon: LogOut },
 ]
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default function AdminLayout({ children }: { children: React.React.Node }) {
   const pathname = usePathname();
 
   return (
@@ -72,6 +73,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
       </Sidebar>
       <SidebarInset>
         <div className="p-4 sm:p-6 lg:p-8">{children}</div>
+        <AdminAIChat />
       </SidebarInset>
     </SidebarProvider>
   );

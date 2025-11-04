@@ -41,7 +41,6 @@ export async function refineCustomerInquiry(input: RefineCustomerInquiryInput): 
 const BANT_QUESTIONS = [
   "To better understand your needs, could you provide an estimated budget for this project?",
   "Who will be the main point of contact and decision-maker for this project?",
-  "What are the key features you are looking for? For example, for a CRM, how many users do you need to support?",
   "What is your ideal timeline for completing this project?"
 ];
 
@@ -50,26 +49,28 @@ const refineCustomerInquiryPrompt = ai.definePrompt({
   name: 'refineCustomerInquiryPrompt',
   input: {schema: RefineCustomerInquiryInputSchema},
   output: {schema: RefineCustomerInquiryOutputSchema},
-  prompt: `You are an AI assistant helping customers refine their inquiries on a marketplace by following BANT (Budget, Authority, Need, Timeline) parameters.
+  prompt: `You are an AI assistant helping customers refine their inquiries on a marketplace.
 
   The customer has provided the following inquiry: {{{inquiry}}}
 
   {{#if isNewConversation}}
-  You are starting a new conversation. Your goal is to guide the user through the BANT questions.
-  Start by asking the first BANT question: "${BANT_QUESTIONS[0]}"
+  You are starting a new conversation.
+  Analyze the user's first message. If it's a simple request like "I need a CRM", ask for more details first. For example: "Certainly! Could you please describe your exact requirements and what features you are looking for in a CRM?".
+  If the user has provided enough detail, start by asking the first BANT question about their need: "What are the key features you are looking for? For example, for a CRM, how many users do you need to support?".
   Set isFinished to false.
-  Your output should be just the question.
   {{else}}
-  Analyze the user's response. If the current question is answered, ask the next BANT question.
+  Analyze the user's response in the context of the conversation.
+  If you have just asked for initial requirements, evaluate if the user has provided them. If they have, ask the first BANT question: "Great, thank you. To better understand your needs, could you provide an estimated budget for this project?".
+  If the current BANT question is answered, ask the next BANT question.
   If the user's response is a question or doesn't answer the current BANT question, provide a helpful response and repeat the current BANT question.
-  Once all BANT questions are answered, summarize the collected information (Budget, Authority, Need, Timeline) into a refined inquiry.
+  Once all BANT questions are answered, summarize the collected information (Need, Budget, Authority, Timeline) into a refined inquiry.
   Then set isFinished to true and the refinedInquiry to the summarized text.
   If there are more questions to ask, set isFinished to false and refinedInquiry to the next question.
   Here are the BANT questions for your reference:
-  1. Budget: ${BANT_QUESTIONS[0]}
-  2. Authority: ${BANT_QUESTIONS[1]}
-  3. Need: ${BANT_QUESTIONS[2]}
-  4. Timeline: ${BANT_QUESTIONS[3]}
+  1. Need: What are the key features you are looking for?
+  2. Budget: ${BANT_QUESTIONS[0]}
+  3. Authority: ${BANT_QUESTIONS[1]}
+  4. Timeline: ${BANT_QUESTIONS[2]}
   {{/if}}
 `,
 });
