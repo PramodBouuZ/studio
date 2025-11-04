@@ -84,14 +84,7 @@ export default function HeroSection() {
                       priority
                     />
                   )}
-                  <div className="absolute inset-0 bg-black/50" />
-                  <div className="absolute inset-0 flex items-center justify-center p-4">
-                    <div className="w-full max-w-md text-center text-white">
-                      <h1 className="text-3xl md:text-5xl font-bold font-headline mb-4">{slide.title}</h1>
-                      <p className="text-lg md:text-xl mb-8">{slide.description}</p>
-                      <Button size="lg">{slide.buttonText}</Button>
-                    </div>
-                  </div>
+                  <div className="absolute inset-0 bg-black/20" />
                 </div>
               </CarouselItem>
             );
