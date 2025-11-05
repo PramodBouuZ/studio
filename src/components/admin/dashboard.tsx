@@ -70,8 +70,12 @@ export default function AdminDashboard() {
 
   return (
     <>
+      <div className="mb-6">
+        <h1 className="text-2xl font-bold tracking-tight">Leads Dashboard</h1>
+        <p className="text-muted-foreground">View and manage all customer inquiries.</p>
+      </div>
       <div className="flex justify-end mb-4">
-        <Button onClick={handleDownloadLeads}>
+        <Button onClick={handleDownloadLeads} disabled={!leads || leads.length === 0}>
           <FileDown className="mr-2 h-4 w-4" />
           Download Leads
         </Button>
@@ -90,14 +94,17 @@ export default function AdminDashboard() {
           <TableBody>
             {isLeadsLoading && Array.from({ length: 5 }).map((_, i) => (
                 <TableRow key={i}>
-                    <TableCell><Skeleton className="h-5 w-32" /></TableCell>
+                    <TableCell>
+                        <Skeleton className="h-5 w-24 mb-1" />
+                        <Skeleton className="h-4 w-16" />
+                    </TableCell>
                     <TableCell className="hidden md:table-cell"><Skeleton className="h-5 w-full" /></TableCell>
                     <TableCell><Skeleton className="h-6 w-20" /></TableCell>
                     <TableCell className="hidden sm:table-cell"><Skeleton className="h-5 w-24" /></TableCell>
                     <TableCell className="text-right"><Skeleton className="h-8 w-8 ml-auto" /></TableCell>
                 </TableRow>
             ))}
-            {leads?.map((lead) => (
+            {!isLeadsLoading && leads?.map((lead) => (
               <TableRow key={lead.id}>
                 <TableCell>
                   <div className="font-medium">{lead.name}</div>
@@ -155,6 +162,7 @@ export default function AdminDashboard() {
           isOpen={isSheetOpen}
           onOpenChange={setSheetOpen}
           vendors={vendors?.map(v => v.name) || []}
+          isVendorsLoading={isVendorsLoading}
         />
       )}
     </>

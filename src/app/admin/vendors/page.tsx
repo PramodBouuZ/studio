@@ -71,7 +71,10 @@ export default function VendorsPage() {
       return [...vendors].sort((a, b) => {
         if (a.status === 'pending_approval' && b.status !== 'pending_approval') return -1;
         if (a.status !== 'pending_approval' && b.status === 'pending_approval') return 1;
-        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+        // When statuses are the same, sort by creation date descending
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        return dateB - dateA;
       });
     }, [vendors]);
 
@@ -87,28 +90,33 @@ export default function VendorsPage() {
         {isLoading && Array.from({ length: 3 }).map((_, i) => (
             <Card key={i}>
                 <CardHeader>
-                    <Skeleton className="h-6 w-3/4" />
+                    <Skeleton className="h-6 w-3/4 mb-2" />
+                    <Skeleton className="h-5 w-1/4" />
                 </CardHeader>
                 <CardContent className="space-y-4">
-                     <Skeleton className="aspect-video w-full" />
-                     <Skeleton className="h-5 w-1/2" />
-                     <Skeleton className="h-10 w-full" />
-                     <Skeleton className="h-5 w-1/2" />
-                     <Skeleton className="h-10 w-full" />
+                     <Skeleton className="aspect-video w-full rounded-md" />
+                     <div className="space-y-2">
+                        <Skeleton className="h-4 w-1/3" />
+                        <Skeleton className="h-10 w-full" />
+                     </div>
+                      <div className="space-y-2">
+                        <Skeleton className="h-4 w-1/3" />
+                        <Skeleton className="h-10 w-full" />
+                     </div>
                 </CardContent>
-                 <CardFooter className="flex justify-between">
-                    <Skeleton className="h-10 w-24" />
-                    <Skeleton className="h-10 w-24" />
+                 <CardFooter className="flex justify-end gap-2">
+                    <Skeleton className="h-9 w-24" />
+                    <Skeleton className="h-9 w-24" />
                 </CardFooter>
             </Card>
         ))}
-        {sortedVendors.map((vendor) => (
+        {!isLoading && sortedVendors.map((vendor) => (
             <Card key={vendor.id} className="flex flex-col">
                 <CardHeader className="flex flex-row justify-between items-start">
                     <div>
                         <CardTitle>{vendor.name}</CardTitle>
                         <CardDescription>Status: 
-                            <Badge variant={vendor.status === 'approved' ? 'default' : vendor.status === 'pending_approval' ? 'secondary' : 'destructive'} className="ml-2">
+                            <Badge variant={vendor.status === 'approved' ? 'default' : vendor.status === 'pending_approval' ? 'secondary' : 'destructive'} className="ml-2 capitalize">
                                 {vendor.status.replace('_', ' ')}
                             </Badge>
                         </CardDescription>

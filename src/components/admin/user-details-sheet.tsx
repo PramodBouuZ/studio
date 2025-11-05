@@ -26,12 +26,14 @@ import { improveLeadQualification, ImproveLeadQualificationOutput } from '@/ai/f
 import { Alert, AlertTitle, AlertDescription } from '../ui/alert';
 import { useFirestore } from '@/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
+import { Skeleton } from '../ui/skeleton';
 
 interface UserDetailsSheetProps {
   lead: Lead;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   vendors: string[];
+  isVendorsLoading: boolean;
 }
 
 type AIState = {
@@ -44,7 +46,8 @@ export default function UserDetailsSheet({
   lead,
   isOpen,
   onOpenChange,
-  vendors
+  vendors,
+  isVendorsLoading
 }: UserDetailsSheetProps) {
   const [editedLead, setEditedLead] = useState<Lead>(lead);
   const [aiState, setAiState] = useState<AIState>({ loading: false, suggestions: null, error: null });
@@ -137,15 +140,19 @@ export default function UserDetailsSheet({
           </div>
            <div className="grid grid-cols-4 items-center gap-4">
             <Label htmlFor="assignedVendor" className="text-right">Assigned Vendor</Label>
-            <Select name="assignedVendor" value={editedLead.assignedVendor || 'unassigned'} onValueChange={(v) => handleSelectChange('assignedVendor', v)}>
-              <SelectTrigger className="col-span-3">
-                <SelectValue placeholder="Assign vendor" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="unassigned">Unassigned</SelectItem>
-                {vendors.map(v => <SelectItem key={v} value={v}>{v}</SelectItem>)}
-              </SelectContent>
-            </Select>
+            {isVendorsLoading ? (
+                 <Skeleton className="h-10 col-span-3" />
+            ) : (
+                <Select name="assignedVendor" value={editedLead.assignedVendor || 'unassigned'} onValueChange={(v) => handleSelectChange('assignedVendor', v)}>
+                  <SelectTrigger className="col-span-3">
+                    <SelectValue placeholder="Assign vendor" />
+                  </SelectTrigger>
+                  <SelectContent>
+                    <SelectItem value="unassigned">Unassigned</SelectItem>
+                    {vendors.map(v => <SelectItem key={v} value={v}>{v}</SelectItem>)}
+                  </SelectContent>
+                </Select>
+            )}
           </div>
           <div className="col-span-4">
             <Button onClick={handleGetAISuggestions} variant="outline" className="w-full" disabled={aiState.loading}>
