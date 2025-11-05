@@ -128,6 +128,49 @@
         "status",
         "createdAt"
       ]
+    },
+    "Lead": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Lead",
+      "type": "object",
+      "description": "Stores a customer inquiry or lead.",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the lead."
+        },
+        "name": {
+          "type": "string",
+          "description": "Customer's name."
+        },
+        "company": {
+          "type": "string",
+          "description": "Customer's company."
+        },
+        "email": {
+          "type": "string",
+          "description": "Customer's email.",
+          "format": "email"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Customer's phone number."
+        },
+        "inquiry": {
+          "type": "string",
+          "description": "The details of the customer's inquiry."
+        },
+        "status": {
+          "type": "string",
+          "description": "The current status of the lead.",
+          "enum": ["New", "Contacted", "Qualified", "Closed"]
+        },
+        "assignedVendor": {
+          "type": "string",
+          "description": "The name of the vendor assigned to this lead."
+        }
+      },
+      "required": ["id", "name", "email", "inquiry", "status"]
     }
   },
   "auth": {
@@ -169,8 +212,24 @@
             }
           ]
         }
+      },
+       {
+        "path": "/leads/{leadId}",
+        "definition": {
+          "entityName": "Lead",
+          "schema": {
+            "$ref": "#/backend/entities/Lead"
+          },
+          "description": "Stores customer inquiries (leads). Can be created by any authenticated user, but only managed by admins.",
+          "params": [
+            {
+              "name": "leadId",
+              "description": "The unique identifier for the lead."
+            }
+          ]
+        }
       }
     ],
-    "reasoning": "This Firestore structure prioritizes authorization independence and simplifies security rules. User accounts are stored under `/users/{userId}`. This path-based ownership model provides strong isolation and simplifies access control. Vendor profiles are stored in a separate `/vendors/{vendorId}` collection, which allows for different security rules and data models specific to vendors. The `vendorId` also matches the Firebase Auth UID, ensuring that only the authenticated vendor can manage their own profile."
+    "reasoning": "This Firestore structure prioritizes authorization independence and simplifies security rules. User accounts are stored under `/users/{userId}`. This path-based ownership model provides strong isolation and simplifies access control. Vendor profiles are stored in a separate `/vendors/{vendorId}` collection, which allows for different security rules and data models specific to vendors. The `vendorId` also matches the Firebase Auth UID, ensuring that only the authenticated vendor can manage their own profile. Leads are stored in `/leads/{leadId}`, allowing authenticated users to create them and admins to manage them."
   }
 }

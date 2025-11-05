@@ -11,9 +11,9 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, Di
 import { useUser, useAuth, useFirestore } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { createUserWithEmailAndPassword, signInWithEmailAndPassword } from 'firebase/auth';
-import { doc, setDoc } from 'firebase/firestore';
+import { collection, doc, setDoc } from 'firebase/firestore';
 import { useToast } from '@/hooks/use-toast';
-import { leads, type Lead } from '@/lib/data';
+import { type Lead } from '@/lib/data';
 import { Label } from './ui/label';
 import { Input } from './ui/input';
 
@@ -125,11 +125,13 @@ function AIChat() {
   };
 
   const saveLead = async (summary: string) => {
-    if (!user) return;
+    if (!user || !firestore) return;
+
+    const leadRef = doc(collection(firestore, 'leads'));
 
     const newLead: Lead = {
-      id: `lead_${Date.now()}`,
-      name: user.displayName || `${user.email}`,
+      id: leadRef.id,
+      name: user.displayName || user.email || 'Anonymous',
       company: '', // This could be fetched from user's profile if available
       email: user.email || '',
       phone: user.phoneNumber || '',
@@ -138,8 +140,7 @@ function AIChat() {
       assignedVendor: '',
     };
     
-    // In a real app, you would save this to Firestore. We are adding it to a local array for now.
-    leads.unshift(newLead);
+    await setDoc(leadRef, newLead);
 
     toast({
       title: 'Inquiry Submitted!',
@@ -149,7 +150,10 @@ function AIChat() {
     closeChat();
     setMessages([]);
     setIsNewConversation(true);
-    router.push('/admin'); // Navigate admin to see the new lead
+    // Navigate admin to see the new lead. This assumes 'admin' role can be identified.
+    if (user.email === 'admin@bantconfirm.com') {
+        router.push('/admin'); 
+    }
   };
 
   return (

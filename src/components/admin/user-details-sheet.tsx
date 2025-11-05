@@ -24,12 +24,13 @@ import { type Lead } from '@/lib/data';
 import { Sparkles, Loader2 } from 'lucide-react';
 import { improveLeadQualification, ImproveLeadQualificationOutput } from '@/ai/flows/improve-lead-qualification';
 import { Alert, AlertTitle, AlertDescription } from '../ui/alert';
+import { useFirestore } from '@/firebase';
+import { doc, updateDoc } from 'firebase/firestore';
 
 interface UserDetailsSheetProps {
   lead: Lead;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  onUpdateLead: (updatedLead: Lead) => void;
   vendors: string[];
 }
 
@@ -43,11 +44,11 @@ export default function UserDetailsSheet({
   lead,
   isOpen,
   onOpenChange,
-  onUpdateLead,
   vendors
 }: UserDetailsSheetProps) {
   const [editedLead, setEditedLead] = useState<Lead>(lead);
   const [aiState, setAiState] = useState<AIState>({ loading: false, suggestions: null, error: null });
+  const firestore = useFirestore();
 
   useEffect(() => {
     // When a new lead is passed in, update the sheet's state
@@ -66,8 +67,10 @@ export default function UserDetailsSheet({
     setEditedLead({ ...editedLead, [name]: finalValue });
   };
 
-  const handleSaveChanges = () => {
-    onUpdateLead(editedLead);
+  const handleSaveChanges = async () => {
+    if (!firestore) return;
+    const leadRef = doc(firestore, 'leads', editedLead.id);
+    await updateDoc(leadRef, { ...editedLead });
     onOpenChange(false);
   };
   

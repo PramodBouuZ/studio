@@ -73,5 +73,16 @@ service cloud.firestore {
         // The owner of the vendor profile or an admin can delete it.
         allow delete: if isOwner(vendorId) || isAdmin();
     }
+
+    /**
+     * @description Secure leads under /leads/{leadId}.
+     * - Any signed-in user can create a lead.
+     * - Only admins can read, update, or delete leads.
+     * @path /leads/{leadId}
+     */
+    match /leads/{leadId} {
+      allow get, list, update, delete: if isAdmin();
+      allow create: if isSignedIn();
+    }
   }
 }

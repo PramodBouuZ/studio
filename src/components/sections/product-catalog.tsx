@@ -10,7 +10,7 @@ import { Slider } from '@/components/ui/slider';
 import { Search, Calendar as CalendarIcon, Clock } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { useUser } from '@/firebase';
+import { useUser, useFirestore } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -20,6 +20,8 @@ import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { motion } from 'framer-motion';
 import { useAIChat } from '../ai-chat';
+import { type Lead } from '@/lib/data';
+import { collection, doc, setDoc } from 'firebase/firestore';
 
 const productTypes = ['All', 'Software', 'Service', 'Consulting', 'Hardware'];
 const maxPrice = Math.max(...allProducts.map((p) => p.price));
@@ -37,6 +39,7 @@ export default function ProductCatalog() {
   const { user } = useUser();
   const router = useRouter();
   const { toast } = useToast();
+  const firestore = useFirestore();
 
   const filteredProducts = useMemo(() => {
     return allProducts.filter((product) => {
@@ -60,8 +63,8 @@ export default function ProductCatalog() {
     setDemoModalOpen(true);
   };
   
-  const handlePostEnquiryClick = (product: Product) => {
-    if (!user) {
+  const handlePostEnquiryClick = async (product: Product) => {
+    if (!user || !firestore) {
        toast({
         title: 'Authentication Required',
         description: 'Please log in or sign up to post an enquiry.',
@@ -69,9 +72,21 @@ export default function ProductCatalog() {
       });
       return;
     }
+    
+    const leadRef = doc(collection(firestore, 'leads'));
+    const newLead: Lead = {
+      id: leadRef.id,
+      name: user.displayName || user.email || 'Anonymous',
+      company: '', // Could be fetched from user profile
+      email: user.email || '',
+      phone: user.phoneNumber || '',
+      inquiry: `Interested in: ${product.name}`,
+      status: 'New',
+      assignedVendor: '',
+    };
 
-    // This action no longer saves to the admin panel.
-    // It only shows a confirmation toast to the user.
+    await setDoc(leadRef, newLead);
+
     toast({
       title: 'Enquiry Sent!',
       description: `Your interest in "${product.name}" has been noted. Our team will reach out to you shortly.`,
@@ -80,8 +95,6 @@ export default function ProductCatalog() {
 
   const handleScheduleDemo = () => {
     if (selectedDate && selectedTime && selectedProduct) {
-      // This action no longer saves to the admin panel.
-      // It only shows a confirmation toast to the user.
       toast({
         title: 'Demo Booked!',
         description: `Your demo for ${selectedProduct.name} is scheduled on ${format(selectedDate, 'PPP')} at ${selectedTime}.`,

@@ -24,11 +24,21 @@ import {
   Edit,
   Trash2,
 } from 'lucide-react';
-import { leads as initialLeads, vendors, type Lead } from '@/lib/data';
+import { type Lead } from '@/lib/data';
 import UserDetailsSheet from './user-details-sheet';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { collection, deleteDoc, doc } from 'firebase/firestore';
+import type { VendorProfile } from '@/lib/types';
+import { Skeleton } from '../ui/skeleton';
 
 export default function AdminDashboard() {
-  const [leads, setLeads] = useState<Lead[]>(initialLeads);
+  const firestore = useFirestore();
+  const leadsCollection = useMemoFirebase(() => firestore ? collection(firestore, 'leads') : null, [firestore]);
+  const { data: leads, isLoading: isLeadsLoading } = useCollection<Lead>(leadsCollection);
+
+  const vendorsCollection = useMemoFirebase(() => firestore ? collection(firestore, 'vendors') : null, [firestore]);
+  const { data: vendors, isLoading: isVendorsLoading } = useCollection<VendorProfile>(vendorsCollection);
+
   const [selectedLead, setSelectedLead] = useState<Lead | null>(null);
   const [isSheetOpen, setSheetOpen] = useState(false);
 
@@ -36,12 +46,14 @@ export default function AdminDashboard() {
     setSelectedLead(lead);
     setSheetOpen(true);
   };
-
-  const handleUpdateLead = (updatedLead: Lead) => {
-    setLeads(leads.map(l => l.id === updatedLead.id ? updatedLead : l));
-  };
   
+  const handleDeleteLead = async (leadId: string) => {
+      if (!firestore) return;
+      await deleteDoc(doc(firestore, 'leads', leadId));
+  }
+
   const handleDownloadLeads = () => {
+    if (!leads) return;
     const csvContent = "data:text/csv;charset=utf-8," 
       + ["ID", "Name", "Company", "Email", "Phone", "Inquiry", "Status", "Assigned Vendor"].join(",")
       + "\n"
@@ -76,7 +88,16 @@ export default function AdminDashboard() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {leads.map((lead) => (
+            {isLeadsLoading && Array.from({ length: 5 }).map((_, i) => (
+                <TableRow key={i}>
+                    <TableCell><Skeleton className="h-5 w-32" /></TableCell>
+                    <TableCell className="hidden md:table-cell"><Skeleton className="h-5 w-full" /></TableCell>
+                    <TableCell><Skeleton className="h-6 w-20" /></TableCell>
+                    <TableCell className="hidden sm:table-cell"><Skeleton className="h-5 w-24" /></TableCell>
+                    <TableCell className="text-right"><Skeleton className="h-8 w-8 ml-auto" /></TableCell>
+                </TableRow>
+            ))}
+            {leads?.map((lead) => (
               <TableRow key={lead.id}>
                 <TableCell>
                   <div className="font-medium">{lead.name}</div>
@@ -109,15 +130,22 @@ export default function AdminDashboard() {
                         <CheckCircle2 className="mr-2 h-4 w-4" />
                         Verify Lead
                       </DropdownMenuItem>
-                      <DropdownMenuItem>
-                        <Trash2 className="mr-2 h-4 w-4 text-destructive" />
-                        <span className="text-destructive">Delete Lead</span>
+                      <DropdownMenuItem onClick={() => handleDeleteLead(lead.id)} className="text-destructive">
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        <span>Delete Lead</span>
                       </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </TableCell>
               </TableRow>
             ))}
+             {!isLeadsLoading && leads?.length === 0 && (
+                <TableRow>
+                    <TableCell colSpan={5} className="text-center text-muted-foreground py-8">
+                        No leads found.
+                    </TableCell>
+                </TableRow>
+            )}
           </TableBody>
         </Table>
       </div>
@@ -126,8 +154,7 @@ export default function AdminDashboard() {
           lead={selectedLead}
           isOpen={isSheetOpen}
           onOpenChange={setSheetOpen}
-          onUpdateLead={handleUpdateLead}
-          vendors={vendors.map(v => v.name)}
+          vendors={vendors?.map(v => v.name) || []}
         />
       )}
     </>
