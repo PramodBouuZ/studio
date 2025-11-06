@@ -27,11 +27,10 @@ export async function generateContent(input: GenerateContentInput): Promise<Gene
   return generateContentFlow(input);
 }
 
-
 const generateTextPrompt = ai.definePrompt({
     name: 'generateTextPrompt',
     input: { schema: GenerateContentInputSchema },
-    output: { schema: GenerateContentOutputSchema },
+    output: { schema: z.object({ generatedText: z.string() }) },
     prompt: `You are an expert copywriter for a B2B marketplace called BANTConfirm. Your task is to generate a compelling {{contentType}} for a hero banner slide, promotion, or product based on the following topic:
 
 Topic: {{{prompt}}}
