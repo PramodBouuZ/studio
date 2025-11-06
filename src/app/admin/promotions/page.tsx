@@ -7,9 +7,10 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import Image from 'next/image';
-import { ImageIcon, Upload } from 'lucide-react';
+import { ImageIcon, Upload, Sparkles, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { generateContent } from '@/ai/flows/generate-content';
 
 type Promotion = {
   id: string;
@@ -32,9 +33,10 @@ const initialPromotion: Promotion = {
 export default function PromotionsPage() {
     const [promotion, setPromotion] = useState<Promotion>(initialPromotion);
     const { toast } = useToast();
+    const [generating, setGenerating] = useState<Record<string, boolean>>({});
 
     const getImageUrl = (imageId: string) => {
-        return PlaceHolderImages.find(img => img.id === imageId)?.imageUrl || '';
+        return PlaceHolderImages.find(img => img.id === imageId)?.imageUrl || (imageId.startsWith('data:') ? imageId : '');
     }
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -43,14 +45,7 @@ export default function PromotionsPage() {
             const reader = new FileReader();
             reader.onload = (event) => {
                 const imageUrl = event.target?.result as string;
-                const tempImageId = `temp-promo-${Date.now()}`;
-                PlaceHolderImages.push({
-                    id: tempImageId,
-                    description: 'Uploaded promotion image',
-                    imageUrl: imageUrl,
-                    imageHint: 'custom promotion'
-                });
-                setPromotion({...promotion, imageId: tempImageId});
+                setPromotion({...promotion, imageId: imageUrl});
             };
             reader.readAsDataURL(file);
         }
@@ -65,6 +60,32 @@ export default function PromotionsPage() {
             title: 'Promotion Saved',
             description: `Changes to the promotional banner have been saved.`,
         });
+    };
+
+    const handleGenerateContent = async (contentType: 'tagText' | 'title' | 'description' | 'buttonText' | 'image') => {
+        const fieldKey = contentType;
+        setGenerating(prev => ({...prev, [fieldKey]: true}));
+    
+        try {
+            if (contentType === 'image') {
+                const result = await generateContent({ prompt: promotion.title, generateImage: true });
+                if (result.imageUrl) {
+                    setPromotion(prev => ({ ...prev, imageId: result.imageUrl! }));
+                    toast({ title: 'AI Image Generated!', description: 'The image has been updated.' });
+                }
+            } else {
+                const result = await generateContent({ prompt: promotion.title, contentType: contentType });
+                if (result.generatedText) {
+                    setPromotion(prev => ({ ...prev, [contentType]: result.generatedText }));
+                    toast({ title: `AI ${contentType} Generated!` });
+                }
+            }
+        } catch (error) {
+          console.error(error);
+          toast({ variant: 'destructive', title: 'AI Generation Failed', description: 'Could not generate content. Please try again.' });
+        } finally {
+          setGenerating(prev => ({...prev, [fieldKey]: false}));
+        }
     };
 
   return (
@@ -83,19 +104,39 @@ export default function PromotionsPage() {
                 <div className="space-y-4">
                     <div className="space-y-2">
                         <Label htmlFor="tagText">Tag Text (e.g., Limited Time Offer)</Label>
-                        <Input id="tagText" name="tagText" value={promotion.tagText} onChange={handleInputChange} />
+                        <div className="flex gap-2">
+                            <Input id="tagText" name="tagText" value={promotion.tagText} onChange={handleInputChange} />
+                            <Button variant="outline" size="icon" onClick={() => handleGenerateContent('tagText')} disabled={generating.tagText}>
+                                {generating.tagText ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
+                            </Button>
+                        </div>
                     </div>
                     <div className="space-y-2">
                         <Label htmlFor="title">Title</Label>
-                        <Input id="title" name="title" value={promotion.title} onChange={handleInputChange} />
+                         <div className="flex gap-2">
+                            <Input id="title" name="title" value={promotion.title} onChange={handleInputChange} />
+                             <Button variant="outline" size="icon" onClick={() => handleGenerateContent('title')} disabled={generating.title}>
+                                {generating.title ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
+                            </Button>
+                        </div>
                     </div>
                      <div className="space-y-2">
                         <Label htmlFor="description">Description</Label>
-                        <Textarea id="description" name="description" value={promotion.description} onChange={handleInputChange} rows={4} />
+                        <div className="flex gap-2">
+                            <Textarea id="description" name="description" value={promotion.description} onChange={handleInputChange} rows={4} />
+                             <Button variant="outline" size="icon" onClick={() => handleGenerateContent('description')} disabled={generating.description}>
+                                {generating.description ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
+                            </Button>
+                        </div>
                     </div>
                      <div className="space-y-2">
                         <Label htmlFor="buttonText">Button Text</Label>
-                        <Input id="buttonText" name="buttonText" value={promotion.buttonText} onChange={handleInputChange} />
+                        <div className="flex gap-2">
+                            <Input id="buttonText" name="buttonText" value={promotion.buttonText} onChange={handleInputChange} />
+                             <Button variant="outline" size="icon" onClick={() => handleGenerateContent('buttonText')} disabled={generating.buttonText}>
+                                {generating.buttonText ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
+                            </Button>
+                        </div>
                     </div>
                 </div>
                 <div className="space-y-2">
@@ -110,12 +151,16 @@ export default function PromotionsPage() {
                             </div>
                         )}
                     </div>
-                    <div className="relative">
+                    <div className="flex gap-2">
                         <Button asChild variant="outline" className="w-full">
                             <label htmlFor={`upload-${promotion.id}`} className="cursor-pointer">
                                 <Upload className="mr-2 h-4 w-4" />
-                                Upload Image
+                                Upload
                             </label>
+                        </Button>
+                        <Button variant="outline" className="w-full" onClick={() => handleGenerateContent('image')} disabled={generating.image}>
+                            {generating.image ? <Loader2 className="animate-spin" /> : <Sparkles className="mr-2 text-accent" />}
+                            Generate with AI
                         </Button>
                         <input id={`upload-${promotion.id}`} type="file" className="sr-only" accept="image/*" onChange={handleFileChange} />
                     </div>

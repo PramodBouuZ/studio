@@ -7,18 +7,20 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import Image from 'next/image';
-import { ImageIcon, Upload, Trash2, PlusCircle } from 'lucide-react';
+import { ImageIcon, Upload, Trash2, PlusCircle, Sparkles, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { products as initialProducts, type Product } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { generateContent } from '@/ai/flows/generate-content';
 
 export default function ProductsPage() {
     const [products, setProducts] = useState<Product[]>(initialProducts);
     const { toast } = useToast();
+    const [generating, setGenerating] = useState<Record<string, boolean>>({});
 
     const getImageUrl = (imageId: string) => {
-        return PlaceHolderImages.find(img => img.id === imageId)?.imageUrl || '';
+        return PlaceHolderImages.find(img => img.id === imageId)?.imageUrl || (imageId.startsWith('data:') ? imageId : '');
     }
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, productId: string) => {
@@ -27,16 +29,7 @@ export default function ProductsPage() {
             const reader = new FileReader();
             reader.onload = (event) => {
                 const imageUrl = event.target?.result as string;
-                // In a real app, you would upload this file and get a URL.
-                // For now, we just update the UI with a local data URL.
-                const tempImageId = `temp-product-${productId}-${Date.now()}`;
-                PlaceHolderImages.push({
-                    id: tempImageId,
-                    description: 'Uploaded product image',
-                    imageUrl: imageUrl,
-                    imageHint: 'custom product'
-                });
-                setProducts(products.map(p => p.id === productId ? {...p, imageId: tempImageId} : p));
+                setProducts(products.map(p => p.id === productId ? {...p, imageId: imageUrl} : p));
             };
             reader.readAsDataURL(file);
         }
@@ -86,6 +79,36 @@ export default function ProductsPage() {
         });
     }
 
+    const handleGenerateContent = async (productId: string, contentType: 'productName' | 'description' | 'image') => {
+        const product = products.find(p => p.id === productId);
+        if (!product) return;
+    
+        const fieldKey = `${productId}-${contentType}`;
+        setGenerating(prev => ({...prev, [fieldKey]: true}));
+    
+        try {
+            if (contentType === 'image') {
+                const result = await generateContent({ prompt: product.name, generateImage: true });
+                if (result.imageUrl) {
+                    setProducts(prevProducts => prevProducts.map(p => p.id === productId ? { ...p, imageId: result.imageUrl! } : p));
+                    toast({ title: 'AI Image Generated!', description: 'The image has been updated.' });
+                }
+            } else {
+                const result = await generateContent({ prompt: product.name, contentType: contentType });
+                const contentKey = contentType === 'productName' ? 'name' : 'description';
+                if (result.generatedText) {
+                    setProducts(prevProducts => prevProducts.map(p => p.id === productId ? { ...p, [contentKey]: result.generatedText } : p));
+                    toast({ title: `AI ${contentType} Generated!` });
+                }
+            }
+        } catch (error) {
+          console.error(error);
+          toast({ variant: 'destructive', title: 'AI Generation Failed', description: 'Could not generate content. Please try again.' });
+        } finally {
+          setGenerating(prev => ({...prev, [fieldKey]: false}));
+        }
+    };
+
   return (
     <div>
       <div className="mb-6 flex justify-between items-center">
@@ -114,11 +137,21 @@ export default function ProductsPage() {
                     <div className="space-y-4">
                         <div className="space-y-2">
                             <Label htmlFor={`name-${product.id}`}>Name</Label>
-                            <Input id={`name-${product.id}`} name="name" value={product.name} onChange={(e) => handleInputChange(e, product.id)} />
+                            <div className="flex gap-2">
+                                <Input id={`name-${product.id}`} name="name" value={product.name} onChange={(e) => handleInputChange(e, product.id)} />
+                                <Button variant="outline" size="icon" onClick={() => handleGenerateContent(product.id, 'productName')} disabled={generating[`${product.id}-productName`]}>
+                                    {generating[`${product.id}-productName`] ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
+                                </Button>
+                            </div>
                         </div>
                          <div className="space-y-2">
                             <Label htmlFor={`description-${product.id}`}>Description</Label>
-                            <Textarea id={`description-${product.id}`} name="description" value={product.description} onChange={(e) => handleInputChange(e, product.id)} />
+                            <div className="flex gap-2">
+                                <Textarea id={`description-${product.id}`} name="description" value={product.description} onChange={(e) => handleInputChange(e, product.id)} />
+                                 <Button variant="outline" size="icon" onClick={() => handleGenerateContent(product.id, 'description')} disabled={generating[`${product.id}-description`]}>
+                                    {generating[`${product.id}-description`] ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
+                                </Button>
+                            </div>
                         </div>
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
@@ -153,12 +186,16 @@ export default function ProductsPage() {
                                 </div>
                             )}
                         </div>
-                        <div className="relative">
+                        <div className="flex gap-2">
                             <Button asChild variant="outline" className="w-full">
                                 <label htmlFor={`upload-${product.id}`} className="cursor-pointer">
                                     <Upload className="mr-2 h-4 w-4" />
-                                    Upload Image
+                                    Upload
                                 </label>
+                            </Button>
+                            <Button variant="outline" className="w-full" onClick={() => handleGenerateContent(product.id, 'image')} disabled={generating[`${product.id}-image`]}>
+                                {generating[`${product.id}-image`] ? <Loader2 className="animate-spin" /> : <Sparkles className="mr-2 text-accent" />}
+                                Generate with AI
                             </Button>
                             <input id={`upload-${product.id}`} type="file" className="sr-only" accept="image/*" onChange={(e) => handleFileChange(e, product.id)} />
                         </div>
