@@ -6,6 +6,7 @@ import { type Product } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
 import { Search, Calendar as CalendarIcon, Clock, Briefcase, ShoppingCart, Wrench, CloudCog, Server, Lightbulb } from 'lucide-react';
@@ -329,8 +330,4 @@ function ProductCard({ product, onBookDemoClick, onPostEnquiryClick, isHighlight
       </CardContent>
     </Card>
   );
-}
-
-function Label({ htmlFor, children, className }: { htmlFor?: string; children: React.ReactNode, className?: string }) {
-    return <label htmlFor={htmlFor} className={cn("block text-sm font-medium text-muted-foreground", className)}>{children}</label>
 }
