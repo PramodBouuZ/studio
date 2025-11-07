@@ -32,7 +32,7 @@ const icons = {
     Wrench,
     CloudCog,
     Server,
-    Lightbulb: Lightbulb,
+    Lightbulb,
 };
 
 export default function ProductCatalog() {
