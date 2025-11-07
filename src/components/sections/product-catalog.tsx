@@ -1,3 +1,4 @@
+
 'use client';
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
@@ -26,7 +27,7 @@ import { Skeleton } from '../ui/skeleton';
 
 const productTypes = ['All', 'Software', 'Service', 'Consulting', 'Hardware'];
 
-const icons = {
+const icons: { [key: string]: React.ElementType } = {
     Briefcase,
     ShoppingCart,
     Wrench,
@@ -57,7 +58,10 @@ export default function ProductCatalog() {
   const filteredProducts = useMemo(() => {
     if (!allProducts) return [];
     return allProducts.filter((product) => {
-      const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || product.description.toLowerCase().includes(searchTerm.toLowerCase());
+      const lowerCaseSearchTerm = searchTerm.toLowerCase();
+      const matchesSearch = product.name.toLowerCase().includes(lowerCaseSearchTerm) || 
+                            product.description.toLowerCase().includes(lowerCaseSearchTerm) ||
+                            (product.keywords && product.keywords.some(kw => kw.toLowerCase().includes(lowerCaseSearchTerm)));
       const matchesType = selectedType === 'All' || product.type === selectedType;
       const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
       return matchesSearch && matchesType && matchesPrice;
@@ -156,7 +160,7 @@ export default function ProductCatalog() {
                       <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
                       <Input
                       id="search"
-                      placeholder="Search by name or description..."
+                      placeholder="Search by name, description, or keyword..."
                       className="pl-10 h-11 text-base"
                       value={searchTerm}
                       onChange={(e) => setSearchTerm(e.target.value)}

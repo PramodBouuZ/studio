@@ -1,3 +1,4 @@
+
 import type { LucideIcon } from 'lucide-react';
 import { Briefcase, Lightbulb, ShoppingCart, Wrench, Megaphone, Server, Palette, CloudCog } from 'lucide-react';
 import type { VendorProfile } from './types';
@@ -10,6 +11,7 @@ export type Product = {
   description: string;
   imageId: string;
   iconName: string; // Changed from icon to iconName
+  keywords?: string[];
 };
 
 // This is now seed data, not the source of truth.
@@ -22,6 +24,7 @@ export const products: Product[] = [
     description: 'Integrate voice, video, and messaging for seamless team collaboration.',
     imageId: 'product-1',
     iconName: 'ShoppingCart',
+    keywords: ['UC', 'collaboration', 'messaging', 'video conference'],
   },
   {
     id: 'prod_2',
@@ -31,6 +34,7 @@ export const products: Product[] = [
     description: 'Cost-effective, feature-rich voice over IP solutions for modern businesses.',
     imageId: 'product-2',
     iconName: 'Wrench',
+    keywords: ['voip', 'phone system', 'business communication', 'telephony'],
   },
   {
     id: 'prod_3',
@@ -40,6 +44,7 @@ export const products: Product[] = [
     description: 'Scalable and intelligent contact center solutions to enhance customer experience.',
     imageId: 'product-5',
     iconName: 'CloudCog',
+    keywords: ['contact center', 'customer support', 'cloud', 'CX'],
   },
   {
     id: 'prod_4',
@@ -49,6 +54,7 @@ export const products: Product[] = [
     description: 'Optimize your telecom spend with our expert analysis and management services.',
     imageId: 'product-4',
     iconName: 'Briefcase',
+    keywords: ['telecom', 'expense management', 'cost optimization', 'auditing'],
   },
   {
     id: 'prod_5',
@@ -58,6 +64,7 @@ export const products: Product[] = [
     description: 'Robust and secure on-premise PBX servers for large-scale operations.',
     imageId: 'product-3',
     iconName: 'Server',
+    keywords: ['pbx', 'server', 'on-premise', 'enterprise phone system'],
   },
   {
     id: 'prod_6',
@@ -67,6 +74,7 @@ export const products: Product[] = [
     description: 'Reliable and high-quality SIP trunking to connect your PBX to the PSTN.',
     imageId: 'product-6',
     iconName: 'Wrench',
+    keywords: ['sip trunking', 'telephony', 'connectivity', 'pstn'],
   },
 ];
 
@@ -126,7 +134,7 @@ export const testimonials: Testimonial[] = [
 ];
 
 export type Lead = {
-  id: string;
+  id:string;
   name: string;
   company: string;
   email: string;
