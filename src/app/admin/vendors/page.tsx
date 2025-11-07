@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -8,19 +8,35 @@ import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 import { ImageIcon, Upload, Trash2, Check, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
-import { collection, doc, updateDoc, deleteDoc } from 'firebase/firestore';
+import { useFirestore } from '@/firebase';
+import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import type { VendorProfile } from '@/lib/types';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
+import { getVendors } from '@/app/admin/vendors/actions';
 
 export default function VendorsPage() {
     const firestore = useFirestore();
-    const vendorsCollection = useMemoFirebase(() => firestore ? collection(firestore, 'vendors') : null, [firestore]);
-    const { data: vendors, isLoading } = useCollection<VendorProfile>(vendorsCollection);
-    
     const { toast } = useToast();
+    const [vendors, setVendors] = useState<VendorProfile[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchVendors = async () => {
+            setIsLoading(true);
+            const serverVendors = await getVendors();
+            setVendors(serverVendors);
+            setIsLoading(false);
+        };
+        fetchVendors();
+    }, []);
+    
+    // This will re-run the fetch when a vendor is updated/deleted client-side
+    const refetchVendors = async () => {
+        const serverVendors = await getVendors();
+        setVendors(serverVendors);
+    };
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, vendorId: string) => {
         const file = e.target.files?.[0];
@@ -28,11 +44,10 @@ export default function VendorsPage() {
             const reader = new FileReader();
             reader.onload = async (event) => {
                 const imageUrl = event.target?.result as string;
-                // In a real app, you would upload this to Firebase Storage.
-                // For this demo, we'll store the base64 URL directly.
                 const vendorRef = doc(firestore, 'vendors', vendorId);
                 await updateDoc(vendorRef, { logoUrl: imageUrl });
                 toast({ title: 'Logo Updated!' });
+                await refetchVendors();
             };
             reader.readAsDataURL(file);
         }
@@ -43,7 +58,8 @@ export default function VendorsPage() {
         const { name, value } = e.target;
         const vendorRef = doc(firestore, 'vendors', vendorId);
         await updateDoc(vendorRef, { [name]: value });
-    }
+        // No need to toast here, onBlur is enough
+    };
 
     const handleStatusChange = async (vendorId: string, status: 'approved' | 'rejected') => {
         if (!firestore) return;
@@ -53,6 +69,7 @@ export default function VendorsPage() {
             title: `Vendor ${status}`,
             description: `The vendor has been ${status}.`,
         });
+        await refetchVendors();
     };
 
     const handleDeleteVendor = async (vendorId: string) => {
@@ -63,15 +80,14 @@ export default function VendorsPage() {
             description: 'The vendor has been removed from the system.',
             variant: 'destructive',
         });
+        await refetchVendors();
     }
 
     const sortedVendors = useMemo(() => {
       if (!vendors) return [];
-      // Show pending vendors first, then by creation date
       return [...vendors].sort((a, b) => {
         if (a.status === 'pending_approval' && b.status !== 'pending_approval') return -1;
         if (a.status !== 'pending_approval' && b.status === 'pending_approval') return 1;
-        // When statuses are the same, sort by creation date descending
         const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
         const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
         return dateB - dateA;
