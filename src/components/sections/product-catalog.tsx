@@ -1,16 +1,16 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
-import { products as allProducts, type Product } from '@/lib/data';
+import { type Product } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Slider } from '@/components/ui/slider';
-import { Search, Calendar as CalendarIcon, Clock } from 'lucide-react';
+import { Search, Calendar as CalendarIcon, Clock, Briefcase, ShoppingCart, Wrench, CloudCog, Server, Lightbulb } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import { Button } from '../ui/button';
-import { useUser, useFirestore } from '@/firebase';
+import { useUser, useFirestore, useCollection, useMemoFirebase } from '@/firebase';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@/hooks/use-toast';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
@@ -22,13 +22,27 @@ import { motion } from 'framer-motion';
 import { useAIChat } from '../ai-chat';
 import { type Lead } from '@/lib/data';
 import { collection, doc, setDoc } from 'firebase/firestore';
+import { Skeleton } from '../ui/skeleton';
 
 const productTypes = ['All', 'Software', 'Service', 'Consulting', 'Hardware'];
-const maxPrice = Math.max(...allProducts.map((p) => p.price));
+
+const icons = {
+    Briefcase,
+    ShoppingCart,
+    Wrench,
+    CloudCog,
+    Server,
+    Lightbulb: Lightbulb,
+};
 
 export default function ProductCatalog() {
+  const firestore = useFirestore();
+  const productsCollection = useMemoFirebase(() => firestore ? collection(firestore, 'products') : null, [firestore]);
+  const { data: allProducts, isLoading: productsLoading } = useCollection<Product>(productsCollection);
+  
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedType, setSelectedType] = useState('All');
+  const maxPrice = useMemo(() => allProducts ? Math.max(...allProducts.map((p) => p.price)) : 100000, [allProducts]);
   const [priceRange, setPriceRange] = useState([0, maxPrice]);
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [isDemoModalOpen, setDemoModalOpen] = useState(false);
@@ -39,16 +53,16 @@ export default function ProductCatalog() {
   const { user } = useUser();
   const router = useRouter();
   const { toast } = useToast();
-  const firestore = useFirestore();
 
   const filteredProducts = useMemo(() => {
+    if (!allProducts) return [];
     return allProducts.filter((product) => {
       const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase()) || product.description.toLowerCase().includes(searchTerm.toLowerCase());
       const matchesType = selectedType === 'All' || product.type === selectedType;
       const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1];
       return matchesSearch && matchesType && matchesPrice;
     });
-  }, [searchTerm, selectedType, priceRange]);
+  }, [searchTerm, selectedType, priceRange, allProducts]);
   
   const handleBookDemoClick = (product: Product) => {
     if (!user) {
@@ -183,6 +197,11 @@ export default function ProductCatalog() {
       </motion.div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {productsLoading && Array.from({length: 6}).map((_, i) => (
+            <motion.div key={i} initial={{ opacity: 0, y: 50 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.5, delay: i * 0.1 }}>
+                <Skeleton className="h-[450px] w-full" />
+            </motion.div>
+        ))}
         {filteredProducts.map((product, index) => (
            <motion.div
             key={product.id}
@@ -199,7 +218,7 @@ export default function ProductCatalog() {
             />
           </motion.div>
         ))}
-         {filteredProducts.length === 0 && (
+         {!productsLoading && filteredProducts.length === 0 && (
           <div className="col-span-full text-center py-16">
             <p className="text-lg text-muted-foreground">No products match your criteria. Try adjusting your filters.</p>
           </div>
@@ -262,8 +281,8 @@ export default function ProductCatalog() {
 }
 
 function ProductCard({ product, onBookDemoClick, onPostEnquiryClick, isHighlighted }: { product: Product, onBookDemoClick: () => void, onPostEnquiryClick: () => void, isHighlighted?: boolean }) {
-  const image = PlaceHolderImages.find((img) => img.id === product.imageId);
-  const Icon = product.icon;
+  const image = PlaceHolderImages.find((img) => img.id === product.imageId) || { imageUrl: product.imageId.startsWith('data:') ? product.imageId : '', description: product.name, imageHint: '' };
+  const Icon = icons[product.iconName as keyof typeof icons] || ShoppingCart;
 
   return (
     <Card className={cn(
@@ -311,5 +330,3 @@ function ProductCard({ product, onBookDemoClick, onPostEnquiryClick, isHighlight
 function Label({ htmlFor, children, className }: { htmlFor?: string; children: React.ReactNode, className?: string }) {
     return <label htmlFor={htmlFor} className={cn("block text-sm font-medium text-muted-foreground", className)}>{children}</label>
 }
-
-    

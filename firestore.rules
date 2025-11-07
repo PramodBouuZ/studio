@@ -84,5 +84,32 @@ service cloud.firestore {
       allow get, list, update, delete: if isAdmin();
       allow create: if isSignedIn();
     }
+
+    /**
+     * @description Public read, admin write for products.
+     * @path /products/{productId}
+     */
+    match /products/{productId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+    
+    /**
+     * @description Public read, admin write for hero slides.
+     * @path /heroSlides/{slideId}
+     */
+    match /heroSlides/{slideId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
+
+    /**
+     * @description Public read, admin write for promotions.
+     * @path /promotions/{promoId}
+     */
+    match /promotions/{promoId} {
+      allow get, list: if true;
+      allow create, update, delete: if isAdmin();
+    }
   }
 }

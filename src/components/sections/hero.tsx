@@ -14,36 +14,21 @@ import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useAIChat } from '../ai-chat';
-
-const heroSlides = [
-  {
-    id: 'hero-1',
-    title: 'Find The Right Vendor, Faster.',
-    description: 'Describe your needs, and our AI-powered platform will connect you with top-tier vendors.',
-    buttonText: 'Submit Your Inquiry',
-    imageId: 'hero-1',
-  },
-  {
-    id: 'hero-2',
-    title: 'Unlock Business Growth',
-    description: 'Access a marketplace of services designed to scale your operations.',
-    buttonText: 'Explore Services',
-    imageId: 'hero-2',
-  },
-  {
-    id: 'hero-3',
-    title: 'Seamless Collaboration',
-    description: 'Streamline your procurement process with our intuitive and powerful tools.',
-    buttonText: 'Get Started',
-    imageId: 'hero-3',
-  },
-];
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import type { HeroSlide } from '@/lib/data';
+import { collection } from 'firebase/firestore';
+import { Skeleton } from '../ui/skeleton';
 
 export default function HeroSection() {
   const [api, setApi] = React.useState<any>();
   const [current, setCurrent] = React.useState(0);
   const [count, setCount] = React.useState(0);
   const { openChat } = useAIChat();
+
+  const firestore = useFirestore();
+  const slidesCollection = useMemoFirebase(() => firestore ? collection(firestore, 'heroSlides') : null, [firestore]);
+  const { data: heroSlides, isLoading: slidesLoading } = useCollection<HeroSlide>(slidesCollection);
+
 
   React.useEffect(() => {
     if (!api) {
@@ -57,6 +42,10 @@ export default function HeroSection() {
       setCurrent(api.selectedScrollSnap());
     });
   }, [api]);
+
+  if (slidesLoading) {
+    return <Skeleton className="w-full h-[70vh] md:h-[80vh]" />;
+  }
 
   return (
     <section className="relative w-full h-[70vh] md:h-[80vh] bg-secondary">
@@ -72,8 +61,8 @@ export default function HeroSection() {
         ]}
       >
         <CarouselContent>
-          {heroSlides.map((slide, index) => {
-            const image = PlaceHolderImages.find((img) => img.id === slide.imageId);
+          {heroSlides?.map((slide, index) => {
+            const image = PlaceHolderImages.find((img) => img.id === slide.imageId) || { imageUrl: slide.imageId.startsWith('data:') ? slide.imageId : '', description: slide.title, imageHint: ''};
             return (
               <CarouselItem key={slide.id}>
                 <div className="relative w-full h-[70vh] md:h-[80vh]">

@@ -7,9 +7,34 @@ import { ArrowRight, Gift } from 'lucide-react';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card } from '@/components/ui/card';
 import { motion } from 'framer-motion';
+import { useDoc, useFirestore, useMemoFirebase } from '@/firebase';
+import type { Promotion } from '@/lib/data';
+import { doc } from 'firebase/firestore';
+import { Skeleton } from '../ui/skeleton';
+
+const PROMO_ID = 'main-promotion';
 
 export default function PromoBanner() {
-    const image = PlaceHolderImages.find(img => img.id === 'hero-5');
+    const firestore = useFirestore();
+    const promotionDoc = useMemoFirebase(() => firestore ? doc(firestore, 'promotions', PROMO_ID) : null, [firestore]);
+    const { data: promotion, isLoading: promotionLoading } = useDoc<Promotion>(promotionDoc);
+
+    const image = promotion ? (PlaceHolderImages.find(img => img.id === promotion.imageId) || { imageUrl: promotion.imageId.startsWith('data:') ? promotion.imageId : '', description: promotion.title, imageHint: ''}) : null;
+
+    if (promotionLoading) {
+        return (
+            <motion.section 
+                className="py-16 sm:py-24"
+                initial={{ opacity: 0, y: 50 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.5, delay: 0.2 }}
+            >
+                <Skeleton className="h-80 w-full" />
+            </motion.section>
+        )
+    }
+    
+    if (!promotion) return null;
 
     return (
         <motion.section 
@@ -25,16 +50,16 @@ export default function PromoBanner() {
                         <div className="max-w-md">
                              <div className="mb-4 inline-flex items-center gap-2 rounded-full bg-accent/90 px-4 py-1.5 text-sm font-semibold text-accent-foreground shadow-md">
                                 <Gift className="h-4 w-4" />
-                                <span>Exclusive Customer Reward</span>
+                                <span>{promotion.tagText}</span>
                             </div>
                             <h2 className="text-3xl font-extrabold tracking-tight font-headline sm:text-4xl mb-4 text-white">
-                                Earn Up to 10% Commission!
+                                {promotion.title}
                             </h2>
                             <p className="text-lg text-white/90 mb-8">
-                                Post an inquiry and if your deal is successfully closed through our platform, you'll receive up to a 10% commission as a thank you. It pays to find the right vendor with BANTConfirm.
+                                {promotion.description}
                             </p>
                             <Button size="lg" variant="secondary" className="text-lg px-8 py-6 rounded-full shadow-lg transition-transform hover:scale-105">
-                                Post Your Inquiry Now <ArrowRight className="ml-2" />
+                                {promotion.buttonText} <ArrowRight className="ml-2" />
                             </Button>
                         </div>
                     </div>
@@ -42,7 +67,7 @@ export default function PromoBanner() {
                         {image && (
                             <Image
                                 src={image.imageUrl}
-                                alt="Promotional banner image"
+                                alt={image.description}
                                 fill
                                 className="object-cover"
                                 data-ai-hint={image.imageHint}

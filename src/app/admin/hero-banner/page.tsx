@@ -7,18 +7,14 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import Image from 'next/image';
-import { ImageIcon, Upload, Sparkles, Loader2 } from 'lucide-react';
+import { ImageIcon, Upload, Sparkles, Loader2, PlusCircle } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { generateContent } from '@/ai/flows/generate-content';
-
-type HeroSlide = {
-  id: string;
-  title: string;
-  description: string;
-  buttonText: string;
-  imageId: string;
-};
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import type { HeroSlide } from '@/lib/data';
+import { collection, doc, setDoc, deleteDoc, writeBatch } from 'firebase/firestore';
+import { Skeleton } from '@/components/ui/skeleton';
 
 const initialSlides: HeroSlide[] = [
   {
@@ -46,35 +42,37 @@ const initialSlides: HeroSlide[] = [
 
 
 export default function HeroBannerPage() {
-    const [slides, setSlides] = useState<HeroSlide[]>(initialSlides);
+    const firestore = useFirestore();
+    const slidesCollection = useMemoFirebase(() => firestore ? collection(firestore, 'heroSlides') : null, [firestore]);
+    const { data: slides, isLoading: slidesLoading } = useCollection<HeroSlide>(slidesCollection);
+    
     const { toast } = useToast();
     const [generating, setGenerating] = useState<Record<string, boolean>>({});
 
     const getImageUrl = (imageId: string) => {
-        // Find in original placeholders or temporary (data: URL) images
         return PlaceHolderImages.find(img => img.id === imageId)?.imageUrl || (imageId.startsWith('data:') ? imageId : '');
     }
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, slideId: string) => {
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, slideId: string) => {
+        if (!firestore) return;
         const file = e.target.files?.[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = (event) => {
+            reader.onload = async (event) => {
                 const imageUrl = event.target?.result as string;
-                setSlides(slides.map(s => s.id === slideId ? {...s, imageId: imageUrl} : s));
+                await setDoc(doc(firestore, 'heroSlides', slideId), { imageId: imageUrl }, { merge: true });
             };
             reader.readAsDataURL(file);
         }
     };
     
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, slideId: string) => {
-        setSlides(slides.map(p => p.id === slideId ? {...p, [e.target.name]: e.target.value} : p));
+    const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, slideId: string) => {
+        if (!firestore) return;
+        await setDoc(doc(firestore, 'heroSlides', slideId), { [e.target.name]: e.target.value }, { merge: true });
     }
 
     const handleSaveChanges = (slideId: string) => {
-        const slide = slides.find(s => s.id === slideId);
-        // This is where you would save to a database in a real app
-        console.log('Saving slide:', slide);
+        const slide = slides?.find(s => s.id === slideId);
         toast({
             title: 'Hero Banner Saved',
             description: `Changes to "${slide?.title}" have been saved.`,
@@ -82,23 +80,25 @@ export default function HeroBannerPage() {
     };
 
     const handleGenerateContent = async (slideId: string, contentType: 'title' | 'description' | 'buttonText' | 'image') => {
-        const slide = slides.find(s => s.id === slideId);
+        if (!firestore) return;
+        const slide = slides?.find(s => s.id === slideId);
         if (!slide) return;
     
         const fieldKey = `${slideId}-${contentType}`;
         setGenerating(prev => ({...prev, [fieldKey]: true}));
     
         try {
+            const slideRef = doc(firestore, 'heroSlides', slideId);
             if (contentType === 'image') {
                 const result = await generateContent({ prompt: slide.title, generateImage: true });
                 if (result.imageUrl) {
-                    setSlides(prevSlides => prevSlides.map(s => s.id === slideId ? { ...s, imageId: result.imageUrl! } : s));
+                    await setDoc(slideRef, { imageId: result.imageUrl }, { merge: true });
                     toast({ title: 'AI Image Generated!', description: 'The image has been updated.' });
                 }
             } else {
                 const result = await generateContent({ prompt: slide.title, contentType: contentType });
                 if (result.generatedText) {
-                    setSlides(prevSlides => prevSlides.map(s => s.id === slideId ? { ...s, [contentType]: result.generatedText } : s));
+                    await setDoc(slideRef, { [contentType]: result.generatedText }, { merge: true });
                     toast({ title: `AI ${contentType} Generated!` });
                 }
             }
@@ -110,14 +110,31 @@ export default function HeroBannerPage() {
         }
     };
 
+    const seedInitialData = async () => {
+        if (!firestore) return;
+        const batch = writeBatch(firestore);
+        initialSlides.forEach(slide => {
+            const docRef = doc(firestore, "heroSlides", slide.id);
+            batch.set(docRef, slide);
+        });
+        await batch.commit();
+        toast({ title: 'Initial slides seeded!' });
+    };
+
   return (
     <div>
-      <div className="mb-6">
-        <h1 className="text-2xl font-bold tracking-tight">Manage Hero Banner</h1>
-        <p className="text-muted-foreground">Update the rotating slides on the homepage hero section.</p>
+      <div className="mb-6 flex justify-between items-center">
+        <div>
+            <h1 className="text-2xl font-bold tracking-tight">Manage Hero Banner</h1>
+            <p className="text-muted-foreground">Update the rotating slides on the homepage hero section.</p>
+        </div>
+        {!slidesLoading && slides?.length === 0 && (
+            <Button onClick={seedInitialData} variant="outline">Seed Initial Slides</Button>
+        )}
       </div>
       <div className="grid gap-6">
-        {slides.map((slide) => (
+        {slidesLoading && Array.from({length: 3}).map((_, i) => <Skeleton key={i} className="h-96 w-full"/>)}
+        {slides?.map((slide) => (
             <Card key={slide.id}>
                 <CardHeader>
                     <CardTitle>Edit Slide: {slide.title}</CardTitle>
@@ -127,7 +144,7 @@ export default function HeroBannerPage() {
                         <div className="space-y-2">
                             <Label htmlFor={`title-${slide.id}`}>Title</Label>
                             <div className="flex gap-2">
-                                <Input id={`title-${slide.id}`} name="title" value={slide.title} onChange={(e) => handleInputChange(e, slide.id)} />
+                                <Input id={`title-${slide.id}`} name="title" defaultValue={slide.title} onBlur={(e) => handleInputChange(e, slide.id)} />
                                 <Button variant="outline" size="icon" onClick={() => handleGenerateContent(slide.id, 'title')} disabled={generating[`${slide.id}-title`]}>
                                     {generating[`${slide.id}-title`] ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
                                 </Button>
@@ -136,7 +153,7 @@ export default function HeroBannerPage() {
                          <div className="space-y-2">
                             <Label htmlFor={`description-${slide.id}`}>Description</Label>
                              <div className="flex gap-2">
-                                <Textarea id={`description-${slide.id}`} name="description" value={slide.description} onChange={(e) => handleInputChange(e, slide.id)} />
+                                <Textarea id={`description-${slide.id}`} name="description" defaultValue={slide.description} onBlur={(e) => handleInputChange(e, slide.id)} />
                                 <Button variant="outline" size="icon" onClick={() => handleGenerateContent(slide.id, 'description')} disabled={generating[`${slide.id}-description`]}>
                                      {generating[`${slide.id}-description`] ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
                                 </Button>
@@ -145,7 +162,7 @@ export default function HeroBannerPage() {
                          <div className="space-y-2">
                             <Label htmlFor={`buttonText-${slide.id}`}>Button Text</Label>
                              <div className="flex gap-2">
-                                <Input id={`buttonText-${slide.id}`} name="buttonText" value={slide.buttonText} onChange={(e) => handleInputChange(e, slide.id)} />
+                                <Input id={`buttonText-${slide.id}`} name="buttonText" defaultValue={slide.buttonText} onBlur={(e) => handleInputChange(e, slide.id)} />
                                 <Button variant="outline" size="icon" onClick={() => handleGenerateContent(slide.id, 'buttonText')} disabled={generating[`${slide.id}-buttonText`]}>
                                      {generating[`${slide.id}-buttonText`] ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
                                 </Button>

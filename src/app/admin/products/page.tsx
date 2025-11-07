@@ -9,13 +9,20 @@ import { Textarea } from '@/components/ui/textarea';
 import Image from 'next/image';
 import { ImageIcon, Upload, Trash2, PlusCircle, Sparkles, Loader2 } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { products as initialProducts, type Product } from '@/lib/data';
+import { type Product } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { generateContent } from '@/ai/flows/generate-content';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
+import { collection, doc, setDoc, deleteDoc, serverTimestamp, writeBatch } from 'firebase/firestore';
+import { products as initialProducts } from '@/lib/data';
+import { Skeleton } from '@/components/ui/skeleton';
 
 export default function ProductsPage() {
-    const [products, setProducts] = useState<Product[]>(initialProducts);
+    const firestore = useFirestore();
+    const productsCollection = useMemoFirebase(() => firestore ? collection(firestore, 'products') : null, [firestore]);
+    const { data: products, isLoading: productsLoading } = useCollection<Product>(productsCollection);
+
     const { toast } = useToast();
     const [generating, setGenerating] = useState<Record<string, boolean>>({});
 
@@ -23,36 +30,44 @@ export default function ProductsPage() {
         return PlaceHolderImages.find(img => img.id === imageId)?.imageUrl || (imageId.startsWith('data:') ? imageId : '');
     }
 
-    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, productId: string) => {
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>, productId: string) => {
+        if (!firestore) return;
         const file = e.target.files?.[0];
         if (file) {
             const reader = new FileReader();
-            reader.onload = (event) => {
+            reader.onload = async (event) => {
                 const imageUrl = event.target?.result as string;
-                setProducts(products.map(p => p.id === productId ? {...p, imageId: imageUrl} : p));
+                const productRef = doc(firestore, 'products', productId);
+                await setDoc(productRef, { imageId: imageUrl }, { merge: true });
+                toast({ title: 'Image Uploaded' });
             };
             reader.readAsDataURL(file);
         }
     };
     
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, productId: string) => {
+    const handleInputChange = async (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>, productId: string) => {
+        if (!firestore) return;
         const { name, value } = e.target;
-        setProducts(products.map(p => p.id === productId ? {...p, [name]: name === 'price' ? Number(value) : value } : p));
+        const productRef = doc(firestore, 'products', productId);
+        await setDoc(productRef, { [name]: name === 'price' ? Number(value) : value }, { merge: true });
     }
     
-    const handleTypeChange = (value: string, productId: string) => {
-        setProducts(products.map(p => p.id === productId ? {...p, type: value as Product['type'] } : p));
+    const handleTypeChange = async (value: string, productId: string) => {
+        if (!firestore) return;
+        const productRef = doc(firestore, 'products', productId);
+        await setDoc(productRef, { type: value as Product['type'] }, { merge: true });
     }
 
     const handleSaveChanges = (productId: string) => {
-        const product = products.find(p => p.id === productId);
+        const product = products?.find(p => p.id === productId);
         toast({
             title: 'Product Saved',
             description: `Changes to "${product?.name}" have been saved.`,
         });
     };
     
-    const handleAddProduct = () => {
+    const handleAddProduct = async () => {
+        if (!firestore) return;
         const newId = `prod_${Date.now()}`;
         const newProduct: Product = {
             id: newId,
@@ -61,17 +76,18 @@ export default function ProductsPage() {
             price: 0,
             type: 'Software',
             imageId: '',
-            icon: PlusCircle,
+            iconName: 'ShoppingCart',
         };
-        setProducts([newProduct, ...products]);
+        await setDoc(doc(firestore, 'products', newId), newProduct);
         toast({
             title: 'Product Added',
-            description: 'A new product has been added to the top of the list.',
+            description: 'A new product has been added.',
         });
     }
 
-    const handleDeleteProduct = (productId: string) => {
-        setProducts(products.filter(p => p.id !== productId));
+    const handleDeleteProduct = async (productId: string) => {
+        if (!firestore) return;
+        await deleteDoc(doc(firestore, 'products', productId));
         toast({
             title: 'Product Deleted',
             description: 'The product has been removed.',
@@ -80,24 +96,26 @@ export default function ProductsPage() {
     }
 
     const handleGenerateContent = async (productId: string, contentType: 'productName' | 'description' | 'image') => {
-        const product = products.find(p => p.id === productId);
+        if (!firestore) return;
+        const product = products?.find(p => p.id === productId);
         if (!product) return;
     
         const fieldKey = `${productId}-${contentType}`;
         setGenerating(prev => ({...prev, [fieldKey]: true}));
     
         try {
+            const productRef = doc(firestore, 'products', productId);
             if (contentType === 'image') {
                 const result = await generateContent({ prompt: product.name, generateImage: true });
                 if (result.imageUrl) {
-                    setProducts(prevProducts => prevProducts.map(p => p.id === productId ? { ...p, imageId: result.imageUrl! } : p));
+                    await setDoc(productRef, { imageId: result.imageUrl }, { merge: true });
                     toast({ title: 'AI Image Generated!', description: 'The image has been updated.' });
                 }
             } else {
                 const result = await generateContent({ prompt: product.name, contentType: contentType });
                 const contentKey = contentType === 'productName' ? 'name' : 'description';
                 if (result.generatedText) {
-                    setProducts(prevProducts => prevProducts.map(p => p.id === productId ? { ...p, [contentKey]: result.generatedText } : p));
+                    await setDoc(productRef, { [contentKey]: result.generatedText }, { merge: true });
                     toast({ title: `AI ${contentType} Generated!` });
                 }
             }
@@ -108,6 +126,18 @@ export default function ProductsPage() {
           setGenerating(prev => ({...prev, [fieldKey]: false}));
         }
     };
+    
+    // Function to seed initial data if the collection is empty
+    const seedInitialData = async () => {
+        if (!firestore) return;
+        const batch = writeBatch(firestore);
+        initialProducts.forEach(product => {
+            const docRef = doc(firestore, "products", product.id);
+            batch.set(docRef, product);
+        });
+        await batch.commit();
+        toast({ title: 'Initial products seeded!' });
+    };
 
   return (
     <div>
@@ -116,13 +146,19 @@ export default function ProductsPage() {
             <h1 className="text-2xl font-bold tracking-tight">Manage Products</h1>
             <p className="text-muted-foreground">Add, edit, or remove products from the catalog.</p>
         </div>
-        <Button onClick={handleAddProduct}>
-            <PlusCircle className="mr-2 h-4 w-4"/>
-            Add Product
-        </Button>
+        <div className="flex gap-2">
+            {!productsLoading && products?.length === 0 && (
+                <Button onClick={seedInitialData} variant="outline">Seed Initial Products</Button>
+            )}
+            <Button onClick={handleAddProduct}>
+                <PlusCircle className="mr-2 h-4 w-4"/>
+                Add Product
+            </Button>
+        </div>
       </div>
       <div className="grid gap-6">
-        {products.map((product) => (
+        {productsLoading && Array.from({length: 3}).map((_, i) => <Skeleton key={i} className="h-96 w-full"/>)}
+        {products?.map((product) => (
             <Card key={product.id}>
                 <CardHeader className="flex flex-row justify-between items-start">
                     <div>
@@ -138,7 +174,7 @@ export default function ProductsPage() {
                         <div className="space-y-2">
                             <Label htmlFor={`name-${product.id}`}>Name</Label>
                             <div className="flex gap-2">
-                                <Input id={`name-${product.id}`} name="name" value={product.name} onChange={(e) => handleInputChange(e, product.id)} />
+                                <Input id={`name-${product.id}`} name="name" defaultValue={product.name} onBlur={(e) => handleInputChange(e, product.id)} />
                                 <Button variant="outline" size="icon" onClick={() => handleGenerateContent(product.id, 'productName')} disabled={generating[`${product.id}-productName`]}>
                                     {generating[`${product.id}-productName`] ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
                                 </Button>
@@ -147,7 +183,7 @@ export default function ProductsPage() {
                          <div className="space-y-2">
                             <Label htmlFor={`description-${product.id}`}>Description</Label>
                             <div className="flex gap-2">
-                                <Textarea id={`description-${product.id}`} name="description" value={product.description} onChange={(e) => handleInputChange(e, product.id)} />
+                                <Textarea id={`description-${product.id}`} name="description" defaultValue={product.description} onBlur={(e) => handleInputChange(e, product.id)} />
                                  <Button variant="outline" size="icon" onClick={() => handleGenerateContent(product.id, 'description')} disabled={generating[`${product.id}-description`]}>
                                     {generating[`${product.id}-description`] ? <Loader2 className="animate-spin" /> : <Sparkles className="text-accent" />}
                                 </Button>
@@ -156,11 +192,11 @@ export default function ProductsPage() {
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor={`price-${product.id}`}>Price (₹)</Label>
-                                <Input id={`price-${product.id}`} name="price" type="number" value={product.price} onChange={(e) => handleInputChange(e, product.id)} />
+                                <Input id={`price-${product.id}`} name="price" type="number" defaultValue={product.price} onBlur={(e) => handleInputChange(e, product.id)} />
                             </div>
                             <div className="space-y-2">
                                 <Label htmlFor={`type-${product.id}`}>Type</Label>
-                                 <Select value={product.type} onValueChange={(v) => handleTypeChange(v, product.id)}>
+                                 <Select defaultValue={product.type} onValueChange={(v) => handleTypeChange(v, product.id)}>
                                     <SelectTrigger id={`type-${product.id}`}>
                                         <SelectValue placeholder="Select type" />
                                     </SelectTrigger>

@@ -6,61 +6,18 @@
       "type": "object",
       "description": "Stores user account information, excluding sensitive authentication data.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the user account."
-        },
-        "email": {
-          "type": "string",
-          "description": "User's email address.",
-          "format": "email"
-        },
-        "firstName": {
-          "type": "string",
-          "description": "User's first name."
-        },
-        "lastName": {
-          "type": "string",
-          "description": "User's last name."
-        },
-        "mobileNumber": {
-          "type": "string",
-          "description": "User's mobile phone number."
-        },
-        "companyName": {
-          "type": "string",
-          "description": "User's company name."
-        },
-        "location": {
-          "type": "string",
-          "description": "User's location."
-        },
-        "createdAt": {
-          "type": "string",
-          "description": "Timestamp indicating when the account was created.",
-          "format": "date-time"
-        },
-        "updatedAt": {
-          "type": "string",
-          "description": "Timestamp indicating when the account was last updated.",
-          "format": "date-time"
-        },
-        "role": {
-          "type": "string",
-          "description": "Role of user, either admin, vendor, or customer."
-        }
+        "id": { "type": "string", "description": "Unique identifier for the user account." },
+        "email": { "type": "string", "description": "User's email address.", "format": "email" },
+        "firstName": { "type": "string", "description": "User's first name." },
+        "lastName": { "type": "string", "description": "User's last name." },
+        "mobileNumber": { "type": "string", "description": "User's mobile phone number." },
+        "companyName": { "type": "string", "description": "User's company name." },
+        "location": { "type": "string", "description": "User's location." },
+        "createdAt": { "type": "string", "description": "Timestamp indicating when the account was created.", "format": "date-time" },
+        "updatedAt": { "type": "string", "description": "Timestamp indicating when the account was last updated.", "format": "date-time" },
+        "role": { "type": "string", "description": "Role of user, either admin, vendor, or customer." }
       },
-      "required": [
-        "id",
-        "email",
-        "firstName",
-        "lastName",
-        "mobileNumber",
-        "location",
-        "createdAt",
-        "updatedAt",
-        "role"
-      ]
+      "required": ["id", "email", "firstName", "lastName", "mobileNumber", "location", "createdAt", "updatedAt", "role"]
     },
     "VendorProfile": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -68,66 +25,18 @@
       "type": "object",
       "description": "Stores detailed information about a vendor.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the vendor, matching their Firebase Auth UID."
-        },
-        "name": {
-          "type": "string",
-          "description": "The legal name of the vendor company."
-        },
-        "contactName": {
-          "type": "string",
-          "description": "The primary contact person's name."
-        },
-        "email": {
-          "type": "string",
-          "description": "Vendor's contact email address.",
-          "format": "email"
-        },
-        "phone": {
-          "type": "string",
-          "description": "Vendor's contact phone number."
-        },
-        "location": {
-          "type": "string",
-          "description": "Vendor's physical location."
-        },
-        "logoUrl": {
-          "type": "string",
-          "description": "URL for the vendor's logo.",
-          "format": "uri"
-        },
-        "products": {
-          "type": "string",
-          "description": "A description of products or services offered by the vendor."
-        },
-        "status": {
-          "type": "string",
-          "description": "The approval status of the vendor.",
-          "enum": [
-            "pending_approval",
-            "approved",
-            "rejected"
-          ]
-        },
-        "createdAt": {
-          "type": "string",
-          "description": "Timestamp indicating when the vendor profile was created.",
-          "format": "date-time"
-        }
+        "id": { "type": "string", "description": "Unique identifier for the vendor, matching their Firebase Auth UID." },
+        "name": { "type": "string", "description": "The legal name of the vendor company." },
+        "contactName": { "type": "string", "description": "The primary contact person's name." },
+        "email": { "type": "string", "description": "Vendor's contact email address.", "format": "email" },
+        "phone": { "type": "string", "description": "Vendor's contact phone number." },
+        "location": { "type": "string", "description": "Vendor's physical location." },
+        "logoUrl": { "type": "string", "description": "URL for the vendor's logo.", "format": "uri" },
+        "products": { "type": "string", "description": "A description of products or services offered by the vendor." },
+        "status": { "type": "string", "description": "The approval status of the vendor.", "enum": ["pending_approval", "approved", "rejected"] },
+        "createdAt": { "type": "string", "description": "Timestamp indicating when the vendor profile was created.", "format": "date-time" }
       },
-      "required": [
-        "id",
-        "name",
-        "contactName",
-        "email",
-        "phone",
-        "location",
-        "products",
-        "status",
-        "createdAt"
-      ]
+      "required": ["id", "name", "contactName", "email", "phone", "location", "products", "status", "createdAt"]
     },
     "Lead": {
       "$schema": "http://json-schema.org/draft-07/schema#",
@@ -135,42 +44,61 @@
       "type": "object",
       "description": "Stores a customer inquiry or lead.",
       "properties": {
-        "id": {
-          "type": "string",
-          "description": "Unique identifier for the lead."
-        },
-        "name": {
-          "type": "string",
-          "description": "Customer's name."
-        },
-        "company": {
-          "type": "string",
-          "description": "Customer's company."
-        },
-        "email": {
-          "type": "string",
-          "description": "Customer's email.",
-          "format": "email"
-        },
-        "phone": {
-          "type": "string",
-          "description": "Customer's phone number."
-        },
-        "inquiry": {
-          "type": "string",
-          "description": "The details of the customer's inquiry."
-        },
-        "status": {
-          "type": "string",
-          "description": "The current status of the lead.",
-          "enum": ["New", "Contacted", "Qualified", "Closed"]
-        },
-        "assignedVendor": {
-          "type": "string",
-          "description": "The name of the vendor assigned to this lead."
-        }
+        "id": { "type": "string", "description": "Unique identifier for the lead." },
+        "name": { "type": "string", "description": "Customer's name." },
+        "company": { "type": "string", "description": "Customer's company." },
+        "email": { "type": "string", "description": "Customer's email.", "format": "email" },
+        "phone": { "type": "string", "description": "Customer's phone number." },
+        "inquiry": { "type": "string", "description": "The details of the customer's inquiry." },
+        "status": { "type": "string", "description": "The current status of the lead.", "enum": ["New", "Contacted", "Qualified", "Closed"] },
+        "assignedVendor": { "type": "string", "description": "The name of the vendor assigned to this lead." }
       },
       "required": ["id", "name", "email", "inquiry", "status"]
+    },
+    "Product": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Product",
+      "type": "object",
+      "description": "Represents a product or service in the catalog.",
+      "properties": {
+        "id": { "type": "string" },
+        "name": { "type": "string" },
+        "description": { "type": "string" },
+        "price": { "type": "number" },
+        "type": { "type": "string", "enum": ["Software", "Service", "Consulting", "Hardware"] },
+        "imageId": { "type": "string" },
+        "iconName": { "type": "string" }
+      },
+      "required": ["id", "name", "description", "price", "type", "imageId", "iconName"]
+    },
+    "HeroSlide": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "HeroSlide",
+      "type": "object",
+      "description": "Content for a single slide in the homepage hero carousel.",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "buttonText": { "type": "string" },
+        "imageId": { "type": "string" }
+      },
+      "required": ["id", "title", "description", "buttonText", "imageId"]
+    },
+    "Promotion": {
+      "$schema": "http://json-schema.org/draft-07/schema#",
+      "title": "Promotion",
+      "type": "object",
+      "description": "Content for the main promotional banner on the homepage.",
+      "properties": {
+        "id": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "buttonText": { "type": "string" },
+        "imageId": { "type": "string" },
+        "tagText": { "type": "string" }
+      },
+      "required": ["id", "title", "description", "buttonText", "imageId", "tagText"]
     }
   },
   "auth": {
@@ -183,53 +111,28 @@
     "structure": [
       {
         "path": "/users/{userId}",
-        "definition": {
-          "entityName": "UserAccount",
-          "schema": {
-            "$ref": "#/backend/entities/UserAccount"
-          },
-          "description": "Stores user account information. The `userId` parameter corresponds to the Firebase Auth UID, providing path-based ownership and simplifying security rules.",
-          "params": [
-            {
-              "name": "userId",
-              "description": "The unique identifier for the user, matching their Firebase Auth UID."
-            }
-          ]
-        }
+        "definition": { "schema": { "$ref": "#/entities/UserAccount" }, "description": "Stores user account information." }
       },
       {
         "path": "/vendors/{vendorId}",
-        "definition": {
-          "entityName": "VendorProfile",
-          "schema": {
-            "$ref": "#/backend/entities/VendorProfile"
-          },
-          "description": "Stores vendor profiles. The `vendorId` must match the user's Auth UID, who must have a 'vendor' role.",
-          "params": [
-            {
-              "name": "vendorId",
-              "description": "The unique identifier for the vendor, matching their Firebase Auth UID."
-            }
-          ]
-        }
+        "definition": { "schema": { "$ref": "#/entities/VendorProfile" }, "description": "Stores vendor profiles." }
       },
-       {
+      {
         "path": "/leads/{leadId}",
-        "definition": {
-          "entityName": "Lead",
-          "schema": {
-            "$ref": "#/backend/entities/Lead"
-          },
-          "description": "Stores customer inquiries (leads). Can be created by any authenticated user, but only managed by admins.",
-          "params": [
-            {
-              "name": "leadId",
-              "description": "The unique identifier for the lead."
-            }
-          ]
-        }
+        "definition": { "schema": { "$ref": "#/entities/Lead" }, "description": "Stores customer inquiries (leads)." }
+      },
+      {
+        "path": "/products/{productId}",
+        "definition": { "schema": { "$ref": "#/entities/Product" }, "description": "Stores all products for the catalog." }
+      },
+      {
+        "path": "/heroSlides/{slideId}",
+        "definition": { "schema": { "$ref": "#/entities/HeroSlide" }, "description": "Stores the hero banner slides." }
+      },
+      {
+        "path": "/promotions/{promoId}",
+        "definition": { "schema": { "$ref": "#/entities/Promotion" }, "description": "Stores the main promotion banner." }
       }
-    ],
-    "reasoning": "This Firestore structure prioritizes authorization independence and simplifies security rules. User accounts are stored under `/users/{userId}`. This path-based ownership model provides strong isolation and simplifies access control. Vendor profiles are stored in a separate `/vendors/{vendorId}` collection, which allows for different security rules and data models specific to vendors. The `vendorId` also matches the Firebase Auth UID, ensuring that only the authenticated vendor can manage their own profile. Leads are stored in `/leads/{leadId}`, allowing authenticated users to create them and admins to manage them."
+    ]
   }
 }

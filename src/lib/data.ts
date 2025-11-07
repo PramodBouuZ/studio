@@ -1,5 +1,6 @@
 import type { LucideIcon } from 'lucide-react';
 import { Briefcase, Lightbulb, ShoppingCart, Wrench, Megaphone, Server, Palette, CloudCog } from 'lucide-react';
+import type { VendorProfile } from './types';
 
 export type Product = {
   id: string;
@@ -8,9 +9,10 @@ export type Product = {
   price: number;
   description: string;
   imageId: string;
-  icon: LucideIcon;
+  iconName: string; // Changed from icon to iconName
 };
 
+// This is now seed data, not the source of truth.
 export const products: Product[] = [
   {
     id: 'prod_1',
@@ -19,7 +21,7 @@ export const products: Product[] = [
     price: 80000,
     description: 'Integrate voice, video, and messaging for seamless team collaboration.',
     imageId: 'product-1',
-    icon: ShoppingCart,
+    iconName: 'ShoppingCart',
   },
   {
     id: 'prod_2',
@@ -28,7 +30,7 @@ export const products: Product[] = [
     price: 50000,
     description: 'Cost-effective, feature-rich voice over IP solutions for modern businesses.',
     imageId: 'product-2',
-    icon: Wrench,
+    iconName: 'Wrench',
   },
   {
     id: 'prod_3',
@@ -37,7 +39,7 @@ export const products: Product[] = [
     price: 150000,
     description: 'Scalable and intelligent contact center solutions to enhance customer experience.',
     imageId: 'product-5',
-    icon: CloudCog,
+    iconName: 'CloudCog',
   },
   {
     id: 'prod_4',
@@ -46,7 +48,7 @@ export const products: Product[] = [
     price: 100000,
     description: 'Optimize your telecom spend with our expert analysis and management services.',
     imageId: 'product-4',
-    icon: Briefcase,
+    iconName: 'Briefcase',
   },
   {
     id: 'prod_5',
@@ -55,7 +57,7 @@ export const products: Product[] = [
     price: 250000,
     description: 'Robust and secure on-premise PBX servers for large-scale operations.',
     imageId: 'product-3',
-    icon: Server,
+    iconName: 'Server',
   },
   {
     id: 'prod_6',
@@ -64,7 +66,7 @@ export const products: Product[] = [
     price: 30000,
     description: 'Reliable and high-quality SIP trunking to connect your PBX to the PSTN.',
     imageId: 'product-6',
-    icon: Wrench,
+    iconName: 'Wrench',
   },
 ];
 
@@ -134,55 +136,19 @@ export type Lead = {
   assignedVendor: string;
 };
 
-export const leads: Lead[] = [
-  {
-    id: 'lead_1',
-    name: 'John Doe',
-    company: 'Acme Inc.',
-    email: 'john.doe@acme.com',
-    phone: '555-1234',
-    inquiry: 'Looking for a new CRM solution for our sales team of 50 people. Need integration with our existing email marketing platform.',
-    status: 'New',
-    assignedVendor: '',
-  },
-  {
-    id: 'lead_2',
-    name: 'Jane Smith',
-    company: 'Innovate LLC',
-    email: 'jane.s@innovate.llc',
-    phone: '555-5678',
-    inquiry: 'We need to redesign our company website and improve SEO.',
-    status: 'Contacted',
-    assignedVendor: 'PixelPerfect',
-  },
-  {
-    id: 'lead_3',
-    name: 'Robert Brown',
-    company: 'Synergy Corp',
-    email: 'r.brown@synergy.co',
-    phone: '555-8765',
-    inquiry: 'Seeking a business consultant to help us expand into the European market. Experience in logistics is a must.',
-    status: 'Qualified',
-    assignedVendor: 'Stratgurus',
-  },
-  {
-    id: 'lead_4',
-    name: 'Emily White',
-    company: 'Tech Solutions',
-    email: 'emily.w@techsolutions.net',
-    phone: '555-4321',
-    inquiry: 'We require a custom software development for an internal inventory management system.',
-    status: 'New',
-    assignedVendor: '',
-  },
-  {
-    id: 'lead_5',
-    name: 'Michael Green',
-    company: 'GreenScape',
-    email: 'm.green@greenscape.com',
-    phone: '555-9988',
-    inquiry: 'Interested in a long-term service contract for IT support and maintenance for our 100+ employees.',
-    status: 'Closed',
-    assignedVendor: 'Innovatech',
-  },
-];
+export type HeroSlide = {
+  id: string;
+  title: string;
+  description: string;
+  buttonText: string;
+  imageId: string;
+};
+
+export type Promotion = {
+  id: string;
+  title: string;
+  description: string;
+  buttonText: string;
+  imageId: string;
+  tagText: string;
+};
