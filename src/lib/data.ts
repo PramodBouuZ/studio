@@ -39,7 +39,9 @@ export const products: Product[] = [
       'SoftwareSuggest',
       'TechJockey',
       'Freshworks Marketplace',
-      'IndiaMART'
+      'IndiaMART',
+      'BANTConfirm IT marketplace',
+      'BANTConfirm software solutions',
     ],
   },
   {
@@ -65,7 +67,10 @@ export const products: Product[] = [
       'Sulekha',
       'GetApp',
       'Clutch India',
-      'TradeIndia'
+      'TradeIndia',
+      'Cloud telephony & IVR solutions',
+      'B2B software vendors in Delhi',
+      'Cloud software companies in Pune',
     ],
   },
   {
@@ -89,7 +94,11 @@ export const products: Product[] = [
       'LeadSquared Marketplace',
       'G2',
       'Capterra India',
-      'Tars'
+      'Tars',
+      'WhatsApp Business API providers',
+      'AI chatbot and voice agent software India',
+      'Customer support automation solutions',
+      'BANTConfirm B2B portal',
     ],
   },
   {
@@ -113,7 +122,9 @@ export const products: Product[] = [
       'Sulekha',
       'Justdial',
       'SoftwareSuggest',
-      'TechJockey'
+      'TechJockey',
+      'Partner program for IT vendors India',
+      'Verified vendors BANTConfirm India',
     ],
   },
   {
@@ -141,7 +152,12 @@ export const products: Product[] = [
       'IndiaMART',
       'TradeIndia',
       'Udaan',
-      'ExportersIndia'
+      'ExportersIndia',
+      'CRM software for businesses India',
+      'ERP and billing software India',
+      'Inventory management software India',
+      'CRM providers in Mumbai',
+      'Software resellers in Bangalore',
     ],
   },
   {
@@ -168,7 +184,14 @@ export const products: Product[] = [
       'Software marketplace near me',
       'AppSumo',
       'StartupIndia Marketplace',
-      'ResellerClub'
+      'ResellerClub',
+      'Marketing automation tools India',
+      'Post your business requirement BANTConfirm',
+      'IT marketplace in Hyderabad',
+      'Earn commission from business leads',
+      'Reseller platform for software tools',
+      'Sell business software leads',
+      'BANT qualified lead marketplace India'
     ],
   },
 ];
