@@ -11,8 +11,9 @@ import { FirebaseClientProvider } from '@/firebase';
 const inter = Inter({ subsets: ['latin'], variable: '--font-inter' });
 
 export const metadata: Metadata = {
-  title: 'BANTConfirm Marketplace',
-  description: 'Connect with the right vendors effortlessly.',
+  title: 'BANTConfirm | AI-Powered B2B Marketplace for Telecom & IT',
+  description: 'BANTConfirm is an AI-powered B2B marketplace that connects businesses with top-tier vendors for telecom and IT services. Get qualified leads and streamline your procurement process.',
+  keywords: ['B2B Marketplace', 'AI-Powered', 'Telecom', 'IT Services', 'Lead Generation', 'Procurement'],
 };
 
 export default function RootLayout({

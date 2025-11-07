@@ -1,0 +1,18 @@
+# See https://www.robotstxt.org/robotstxt.html for documentation on how to use the robots.txt file
+#
+# To allow all crawlers to access all content on the site, use the following:
+User-agent: *
+Allow: /
+
+# To block all crawlers from accessing the site, use the following:
+# User-agent: *
+# Disallow: /
+
+# To block a specific crawler from accessing the site, use the following:
+# User-agent: Googlebot
+# Disallow: /
+
+# To block all crawlers from accessing a specific directory, use the following:
+# User-agent: *
+# Disallow: /admin/
+Sitemap: https://www.bantconfirm.com/sitemap.xml

@@ -2,127 +2,127 @@
   "placeholderImages": [
     {
       "id": "hero-1",
-      "description": "A diverse group of professionals collaborating in a modern office.",
+      "description": "A diverse group of professionals collaborating in a modern office, representing teamwork and innovation.",
       "imageUrl": "https://images.unsplash.com/photo-1531545514256-b1400bc00f31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHx0ZWFtJTIwY29sbGFib3JhdGlvbnxlbnwwfHx8fDE3NjIxNTIyODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "team collaboration"
     },
     {
       "id": "hero-2",
-      "description": "A person using a laptop with charts and graphs on the screen.",
+      "description": "A professional analyzing data on a laptop, symbolizing business growth and data-driven decisions.",
       "imageUrl": "https://images.unsplash.com/photo-1542744173-05336fcc7ad4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8ZGF0YSUyMGFuYWx5c2lzfGVufDB8fHx8MTc2MjE0NTczNnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "data analysis"
     },
     {
       "id": "hero-3",
-      "description": "Abstract network connections representing technology.",
+      "description": "An abstract visualization of a digital network, representing technology and seamless connectivity.",
       "imageUrl": "https://images.unsplash.com/photo-1603121144201-1b7f945a0c92?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw2fHxhYnN0cmFjdCUyMG5ldHdvcmt8ZW58MHx8fHwxNzYyMTk3MDA1fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "abstract network"
     },
     {
       "id": "hero-4",
-      "description": "A customer shaking hands with a vendor, symbolizing a successful partnership.",
+      "description": "Two business people shaking hands, signifying a successful partnership and trust.",
       "imageUrl": "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxidXNpbmVzcyUyMGhhbmRzaGFrZXxlbnwwfHx8fDE3NjIxODI4NDZ8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "business handshake"
     },
     {
       "id": "hero-5",
-      "description": "A rocket launching, symbolizing growth and success.",
+      "description": "A rocket launching into the sky, symbolizing rapid growth and success.",
       "imageUrl": "https://images.unsplash.com/photo-1614642240262-a452c2c11724?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyb2NrZXQlMjBsYXVuY2h8ZW58MHx8fHwxNzYyMjQ3NjUxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "rocket launch"
     },
     {
       "id": "product-1",
-      "description": "A software development team working on code.",
+      "description": "A software development team collaborating on code for a unified communications platform.",
       "imageUrl": "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxjb21tdW5pY2F0aW9uJTIwcGxhdGZvcm18ZW58MHx8fHwxNzIyOTI0MDUzfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "communication platform"
     },
     {
       "id": "product-2",
-      "description": "A marketing team brainstorming ideas on a whiteboard.",
+      "description": "A modern office phone system representing a VoIP business solution.",
       "imageUrl": "https://images.unsplash.com/photo-1587560699334-cc4ff6349094?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHx2b2lwfGVufDB8fHx8MTcyMjkyNDA4N3ww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "voip"
     },
     {
       "id": "product-3",
-      "description": "A modern office space with ergonomic chairs and desks.",
+      "description": "An enterprise-grade PBX server in a secure data rack.",
       "imageUrl": "https://images.unsplash.com/photo-1549692520-acc6669e2f0c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxwYnh8ZW58MHx8fHwxNzIyOTI0MTMxfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "pbx"
     },
     {
       "id": "product-4",
-      "description": "A consultant presenting a report to a client.",
+      "description": "A consultant presenting a financial analytics report on telecom expenses.",
       "imageUrl": "https://images.unsplash.com/photo-1543286386-713bdd548da4?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxyZXBvcnQlMjBhbmFseXRpY3N8ZW58MHx8fHwxNzIyOTI0MTYzfDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "report analytics"
     },
     {
       "id": "product-5",
-      "description": "Cloud servers in a data center.",
+      "description": "An illustration of a secure cloud contact center with data flowing through it.",
       "imageUrl": "https://images.unsplash.com/photo-1558494949-ef010cbdcc31?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxjbG91ZCUyMGNlbnRlcnxlbnwwfHx8fDE3MjI5MjQxODd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "cloud center"
     },
     {
       "id": "product-6",
-      "description": "A designer working on a new logo on a tablet.",
+      "description": "Abstract network lines showing reliable SIP trunking connections for business.",
       "imageUrl": "https://images.unsplash.com/photo-1553702534-0d7b003955a8?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3wzNjA3fDB8MHxwaG90by1yZWxhdGVkfDE4fHx8ZW58MHx8fHx8&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "connection"
     },
     {
       "id": "vendor-airtel",
-      "description": "Logo for Airtel.",
+      "description": "The official logo of Airtel, a major telecommunications provider.",
       "imageUrl": "https://images.unsplash.com/photo-1744646363639-b75b02808313?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8QWlydGVsJTIwbG9nb3xlbnwwfHx8fDE3NjIyNjQyMzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Airtel logo"
     },
     {
       "id": "vendor-tata",
-      "description": "Logo for Tata Communications.",
+      "description": "The official logo of Tata Communications, a global digital ecosystem enabler.",
       "imageUrl": "https://images.unsplash.com/photo-1651578261941-96720c8e98d1?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxUYXRhJTIwbG9nb3xlbnwwfHx8fDE3NjIxNjQyMTh8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Tata logo"
     },
     {
       "id": "vendor-jio",
-      "description": "Logo for Jio.",
+      "description": "The official logo of Jio, a leading Indian telecommunications company.",
       "imageUrl": "https://images.unsplash.com/photo-1626204836070-f4cb18ae370f?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxMHx8SmlvJTIwbG9nb3xlbnwwfHx8fDE3NjIyNjQyMzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Jio logo"
     },
     {
       "id": "vendor-vi",
-      "description": "Logo for Vodafone Idea.",
+      "description": "The official logo of Vi (Vodafone Idea), a major telecom operator in India.",
       "imageUrl": "https://images.unsplash.com/photo-1648503211120-c69b4233de5c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw0fHxWb2RhZm9uZSUyMElkZWF8ZW58MHx8fHwxNzYyMjY0MjM1fDA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "Vodafone Idea"
     },
     {
       "id": "vendor-bsnl",
-      "description": "Logo for BSNL.",
+      "description": "The official logo of BSNL, an Indian state-owned telecommunications company.",
       "imageUrl": "https://images.unsplash.com/photo-1595409583957-5d1ec5869de9?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxCU05MJTIwbG9nb3xlbnwwfHx8fDE3NjIyNjQyMzV8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "BSNL logo"
     },
     {
       "id": "avatar-1",
-      "description": "Portrait of a smiling man.",
+      "description": "Portrait of Rohan Sharma, a satisfied IT Head from Global Exports.",
       "imageUrl": "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw4fHxpbmRpYW4lMjBtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3MjI5MjQ4ODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "man portrait"
     },
     {
       "id": "avatar-2",
-      "description": "Portrait of a smiling woman.",
+      "description": "Portrait of Priya Mehta, a happy Operations Director from Sterling Corp.",
       "imageUrl": "https://images.unsplash.com/photo-1494790108377-be9c29b29330?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwxfHxpbmRpYW4lMjB3b21hbiUyMHBvcnRyYWl0fGVufDB8fHx8MTcyMjkyNDkxNnww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "woman portrait"
     },
     {
       "id": "avatar-3",
-      "description": "Portrait of a man in business attire.",
+      "description": "Portrait of Ankit Desai, the founder of NextGen BPO.",
       "imageUrl": "https://images.unsplash.com/photo-1618531244498-c68d90977d0e?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHwzfHxpbmRpYW4lMjBtYW4lMjBzbWlsaW5nfGVufDB8fHx8MTcyMjkyNDk0OXww&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "man smiling"
     },
     {
       "id": "avatar-4",
-      "description": "Portrait of a smiling man.",
+      "description": "Portrait of Sameer Gupta, CFO of Pharma Solutions Ltd.",
       "imageUrl": "https://images.unsplash.com/photo-1599566150163-29194dcaad36?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxpbmRpYW4lMjBtYW4lMjBwb3J0cmFpdHxlbnwwfHx8fDE3MjI5MjQ4ODR8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "man portrait"
     },
     {
       "id": "about-us",
-      "description": "A vibrant and diverse team working together in a bright, modern office space.",
+      "description": "A vibrant and diverse team working together in a bright, modern office, showcasing the collaborative spirit of BANTConfirm.",
       "imageUrl": "https://images.unsplash.com/photo-1522071820081-009f0129c71c?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3NDE5ODJ8MHwxfHNlYXJjaHw1fHxkaXZlcnNlJTIwdGVhbXxlbnwwfHx8fDE3MjI5MjUyNDd8MA&ixlib=rb-4.1.0&q=80&w=1080",
       "imageHint": "diverse team"
     }
