@@ -32,6 +32,7 @@ const nextConfig: NextConfig = {
   },
   experimental: {
   },
+  skipTrailingSlashRedirect: true,
   allowedDevOrigins: ["*.cloudworkstations.dev"],
 };
 
