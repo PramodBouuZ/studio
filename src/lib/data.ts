@@ -33,7 +33,13 @@ export const products: Product[] = [
       'Software marketplace in Gurgaon', 
       'B2B IT vendors in Noida',
       'IT software solutions near me',
-      'SaaS tools marketplace near me'
+      'SaaS tools marketplace near me',
+      'G2',
+      'Capterra India',
+      'SoftwareSuggest',
+      'TechJockey',
+      'Freshworks Marketplace',
+      'IndiaMART'
     ],
   },
   {
@@ -53,7 +59,13 @@ export const products: Product[] = [
       'Cloud telephony solutions in Lucknow',
       'Cloud telephony service near me',
       'Cloud telephony and automation Pune',
-      'Cloud and CRM tools providers Mumbai'
+      'Cloud and CRM tools providers Mumbai',
+      'Yellow.ai',
+      'Justdial',
+      'Sulekha',
+      'GetApp',
+      'Clutch India',
+      'TradeIndia'
     ],
   },
   {
@@ -71,7 +83,13 @@ export const products: Product[] = [
       'CX',
       'Cloud solutions providers Chennai',
       'Cloud and CRM tools providers Mumbai',
-      'WhatsApp Business API setup near me'
+      'WhatsApp Business API setup near me',
+      'Freshworks Marketplace',
+      'Zoho Marketplace',
+      'LeadSquared Marketplace',
+      'G2',
+      'Capterra India',
+      'Tars'
     ],
   },
   {
@@ -91,6 +109,11 @@ export const products: Product[] = [
       'IT consulting and software marketplace Pune',
       'IT consultants in Bhubaneswar',
       'Best IT consulting company near me',
+      'Clutch India',
+      'Sulekha',
+      'Justdial',
+      'SoftwareSuggest',
+      'TechJockey'
     ],
   },
   {
@@ -112,7 +135,13 @@ export const products: Product[] = [
       'ERP and CRM vendors in Hyderabad',
       'CRM and ERP marketplace in Nagpur',
       'CRM tools for small business Pune',
-      'CRM service providers near me'
+      'CRM service providers near me',
+      'Zoho Marketplace',
+      'LeadSquared Marketplace',
+      'IndiaMART',
+      'TradeIndia',
+      'Udaan',
+      'ExportersIndia'
     ],
   },
   {
@@ -136,7 +165,10 @@ export const products: Product[] = [
       'Business software in Indore',
       'Business automation solutions near me',
       'Post IT project requirements near me',
-      'Software marketplace near me'
+      'Software marketplace near me',
+      'AppSumo',
+      'StartupIndia Marketplace',
+      'ResellerClub'
     ],
   },
 ];
