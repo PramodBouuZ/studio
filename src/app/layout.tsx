@@ -16,6 +16,46 @@ export const metadata: Metadata = {
   keywords: ['B2B Marketplace', 'AI-Powered', 'Telecom', 'IT Services', 'Lead Generation', 'Procurement'],
 };
 
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      "name": "BANTConfirm",
+      "alternateName": ["Bant confirm", "bantconfim"],
+      "url": "https://www.bantconfirm.com",
+      "logo": "https://www.bantconfirm.com/logo.png", // Assuming you will have a logo at this URL
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "9310269821",
+        "contactType": "Customer Service",
+        "areaServed": "IN",
+        "availableLanguage": ["en"]
+      },
+      "sameAs": [
+        // Add your social media URLs here when available
+      ]
+    },
+    {
+      "@type": "WebSite",
+      "url": "https://www.bantconfirm.com",
+      "name": "BANTConfirm",
+      "description": "AI-Powered B2B Marketplace for Telecom & IT",
+      "publisher": {
+        "@id": "https://www.bantconfirm.com/#organization"
+      },
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://www.bantconfirm.com/search?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+  ]
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -27,6 +67,10 @@ export default function RootLayout({
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
       </head>
       <body className={cn('min-h-screen bg-background font-body antialiased', inter.variable)}>
         <FirebaseClientProvider>
