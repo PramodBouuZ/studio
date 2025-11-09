@@ -17,11 +17,15 @@ import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { collection, doc, setDoc, deleteDoc, serverTimestamp, writeBatch } from 'firebase/firestore';
 import { products as initialProducts } from '@/lib/data';
 import { Skeleton } from '@/components/ui/skeleton';
+import type { VendorProfile } from '@/lib/types';
 
 export default function ProductsPage() {
     const firestore = useFirestore();
     const productsCollection = useMemoFirebase(() => firestore ? collection(firestore, 'products') : null, [firestore]);
     const { data: products, isLoading: productsLoading } = useCollection<Product>(productsCollection);
+
+    const vendorsCollection = useMemoFirebase(() => firestore ? collection(firestore, 'vendors') : null, [firestore]);
+    const { data: vendors, isLoading: isVendorsLoading } = useCollection<VendorProfile>(vendorsCollection);
 
     const { toast } = useToast();
     const [generating, setGenerating] = useState<Record<string, boolean>>({});
@@ -57,6 +61,12 @@ export default function ProductsPage() {
         const productRef = doc(firestore, 'products', productId);
         await setDoc(productRef, { type: value as Product['type'] }, { merge: true });
     }
+    
+    const handleVendorChange = async (vendorId: string, productId: string) => {
+        if (!firestore) return;
+        const productRef = doc(firestore, 'products', productId);
+        await setDoc(productRef, { vendorId: vendorId }, { merge: true });
+    }
 
     const handleSaveChanges = (productId: string) => {
         const product = products?.find(p => p.id === productId);
@@ -77,6 +87,7 @@ export default function ProductsPage() {
             type: 'Software',
             imageId: '',
             iconName: 'ShoppingCart',
+            vendorId: '',
         };
         await setDoc(doc(firestore, 'products', newId), newProduct);
         toast({
@@ -209,6 +220,21 @@ export default function ProductsPage() {
                                 </Select>
                             </div>
                         </div>
+                         <div className="space-y-2">
+                                <Label htmlFor={`vendor-${product.id}`}>Vendor</Label>
+                                {isVendorsLoading ? <Skeleton className="h-10 w-full" /> : (
+                                    <Select defaultValue={product.vendorId} onValueChange={(v) => handleVendorChange(v, product.id)}>
+                                        <SelectTrigger id={`vendor-${product.id}`}>
+                                            <SelectValue placeholder="Select vendor" />
+                                        </SelectTrigger>
+                                        <SelectContent>
+                                            {vendors?.map(vendor => (
+                                                <SelectItem key={vendor.id} value={vendor.id}>{vendor.name}</SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                )}
+                            </div>
                     </div>
                     <div className="space-y-2">
                         <Label>Image</Label>
