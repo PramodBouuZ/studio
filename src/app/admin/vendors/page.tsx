@@ -8,35 +8,20 @@ import { Label } from '@/components/ui/label';
 import Image from 'next/image';
 import { ImageIcon, Upload, Trash2, Check, X } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
-import { useFirestore } from '@/firebase';
+import { useCollection, useFirestore, useMemoFirebase } from '@/firebase';
 import { doc, updateDoc, deleteDoc } from 'firebase/firestore';
 import type { VendorProfile } from '@/lib/types';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { getVendors } from '@/app/admin/vendors/actions';
+import { collection } from 'firebase/firestore';
 
 export default function VendorsPage() {
     const firestore = useFirestore();
     const { toast } = useToast();
-    const [vendors, setVendors] = useState<VendorProfile[]>([]);
-    const [isLoading, setIsLoading] = useState(true);
-
-    useEffect(() => {
-        const fetchVendors = async () => {
-            setIsLoading(true);
-            const serverVendors = await getVendors();
-            setVendors(serverVendors);
-            setIsLoading(false);
-        };
-        fetchVendors();
-    }, []);
     
-    // This will re-run the fetch when a vendor is updated/deleted client-side
-    const refetchVendors = async () => {
-        const serverVendors = await getVendors();
-        setVendors(serverVendors);
-    };
+    const vendorsCollection = useMemoFirebase(() => firestore ? collection(firestore, 'vendors') : null, [firestore]);
+    const { data: vendors, isLoading, error } = useCollection<VendorProfile>(vendorsCollection);
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, vendorId: string) => {
         const file = e.target.files?.[0];
@@ -47,7 +32,6 @@ export default function VendorsPage() {
                 const vendorRef = doc(firestore, 'vendors', vendorId);
                 await updateDoc(vendorRef, { logoUrl: imageUrl });
                 toast({ title: 'Logo Updated!' });
-                await refetchVendors();
             };
             reader.readAsDataURL(file);
         }
@@ -58,7 +42,6 @@ export default function VendorsPage() {
         const { name, value } = e.target;
         const vendorRef = doc(firestore, 'vendors', vendorId);
         await updateDoc(vendorRef, { [name]: value });
-        // No need to toast here, onBlur is enough
     };
 
     const handleStatusChange = async (vendorId: string, status: 'approved' | 'rejected') => {
@@ -69,7 +52,6 @@ export default function VendorsPage() {
             title: `Vendor ${status}`,
             description: `The vendor has been ${status}.`,
         });
-        await refetchVendors();
     };
 
     const handleDeleteVendor = async (vendorId: string) => {
@@ -80,7 +62,6 @@ export default function VendorsPage() {
             description: 'The vendor has been removed from the system.',
             variant: 'destructive',
         });
-        await refetchVendors();
     }
 
     const sortedVendors = useMemo(() => {
