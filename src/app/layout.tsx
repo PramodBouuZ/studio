@@ -22,7 +22,7 @@ const structuredData = {
     {
       "@type": "Organization",
       "name": "BANTConfirm",
-      "alternateName": ["Bant confirm", "bantconfim"],
+      "alternateName": ["Bant confirm", "bantconfirm"],
       "url": "https://www.bantconfirm.com",
       "logo": "https://www.bantconfirm.com/logo.png", // Assuming you will have a logo at this URL
       "contactPoint": {

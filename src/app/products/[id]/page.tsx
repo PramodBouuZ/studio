@@ -1,16 +1,18 @@
 
+
 'use client';
 
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import { useDoc, useFirestore, useMemoFirebase, useUser } from '@/firebase';
 import { doc, collection, setDoc } from 'firebase/firestore';
-import { type Product, type Vendor } from '@/lib/data';
+import { type Product } from '@/lib/data';
+import type { VendorProfile } from '@/lib/types';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Skeleton } from '@/components/ui/skeleton';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardHeader, CardTitle } from '@/components/ui/card';
 import { Briefcase, CloudCog, Lightbulb, Server, ShoppingCart, Wrench, ArrowRight, MapPin, Building, Star } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import { type Lead } from '@/lib/data';
@@ -34,11 +36,11 @@ export default function ProductDetailPage() {
     const { data: product, isLoading: isProductLoading } = useDoc<Product>(productDocRef);
     
     const vendorDocRef = useMemoFirebase(() => firestore && product?.vendorId ? doc(firestore, 'vendors', product.vendorId) : null, [firestore, product?.vendorId]);
-    const { data: vendor, isLoading: isVendorLoading } = useDoc<Vendor>(vendorDocRef);
+    const { data: vendor, isLoading: isVendorLoading } = useDoc<VendorProfile>(vendorDocRef);
 
     const Icon = product ? icons[product.iconName as keyof typeof icons] || ShoppingCart : ShoppingCart;
     const image = product ? PlaceHolderImages.find((img) => img.id === product.imageId) || { imageUrl: product.imageId.startsWith('data:') ? product.imageId : '', description: product.name, imageHint: '' } : null;
-    const vendorImage = vendor ? PlaceHolderImages.find((img) => img.id === vendor.imageId) || { imageUrl: vendor.logoUrl.startsWith('data:') ? vendor.logoUrl : '', description: vendor.name, imageHint: '' } : null;
+    const vendorImage = vendor ? PlaceHolderImages.find((img) => img.id === vendor.logoUrl) || { imageUrl: vendor.logoUrl.startsWith('data:') ? vendor.logoUrl : '', description: vendor.name, imageHint: '' } : null;
 
     const handlePostEnquiry = async () => {
         if (!user || !firestore || !product) {
