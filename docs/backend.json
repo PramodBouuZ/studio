@@ -1,3 +1,4 @@
+
 {
   "entities": {
     "UserAccount": {
@@ -67,9 +68,10 @@
         "price": { "type": "number" },
         "type": { "type": "string", "enum": ["Software", "Service", "Consulting", "Hardware"] },
         "imageId": { "type": "string" },
-        "iconName": { "type": "string" }
+        "iconName": { "type": "string" },
+        "vendorId": { "type": "string", "description": "ID of the vendor offering this product." }
       },
-      "required": ["id", "name", "description", "price", "type", "imageId", "iconName"]
+      "required": ["id", "name", "description", "price", "type", "imageId", "iconName", "vendorId"]
     },
     "HeroSlide": {
       "$schema": "http://json-schema.org/draft-07/schema#",

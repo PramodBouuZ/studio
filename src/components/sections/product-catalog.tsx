@@ -2,6 +2,7 @@
 'use client';
 import { useState, useMemo } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { type Product } from '@/lib/data';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
@@ -217,8 +218,6 @@ export default function ProductCatalog() {
           >
             <ProductCard 
               product={product}
-              onBookDemoClick={() => handleBookDemoClick(product)}
-              onPostEnquiryClick={() => handlePostEnquiryClick(product)}
               isHighlighted={highlightedProductIds.includes(product.id)}
             />
           </motion.div>
@@ -285,7 +284,7 @@ export default function ProductCatalog() {
   );
 }
 
-function ProductCard({ product, onBookDemoClick, onPostEnquiryClick, isHighlighted }: { product: Product, onBookDemoClick: () => void, onPostEnquiryClick: () => void, isHighlighted?: boolean }) {
+function ProductCard({ product, isHighlighted }: { product: Product, isHighlighted?: boolean }) {
   const image = PlaceHolderImages.find((img) => img.id === product.imageId) || { imageUrl: product.imageId.startsWith('data:') ? product.imageId : '', description: product.name, imageHint: '' };
   const Icon = icons[product.iconName as keyof typeof icons] || ShoppingCart;
 
@@ -294,40 +293,39 @@ function ProductCard({ product, onBookDemoClick, onPostEnquiryClick, isHighlight
         "overflow-hidden shadow-md hover:shadow-2xl transition-all duration-300 flex flex-col group h-full",
         isHighlighted ? "border-primary ring-2 ring-primary" : "border-transparent hover:border-primary"
     )}>
-      <CardHeader className="p-0">
-        {image && (
-          <div className="relative h-52 w-full">
-            <Image
-              src={image.imageUrl}
-              alt={image.description}
-              fill
-              className="object-cover group-hover:scale-105 transition-transform duration-500"
-              data-ai-hint={image.imageHint}
-            />
-             <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
-             {isHighlighted && <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">Suggested</div>}
+      <Link href={`/products/${product.id}`} className="flex flex-col h-full">
+        <CardHeader className="p-0">
+          {image && (
+            <div className="relative h-52 w-full">
+              <Image
+                src={image.imageUrl}
+                alt={image.description}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                data-ai-hint={image.imageHint}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
+              {isHighlighted && <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">Suggested</div>}
+            </div>
+          )}
+        </CardHeader>
+        <CardContent className="p-6 flex-grow flex flex-col bg-card">
+          <div className="flex justify-between items-start mb-2">
+            <CardTitle className="text-xl font-bold font-headline">{product.name}</CardTitle>
+            <Badge variant="outline" className="flex items-center gap-1.5 shrink-0 border-primary/50 text-primary">
+              <Icon className="h-3.5 w-3.5" />
+              {product.type}
+            </Badge>
           </div>
-        )}
-      </CardHeader>
-      <CardContent className="p-6 flex-grow flex flex-col bg-card">
-        <div className="flex justify-between items-start mb-2">
-          <CardTitle className="text-xl font-bold font-headline">{product.name}</CardTitle>
-          <Badge variant="outline" className="flex items-center gap-1.5 shrink-0 border-primary/50 text-primary">
-            <Icon className="h-3.5 w-3.5" />
-            {product.type}
-          </Badge>
-        </div>
-        <CardDescription className="mb-4 flex-grow text-base">{product.description}</CardDescription>
-        <div className="flex justify-between items-center mt-6">
-          <p className="text-2xl font-bold text-primary">
-            ₹{product.price.toLocaleString()}
-          </p>
-          <div className="flex gap-2">
-            <Button variant="outline" size="sm" onClick={onBookDemoClick}>Book Demo</Button>
-            <Button size="sm" onClick={onPostEnquiryClick}>Post Enquiry</Button>
+          <CardDescription className="mb-4 flex-grow text-base line-clamp-3">{product.description}</CardDescription>
+          <div className="flex justify-between items-center mt-auto pt-4">
+            <p className="text-2xl font-bold text-primary">
+              ₹{product.price.toLocaleString()}
+            </p>
+            <Button size="sm" variant="outline">View Details</Button>
           </div>
-        </div>
-      </CardContent>
+        </CardContent>
+      </Link>
     </Card>
   );
 }

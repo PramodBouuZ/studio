@@ -1,4 +1,6 @@
+
 import { MetadataRoute } from 'next'
+import { products } from '@/lib/data';
  
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://www.bantconfirm.com';
@@ -11,9 +13,16 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/become-a-vendor`, priority: 0.8 },
   ];
 
+  // Dynamically generate sitemap entries for products
+  const productPages = products.map(product => ({
+    url: `${baseUrl}/products/${product.id}`,
+    priority: 0.9,
+    changeFrequency: 'weekly' as const,
+    lastModified: new Date(),
+  }));
+
   // In the future, you could dynamically generate sitemap entries
-  // for products or vendors from your database.
-  // For now, we'll just add the main sections.
+  // for vendors from your database.
   const sections = [
     { url: `${baseUrl}/#products`, priority: 0.9 },
     { url: `${baseUrl}/#vendors`, priority: 0.7 },
@@ -22,14 +31,10 @@ export default function sitemap(): MetadataRoute.Sitemap {
   ];
 
   const allEntries: MetadataRoute.Sitemap = [
-    ...staticPages,
-    ...sections,
-  ].map(({ url, priority }) => ({
-    url,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority,
-  }));
+    ...staticPages.map(({url, priority}) => ({ url, priority, lastModified: new Date(), changeFrequency: 'monthly' as const })),
+    ...productPages,
+    ...sections.map(({url, priority}) => ({ url, priority, lastModified: new Date(), changeFrequency: 'weekly' as const })),
+  ];
 
   return allEntries;
 }

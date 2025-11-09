@@ -10,8 +10,9 @@ export type Product = {
   price: number;
   description: string;
   imageId: string;
-  iconName: string; // Changed from icon to iconName
+  iconName: string; 
   keywords?: string[];
+  vendorId: string;
 };
 
 // This is now seed data, not the source of truth.
@@ -24,6 +25,7 @@ export const products: Product[] = [
     description: 'Integrate voice, video, and messaging for seamless team collaboration.',
     imageId: 'product-1',
     iconName: 'ShoppingCart',
+    vendorId: 'vendor_1',
     keywords: [
         'UC', 
         'collaboration', 
@@ -42,6 +44,23 @@ export const products: Product[] = [
         'IndiaMART',
         'BANTConfirm IT marketplace',
         'BANTConfirm software solutions',
+        'IT & SaaS Solutions Keywords',
+        'AI chatbot and voice agent software India',
+        'Customer support automation solutions',
+        'BANTConfirm Branded Keywords',
+        'BANTConfirm B2B portal',
+        'Post your business requirement BANTConfirm',
+        'Verified vendors BANTConfirm India',
+        'Local + “Near Me” Keywords',
+        'B2B software vendors in Delhi',
+        'Cloud software companies in Pune',
+        'IT marketplace in Hyderabad',
+        'Reseller / Commission Focused Keywords',
+        'Earn commission from business leads',
+        'Reseller platform for software tools',
+        'Partner program for IT vendors India',
+        'Sell business software leads',
+        'BANT qualified lead marketplace India'
     ],
   },
   {
@@ -52,6 +71,7 @@ export const products: Product[] = [
     description: 'Cost-effective, feature-rich voice over IP solutions for modern businesses.',
     imageId: 'product-2',
     iconName: 'Wrench',
+    vendorId: 'vendor_2',
     keywords: [
       'voip', 
       'phone system', 
@@ -71,6 +91,18 @@ export const products: Product[] = [
       'Cloud telephony & IVR solutions',
       'B2B software vendors in Delhi',
       'Cloud software companies in Pune',
+      'IT & SaaS Solutions Keywords',
+      'WhatsApp Business API providers',
+      'Marketing automation tools India',
+      'BANTConfirm Branded Keywords',
+      'Verified vendors BANTConfirm India',
+      'Local + “Near Me” Keywords',
+      'IT software solutions near me',
+      'CRM providers in Mumbai',
+      'Software resellers in Bangalore',
+      'Reseller / Commission Focused Keywords',
+      'Earn commission from business leads',
+      'BANT qualified lead marketplace India'
     ],
   },
   {
@@ -81,6 +113,7 @@ export const products: Product[] = [
     description: 'Scalable and intelligent contact center solutions to enhance customer experience.',
     imageId: 'product-5',
     iconName: 'CloudCog',
+    vendorId: 'vendor_3',
     keywords: [
       'contact center', 
       'customer support', 
@@ -99,6 +132,14 @@ export const products: Product[] = [
       'AI chatbot and voice agent software India',
       'Customer support automation solutions',
       'BANTConfirm B2B portal',
+      'IT & SaaS Solutions Keywords',
+      'Inventory management software India',
+      'BANTConfirm Branded Keywords',
+      'BANTConfirm IT marketplace',
+      'Local + “Near Me” Keywords',
+      'Cloud software companies in Pune',
+      'Reseller / Commission Focused Keywords',
+      'Sell business software leads'
     ],
   },
   {
@@ -109,6 +150,7 @@ export const products: Product[] = [
     description: 'Optimize your telecom spend with our expert analysis and management services.',
     imageId: 'product-4',
     iconName: 'Briefcase',
+    vendorId: 'vendor_4',
     keywords: [
       'telecom', 
       'expense management', 
@@ -135,6 +177,7 @@ export const products: Product[] = [
     description: 'Robust on-premise servers and fully integrated ERP/CRM systems for large-scale operations.',
     imageId: 'product-3',
     iconName: 'Server',
+    vendorId: 'vendor_5',
     keywords: [
       'pbx', 
       'server', 
@@ -168,6 +211,7 @@ export const products: Product[] = [
     description: 'Reliable SIP trunking and comprehensive IT solutions to streamline your business processes.',
     imageId: 'product-6',
     iconName: 'Lightbulb',
+    vendorId: 'vendor_1',
     keywords: [
       'sip trunking', 
       'connectivity', 
@@ -201,14 +245,15 @@ export type Vendor = {
   id: string;
   name: string;
   imageId: string;
+  location: string;
 };
 
 export const vendors: Vendor[] = [
-    { id: 'vendor_1', name: 'Airtel', imageId: 'vendor-airtel' },
-    { id: 'vendor_2', name: 'Tata Communications', imageId: 'vendor-tata' },
-    { id: 'vendor_3', name: 'Jio', imageId: 'vendor-jio' },
-    { id: 'vendor_4', name: 'Vodafone Idea', imageId: 'vendor-vi' },
-    { id: 'vendor_5', name: 'BSNL', imageId: 'vendor-bsnl' },
+    { id: 'vendor_1', name: 'Airtel', imageId: 'vendor-airtel', location: 'Delhi, India' },
+    { id: 'vendor_2', name: 'Tata Communications', imageId: 'vendor-tata', location: 'Mumbai, India' },
+    { id: 'vendor_3', name: 'Jio', imageId: 'vendor-jio', location: 'Mumbai, India' },
+    { id: 'vendor_4', name: 'Vodafone Idea', imageId: 'vendor-vi', location: 'Gandhinagar, India' },
+    { id: 'vendor_5', name: 'BSNL', imageId: 'vendor-bsnl', location: 'Delhi, India' },
 ];
 
 
