@@ -35,7 +35,7 @@ const generateContentFlow = ai.defineFlow(
   async (input) => {
     if (input.generateImage) {
       const { media } = await ai.generate({
-        model: 'googleai/imagen-4.0-fast-generate-001',
+        model: 'googleai/imagen-4-fast-generate-001',
         prompt: `Generate a professional, high-quality marketing image for a B2B marketplace. The image should be visually appealing and relevant to the following topic: ${input.prompt}. Style: photorealistic, clean, modern, corporate.`,
         config: {
             aspectRatio: '16:9'
