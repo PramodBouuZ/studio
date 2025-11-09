@@ -142,6 +142,22 @@ function AIChat() {
     
     await setDoc(leadRef, newLead);
 
+    // TODO: Implement real email sending service here
+    console.log(`
+      --- SIMULATING EMAIL ---
+      To: ${newLead.email}
+      Subject: Your BANTConfirm Inquiry has been Submitted!
+      Body: Thank you for your inquiry. A member of our team or a relevant vendor will be in touch with you shortly.
+      -------------------------
+    `);
+    console.log(`
+      --- SIMULATING EMAIL ---
+      To: admin@bantconfirm.com
+      Subject: New Customer Inquiry Received!
+      Body: A new lead has been submitted by ${newLead.name}. \n\nInquiry: ${summary}\n\nPlease review it in the admin panel.
+      -------------------------
+    `);
+
     toast({
       title: 'Inquiry Submitted!',
       description: "Our team will review your request and get back to you shortly.",
@@ -285,6 +301,15 @@ function AuthModal({ isOpen, onOpenChange, onSuccess }: { isOpen: boolean, onOpe
         updatedAt: new Date().toISOString(),
         role: 'customer',
       });
+      // TODO: Implement real email sending service here
+      console.log(`
+        --- SIMULATING EMAIL ---
+        To: ${email}
+        Subject: Welcome to BANTConfirm!
+        Body: Thank you for creating an account to submit your inquiry.
+        -------------------------
+      `);
+
       toast({ title: "Account Created Successfully!" });
       onSuccess();
     } catch (error: any) {

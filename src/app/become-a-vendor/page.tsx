@@ -90,6 +90,23 @@ export default function BecomeAVendorPage() {
         createdAt: new Date().toISOString(),
       });
 
+      // TODO: Implement real email sending service here
+      console.log(`
+        --- SIMULATING EMAIL ---
+        To: ${email}
+        Subject: Welcome, Vendor! Your BANTConfirm Application is Under Review.
+        Body: Thank you for registering as a vendor. Your application is now pending approval. We'll notify you once it's been reviewed.
+        -------------------------
+      `);
+      console.log(`
+        --- SIMULATING EMAIL ---
+        To: admin@bantconfirm.com
+        Subject: New Vendor Application!
+        Body: A new vendor, ${companyName}, has applied to join the marketplace. Please review their profile in the admin panel.
+        -------------------------
+      `);
+
+
       toast({ title: 'Registration Successful', description: 'Your vendor application has been submitted for review.' });
       router.push('/');
     } catch (error: any) {

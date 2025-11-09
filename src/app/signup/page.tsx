@@ -54,6 +54,15 @@ export default function SignupPage() {
         role: 'customer',
       });
 
+      // TODO: Implement real email sending service here
+      console.log(`
+        --- SIMULATING EMAIL ---
+        To: ${email}
+        Subject: Welcome to BANTConfirm!
+        Body: Thank you for creating an account. We're excited to have you.
+        -------------------------
+      `);
+
       toast({ title: 'Signup Successful', description: 'Your account has been created.' });
       router.push('/');
     } catch (error: any) {

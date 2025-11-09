@@ -66,6 +66,31 @@ export default function ProductDetailPage() {
 
         await setDoc(leadRef, newLead);
 
+        // TODO: Implement real email sending service here
+        console.log(`
+            --- SIMULATING EMAIL ---
+            To: ${newLead.email}
+            Subject: Your BANTConfirm Inquiry for ${product.name}
+            Body: Thank you for your inquiry about ${product.name}. The vendor, ${vendor?.name || 'BANTConfirm'}, will be in touch with you shortly.
+            -------------------------
+        `);
+        console.log(`
+            --- SIMULATING EMAIL ---
+            To: admin@bantconfirm.com
+            Subject: New Inquiry for ${product.name}
+            Body: A new lead has been submitted by ${newLead.name} for the product ${product.name}. Vendor: ${vendor?.name || 'Unassigned'}.
+            -------------------------
+        `);
+        if (vendor?.email) {
+            console.log(`
+                --- SIMULATING EMAIL ---
+                To: ${vendor.email}
+                Subject: New Lead for ${product.name}!
+                Body: You have a new lead from ${newLead.name} for your product: ${product.name}. Please follow up.
+                -------------------------
+            `);
+        }
+
         toast({
             title: 'Enquiry Sent!',
             description: `Your interest in "${product.name}" has been sent to ${vendor?.name}. They will reach out to you shortly.`,
