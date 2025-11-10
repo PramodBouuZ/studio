@@ -1,13 +1,8 @@
 
 import { MetadataRoute } from 'next'
-import { initializeFirebase } from '@/firebase/server';
-import { Product } from '@/lib/data';
-
  
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = 'https://www.bantconfirm.com';
-
-  const { firestore } = initializeFirebase();
 
   // Add all main pages to the sitemap
   const staticPages = [
@@ -17,18 +12,10 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { url: `${baseUrl}/become-a-vendor`, priority: 0.8, changeFrequency: 'monthly' as const },
   ];
 
-  // Dynamically generate sitemap entries for products from Firestore
-  const productsSnapshot = await firestore.collection('products').get();
-  const productPages = productsSnapshot.docs.map(doc => {
-    const product = doc.data() as Product;
-    return {
-      url: `${baseUrl}/products/${product.id}`,
-      priority: 0.9,
-      changeFrequency: 'weekly' as const,
-      lastModified: new Date(),
-    };
-  });
-
+  // NOTE: A more robust solution for dynamic product pages would be to fetch
+  // the product list from an API endpoint here. For now, we are keeping it static
+  // to prevent build failures related to database connections during the build process.
+  
   const sections = [
     { url: `${baseUrl}/#products`, priority: 0.9, changeFrequency: 'weekly' as const },
     { url: `${baseUrl}/#vendors`, priority: 0.7, changeFrequency: 'monthly' as const },
@@ -38,7 +25,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const allEntries: MetadataRoute.Sitemap = [
     ...staticPages.map(({url, priority, changeFrequency}) => ({ url, priority, lastModified: new Date(), changeFrequency })),
-    ...productPages,
     ...sections.map(({url, priority, changeFrequency}) => ({ url, priority, lastModified: new Date(), changeFrequency })),
   ];
 
