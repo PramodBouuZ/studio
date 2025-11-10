@@ -14,14 +14,35 @@ import type { VendorProfile } from '@/lib/types';
 import { Textarea } from '@/components/ui/textarea';
 import { Badge } from '@/components/ui/badge';
 import { Skeleton } from '@/components/ui/skeleton';
-import { collection } from 'firebase/firestore';
+import { collection, onSnapshot, Unsubscribe } from 'firebase/firestore';
 
 export default function VendorsPage() {
     const firestore = useFirestore();
     const { toast } = useToast();
     
-    const vendorsCollection = useMemoFirebase(() => firestore ? collection(firestore, 'vendors') : null, [firestore]);
-    const { data: vendors, isLoading, error } = useCollection<VendorProfile>(vendorsCollection);
+    const [vendors, setVendors] = useState<VendorProfile[] | null>(null);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+      if (!firestore) {
+          setIsLoading(false);
+          return;
+      }
+      
+      const vendorsCollection = collection(firestore, 'vendors');
+      const unsubscribe: Unsubscribe = onSnapshot(vendorsCollection, (snapshot) => {
+          const vendorsData = snapshot.docs.map(doc => ({ ...doc.data() as Omit<VendorProfile, 'id'>, id: doc.id }));
+          setVendors(vendorsData);
+          setIsLoading(false);
+      }, (error) => {
+          console.error("Error fetching vendors:", error);
+          toast({ variant: 'destructive', title: 'Error', description: 'Could not load vendors.' });
+          setIsLoading(false);
+      });
+  
+      return () => unsubscribe();
+  }, [firestore, toast]);
+
 
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, vendorId: string) => {
         const file = e.target.files?.[0];
