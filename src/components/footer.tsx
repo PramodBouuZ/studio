@@ -1,3 +1,4 @@
+
 'use client';
 
 import Link from 'next/link';
@@ -50,10 +51,6 @@ export default function Footer() {
            <div>
             <h3 className="font-semibold text-lg mb-4">Contact Us</h3>
             <ul className="space-y-4 text-sm text-muted-foreground">
-                <li className='flex items-center gap-3'>
-                    <Phone className='h-4 w-4 shrink-0 text-primary' />
-                    <a href="tel:9310269821" className='hover:text-primary transition-colors'>9310269821</a>
-                </li>
                 <li className='flex items-center gap-3'>
                     <Mail className='h-4 w-4 shrink-0 text-primary' />
                     <a href="mailto:Info@bantconfirm.com" className='hover:text-primary transition-colors'>Info@bantconfirm.com</a>
