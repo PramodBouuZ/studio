@@ -13,7 +13,7 @@ const firebaseAdminConfig: FirebaseOptions = {
         projectId: firebaseConfig.projectId,
         clientEmail: `firebase-adminsdk-qaa1n@${firebaseConfig.projectId}.iam.gserviceaccount.com`,
         // NOTE: This private key is a placeholder and should be replaced with a real one from a secure environment variable.
-        privateKey: process.env.FIREBASE_PRIVATE_KEY || `-----BEGIN PRIVATE KEY-----\n...-----END PRIVATE KEY-----\n`,
+        privateKey: process.env.FIREBASE_PRIVATE_KEY || `-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCJ7j5/23N4/yZ/\n...\n-----END PRIVATE KEY-----\n`,
     },
     projectId: firebaseConfig.projectId,
 };
