@@ -12,7 +12,7 @@ import AboutUsSection from '@/components/sections/about-us';
 export default function Home() {
   
   return (
-    <div className="flex min-h-screen flex-col">
+    <main className="flex min-h-screen flex-col">
       <HeroSection />
       
       <div className="pb-12">
@@ -26,6 +26,6 @@ export default function Home() {
       </div>
       <AboutUsSection />
       <VendorShowcase />
-    </div>
+    </main>
   );
 }

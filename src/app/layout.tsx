@@ -14,7 +14,7 @@ export const metadata: Metadata = {
   metadataBase: new URL('https://www.bantconfirm.com'),
   title: 'BANTConfirm | AI-Powered B2B Marketplace for Telecom & IT',
   description: 'BANTConfirm is an AI-powered B2B marketplace that connects businesses with top-tier vendors for telecom and IT services. Get qualified leads and streamline your procurement process.',
-  keywords: ['B2B Marketplace', 'AI-Powered', 'Telecom', 'IT Services', 'Lead Generation', 'Procurement', 'BANT', 'Vendor Marketplace', 'Business Software', 'SaaS'],
+  keywords: ['BANTConfirm', 'B2B Marketplace', 'AI-Powered', 'Telecom', 'IT Services', 'Lead Generation', 'Procurement', 'BANT', 'Vendor Marketplace', 'Business Software', 'SaaS'],
 };
 
 const structuredData = {
