@@ -45,7 +45,7 @@ export default function ProductDetailPage() {
         const placeholder = PlaceHolderImages.find((img) => img.id === imageId);
         return {
             imageUrl: imageId.startsWith('data:') ? imageId : placeholder?.imageUrl || '',
-            description: placeholder?.description || '',
+            description: placeholder?.description || 'Product image',
             imageHint: placeholder?.imageHint || 'product'
         };
     };
@@ -195,7 +195,7 @@ export default function ProductDetailPage() {
                                 <CardHeader className="flex-row gap-4 items-center">
                                     <div className="relative h-16 w-16 shrink-0 rounded-lg overflow-hidden border bg-background">
                                          {vendorImage?.imageUrl ? (
-                                            <Image src={vendorImage.imageUrl} alt={vendor.name} fill className="object-contain p-2" data-ai-hint={vendorImage.imageHint} />
+                                            <Image src={vendorImage.imageUrl} alt={vendor.name} fill className="object-contain p-2" data-ai-hint={vendorImage.imageHint || 'logo'} />
                                         ) : (
                                             <div className="bg-muted h-full w-full flex items-center justify-center">
                                                 <Building className="h-8 w-8 text-muted-foreground" />
@@ -242,6 +242,7 @@ function ProductDetailSkeleton() {
                         <Skeleton className="h-12 w-full" />
                         <Skeleton className="h-12 w-full" />
                     </div>
+
                     <div className="border-t pt-6">
                         <VendorInfoSkeleton />
                     </div>

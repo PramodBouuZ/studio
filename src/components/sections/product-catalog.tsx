@@ -25,6 +25,7 @@ import { useAIChat } from '../ai-chat';
 import { type Lead } from '@/lib/data';
 import { collection, doc, setDoc } from 'firebase/firestore';
 import { Skeleton } from '../ui/skeleton';
+import { PlaceHolderImages } from '@/lib/placeholder-images';
 
 const productTypes = ['All', 'Software', 'Service', 'Consulting', 'Hardware'];
 
@@ -284,8 +285,9 @@ export default function ProductCatalog() {
 }
 
 function ProductCard({ product, isHighlighted }: { product: Product, isHighlighted?: boolean }) {
-  const imageUrl = product.imageId;
-  const Icon = icons[product.iconName as keyof typeof icons] || ShoppingCart;
+    const imageUrl = product.imageId.startsWith('data:') ? product.imageId : (PlaceHolderImages.find(img => img.id === product.imageId)?.imageUrl || '');
+    const imageHint = PlaceHolderImages.find(img => img.id === product.imageId)?.imageHint || 'product';
+    const Icon = icons[product.iconName as keyof typeof icons] || ShoppingCart;
 
   return (
     <Card className={cn(
@@ -302,6 +304,7 @@ function ProductCard({ product, isHighlighted }: { product: Product, isHighlight
                 width={600}
                 height={400}
                 className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
+                data-ai-hint={imageHint}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               {isHighlighted && <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">Suggested</div>}
