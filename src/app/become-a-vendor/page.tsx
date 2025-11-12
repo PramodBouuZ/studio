@@ -3,9 +3,9 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { getAuth, createUserWithEmailAndPassword } from 'firebase/auth';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { doc, setDoc } from 'firebase/firestore';
-import { useFirestore } from '@/firebase';
+import { useFirestore, useAuth } from '@/firebase';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -34,7 +34,7 @@ export default function BecomeAVendorPage() {
   const [loading, setLoading] = useState(false);
   
   const router = useRouter();
-  const auth = getAuth();
+  const auth = useAuth();
   const firestore = useFirestore();
   const { toast } = useToast();
 
@@ -52,6 +52,10 @@ export default function BecomeAVendorPage() {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (!auth || !firestore) {
+        toast({ variant: 'destructive', title: 'Firebase not initialized', description: 'Please try again later.' });
+        return;
+    }
     setLoading(true);
     
     // In a real application, you would upload the logo to Firebase Storage
