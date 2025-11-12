@@ -300,8 +300,9 @@ function ProductCard({ product, isHighlighted }: { product: Product, isHighlight
               <Image
                 src={image.imageUrl}
                 alt={image.description}
-                fill
-                className="object-cover group-hover:scale-105 transition-transform duration-500"
+                width={600}
+                height={400}
+                className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
                 data-ai-hint={image.imageHint}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
