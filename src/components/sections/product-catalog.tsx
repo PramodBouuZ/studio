@@ -4,7 +4,6 @@ import { useState, useMemo } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { type Product } from '@/lib/data';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -285,8 +284,7 @@ export default function ProductCatalog() {
 }
 
 function ProductCard({ product, isHighlighted }: { product: Product, isHighlighted?: boolean }) {
-  const placeholder = PlaceHolderImages.find((img) => img.id === product.imageId);
-  const imageUrl = product.imageId.startsWith('data:') ? product.imageId : placeholder?.imageUrl;
+  const imageUrl = product.imageId;
   const Icon = icons[product.iconName as keyof typeof icons] || ShoppingCart;
 
   return (
@@ -304,7 +302,6 @@ function ProductCard({ product, isHighlighted }: { product: Product, isHighlight
                 width={600}
                 height={400}
                 className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                data-ai-hint={placeholder?.imageHint || 'product image'}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               {isHighlighted && <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">Suggested</div>}

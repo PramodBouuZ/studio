@@ -10,7 +10,6 @@ import {
   useCarousel,
 } from '@/components/ui/carousel';
 import Autoplay from 'embla-carousel-autoplay';
-import { PlaceHolderImages } from '@/lib/placeholder-images';
 import { Button } from '../ui/button';
 import { ArrowRight } from 'lucide-react';
 import { useAIChat } from '../ai-chat';
@@ -62,9 +61,7 @@ export default function HeroSection() {
       >
         <CarouselContent>
           {heroSlides?.map((slide, index) => {
-            const placeholder = PlaceHolderImages.find((img) => img.id === slide.imageId);
-            const imageUrl = slide.imageId.startsWith('data:') ? slide.imageId : placeholder?.imageUrl;
-
+            const imageUrl = slide.imageId;
             return (
               <CarouselItem key={slide.id}>
                 <div className="relative w-full h-[70vh] md:h-[80vh]">
@@ -74,7 +71,6 @@ export default function HeroSection() {
                       alt={slide.title}
                       fill
                       className="object-cover"
-                      data-ai-hint={placeholder?.imageHint || 'business marketing'}
                       priority={index === 0}
                     />
                   )}
