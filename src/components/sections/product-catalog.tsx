@@ -285,7 +285,8 @@ export default function ProductCatalog() {
 }
 
 function ProductCard({ product, isHighlighted }: { product: Product, isHighlighted?: boolean }) {
-  const image = PlaceHolderImages.find((img) => img.id === product.imageId) || { imageUrl: product.imageId.startsWith('data:') ? product.imageId : '', description: product.name, imageHint: '' };
+  const placeholder = PlaceHolderImages.find((img) => img.id === product.imageId);
+  const imageUrl = product.imageId.startsWith('data:') ? product.imageId : placeholder?.imageUrl;
   const Icon = icons[product.iconName as keyof typeof icons] || ShoppingCart;
 
   return (
@@ -295,15 +296,15 @@ function ProductCard({ product, isHighlighted }: { product: Product, isHighlight
     )}>
       <Link href={`/products/${product.id}`} className="flex flex-col h-full">
         <CardHeader className="p-0">
-          {image && (
+          {imageUrl && (
             <div className="relative h-52 w-full">
               <Image
-                src={image.imageUrl}
-                alt={image.description}
+                src={imageUrl}
+                alt={product.name}
                 width={600}
                 height={400}
                 className="object-cover w-full h-full group-hover:scale-105 transition-transform duration-500"
-                data-ai-hint={image.imageHint}
+                data-ai-hint={placeholder?.imageHint || 'product image'}
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent" />
               {isHighlighted && <div className="absolute top-2 right-2 bg-primary text-primary-foreground text-xs font-bold px-2 py-1 rounded">Suggested</div>}

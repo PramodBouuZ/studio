@@ -62,17 +62,19 @@ export default function HeroSection() {
       >
         <CarouselContent>
           {heroSlides?.map((slide, index) => {
-            const image = PlaceHolderImages.find((img) => img.id === slide.imageId) || { imageUrl: slide.imageId.startsWith('data:') ? slide.imageId : '', description: slide.title, imageHint: ''};
+            const placeholder = PlaceHolderImages.find((img) => img.id === slide.imageId);
+            const imageUrl = slide.imageId.startsWith('data:') ? slide.imageId : placeholder?.imageUrl;
+
             return (
               <CarouselItem key={slide.id}>
                 <div className="relative w-full h-[70vh] md:h-[80vh]">
-                  {image && (
+                  {imageUrl && (
                     <Image
-                      src={image.imageUrl}
-                      alt={image.description}
+                      src={imageUrl}
+                      alt={slide.title}
                       fill
                       className="object-cover"
-                      data-ai-hint={image.imageHint}
+                      data-ai-hint={placeholder?.imageHint || 'business marketing'}
                       priority={index === 0}
                     />
                   )}

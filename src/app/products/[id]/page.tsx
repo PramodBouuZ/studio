@@ -39,8 +39,19 @@ export default function ProductDetailPage() {
     const { data: vendor, isLoading: isVendorLoading } = useDoc<VendorProfile>(vendorDocRef);
 
     const Icon = product ? icons[product.iconName as keyof typeof icons] || ShoppingCart : ShoppingCart;
-    const image = product ? PlaceHolderImages.find((img) => img.id === product.imageId) || { imageUrl: product.imageId.startsWith('data:') ? product.imageId : '', description: product.name, imageHint: '' } : null;
-    const vendorImage = vendor ? PlaceHolderImages.find((img) => img.id === vendor.logoUrl) || { imageUrl: vendor.logoUrl.startsWith('data:') ? vendor.logoUrl : '', description: vendor.name, imageHint: '' } : null;
+
+    const getImageUrl = (imageId: string | undefined) => {
+        if (!imageId) return null;
+        const placeholder = PlaceHolderImages.find((img) => img.id === imageId);
+        return {
+            imageUrl: imageId.startsWith('data:') ? imageId : placeholder?.imageUrl || '',
+            description: placeholder?.description || '',
+            imageHint: placeholder?.imageHint || 'product'
+        };
+    };
+
+    const image = product ? getImageUrl(product.imageId) : null;
+    const vendorImage = vendor ? getImageUrl(vendor.logoUrl) : null;
 
     const handlePostEnquiry = async () => {
         if (!user || !firestore || !product) {
@@ -146,7 +157,7 @@ export default function ProductDetailPage() {
                 {/* Image Section */}
                 <div className="space-y-4">
                     <div className="relative aspect-video w-full rounded-lg overflow-hidden border shadow-lg">
-                        {image ? (
+                        {image?.imageUrl ? (
                             <Image src={image.imageUrl} alt={image.description} fill className="object-cover" data-ai-hint={image.imageHint} />
                         ) : (
                             <div className="bg-muted h-full w-full"></div>
@@ -183,7 +194,7 @@ export default function ProductDetailPage() {
                             <Card className="bg-secondary/50">
                                 <CardHeader className="flex-row gap-4 items-center">
                                     <div className="relative h-16 w-16 shrink-0 rounded-lg overflow-hidden border bg-background">
-                                         {vendorImage ? (
+                                         {vendorImage?.imageUrl ? (
                                             <Image src={vendorImage.imageUrl} alt={vendor.name} fill className="object-contain p-2" data-ai-hint={vendorImage.imageHint} />
                                         ) : (
                                             <div className="bg-muted h-full w-full flex items-center justify-center">
