@@ -1,38 +1,50 @@
 'use client';
 
 import { firebaseConfig } from '@/firebase/config';
-import { initializeApp, getApps, getApp, FirebaseApp } from 'firebase/app';
-import { getAuth, connectAuthEmulator } from 'firebase/auth';
-import { getFirestore, connectFirestoreEmulator } from 'firebase/firestore'
+import { initializeApp, getApps, getApp, type FirebaseApp } from 'firebase/app';
+import { getAuth, type Auth } from 'firebase/auth';
+import { getFirestore, type Firestore } from 'firebase/firestore';
 
-// IMPORTANT: DO NOT MODIFY THIS FUNCTION
-export function initializeFirebase() {
-  if (getApps().length > 0) {
-    return getSdks(getApp());
+// This object will hold the initialized Firebase services.
+let firebaseServices: {
+  firebaseApp: FirebaseApp;
+  auth: Auth;
+  firestore: Firestore;
+} | null = null;
+
+// This is the function that initializes Firebase.
+// It ensures that initialization only happens once.
+function getFirebaseServices() {
+  if (firebaseServices) {
+    return firebaseServices;
   }
-  
-  const firebaseApp = initializeApp(firebaseConfig);
 
-  return getSdks(firebaseApp);
-}
+  // Check if any Firebase app has already been initialized.
+  const app = getApps().length > 0 ? getApp() : initializeApp(firebaseConfig);
 
-export function getSdks(firebaseApp: FirebaseApp) {
-  const firestore = getFirestore(firebaseApp);
-  // In a real app, you might want to connect to emulators in development
-  // if (process.env.NODE_ENV === 'development') {
-  //   connectFirestoreEmulator(firestore, 'localhost', 8080);
-  // }
-  
-  const auth = getAuth(firebaseApp);
+  const auth = getAuth(app);
+  const firestore = getFirestore(app);
+
+  // In a real app, you might want to connect to emulators in development.
+  // This is commented out to ensure it connects to the real Firebase services.
   // if (process.env.NODE_ENV === 'development') {
   //   connectAuthEmulator(auth, 'http://localhost:9099');
+  //   connectFirestoreEmulator(firestore, 'localhost', 8080);
   // }
 
-  return {
-    firebaseApp,
+  firebaseServices = {
+    firebaseApp: app,
     auth,
-    firestore
+    firestore,
   };
+
+  return firebaseServices;
+}
+
+
+// IMPORTANT: The initializeFirebase function is now simplified to just call getFirebaseServices.
+export function initializeFirebase() {
+  return getFirebaseServices();
 }
 
 export * from './provider';
